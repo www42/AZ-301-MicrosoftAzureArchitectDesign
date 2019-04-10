@@ -1,0 +1,6 @@
+URI='https://foo.documents.azure.com:443/'
+PRIMARYKEY='dKOLDzi8IMkVUwdgSBtEs97Wo801uSIqRDKKIwTPOE4lW7XxDAxXWmx1OB2cEO17mz3n6X4CXkgtsiPYPbEZvg=='
+
+# Hier muss noch die id mit rein
+           { "firstName": "Pennington", "lastName": "Oneal", "age": 26, "salary": 90000.00, "company": "Veraq", "isVested": false }
+{ "id": 001, "firstName": "Pennington", "lastName": "Oneal", "age": 26, "salary": 90000.00, "company": "Veraq", "isVested": false }

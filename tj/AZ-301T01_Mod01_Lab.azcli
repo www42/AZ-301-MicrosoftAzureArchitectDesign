@@ -1,0 +1,107 @@
+# Managing Security and Identity for Azure Solutions
+
+## Exercise 1: Deploy Key Vault resources
+
+### Task 1: Open Cloud Shell (Bash)
+
+az account list
+
+# Task 2: Deploy a key vault
+
+# https://docs.microsoft.com/en-us/cli/azure/keyvault?view=azure-cli-latest#az-keyvault-create
+
+az account list-locations -o table
+Location="westeurope"
+
+RgName="AADesignLab0901-RG"
+az group create --name $RgName --location $Location
+
+az provider show --namespace Microsoft.KeyVault -o table
+# if not registerd:
+# az provider register --namespace Microsoft.KeyVault
+
+KeyVaultName="bayernmuenchen"
+az keyvault create --name $KeyVaultName --location $Location --resource-group $RgName --sku standard
+az keyvault list -o table
+az keyvault show --name $KeyVaultName 
+
+### Task 3: Add a secret to a key vault by using the Azure portal
+
+### Task 4: Open Cloud Shell (Bash)
+
+### Task 5: Add a secret to a key vault using the CLI
+
+RESOURCE_GROUP='AADesignLab0901-RG'
+echo $RESOURCE_GROUP
+
+KEY_VAULT_NAME=$(az keyvault list --resource-group $RESOURCE_GROUP --query "[0].name" --output tsv)
+echo $KEY_VAULT_NAME
+
+az keyvault secret list --vault-name $KEY_VAULT_NAME
+az keyvault secret show --vault-name $KEY_VAULT_NAME --name thirdPartyKey --query value --output tsv
+az keyvault secret set --vault-name $KEY_VAULT_NAME --name firstPartyKey --value 56f8a55119845511c81de488
+az keyvault secret list --vault-name $KEY_VAULT_NAME --query "[*].{Id:id,Created:attributes.created}" --out table
+
+### Task 6: Add secrets to a key vault by using Azure Resource Manager templates
+
+### Tak 7: View key vault secrets
+
+az keyvault show --name $KEY_VAULT_NAME -o table
+az keyvault secret list --vault-name $KEY_VAULT_NAME -o table --query "[*].{ID:id,ContentType:contentType}"
+
+
+
+
+## Exercise 2: Deploy Azure VM using Key Vault secret
+
+### Task 1: Retrive the value of the key vault Resource Id parameter
+
+RESOURCE_GROUP='AADesignLab0901-RG'
+echo $RESOURCE_GROUP
+
+KEY_VAULT_ID=$(az keyvault list --resource-group $RESOURCE_GROUP --query "[0].id" --output tsv)
+echo $KEY_VAULT_ID
+
+KEY_VAULT_ID_REGEX="$(echo $KEY_VAULT_ID | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')"
+echo $KEY_VAULT_ID_REGEX
+
+### Task 2: Prepare the Azure Resource Manager deployment template and parameters files
+
+# vm-template.json   try the old 20535 Lab 9
+
+cat ~/vm-template.parameters--tj-KEYVAULTID_INSERTED.json
+
+### Task 3: Configure a key vault for deployment of Azure Resource Manager templates
+
+### Task 4: Deploy a Linux VM with the password paramter set by using a key vault secret
+
+az group deployment create  --resource-group $RESOURCE_GROUP \
+                            --template-file ~/vm-template--tj.json \
+                            --parameters @~/vm-template.parameters--tj-KEYVAULTID_INSERTED.json
+
+
+### Task 5: Verify the outcome of the deployment
+
+RESOURCE_GROUP='AADesignLab0901-RG'
+KEY_VAULT_NAME=$(az keyvault list --resource-group $RESOURCE_GROUP --query "[0].name" --output tsv)
+echo $KEY_VAULT_NAME
+
+az keyvault secret show --vault-name $KEY_VAULT_NAME --name vmPassword --query value --output tsv
+
+PUBLIC_IP=$(az network public-ip list --resource-group $RESOURCE_GROUP --query "[0].ipAddress" --output tsv)
+echo $PUBLIC_IP
+
+ssh Student@$PUBLIC_IP
+exit
+
+
+## Exercise 3: Remove lab resources
+
+### Task 1: Open Cloud Shell
+
+az group list --query "[?starts_with(name,'AADesignLab09')]".name --output tsv
+
+### Task 2: Delete resource groups
+
+az group list --query "[?starts_with(name,'AADesignLab09')]".name --output tsv \
+  | xargs -L1 bash -c 'az group delete --name $0 --no-wait --yes'

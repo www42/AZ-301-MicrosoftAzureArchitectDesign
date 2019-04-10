@@ -1,0 +1,20 @@
+# Integrating SaaS Services Available on the Azure Platform
+
+# Exercise 1
+# ----------
+
+COGNITIVEENDPOINTURL='https://westeurope.api.cognitive.microsoft.com/text/analytics/v2.0'
+COGNITIVEENDPOINTKEY='4d68d26a2b1d4acd95931511ae82ddea'
+
+# Exercise 2
+# ----------
+
+python
+
+import requests
+
+url = "https://prod-91.westeurope.logic.azure.com:443/workflows/2814304e704345b983a58a2c75161df8/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=ig7KIOgdt25eX_ex231i1UYKyWvKZqjjrGCz2kJvXZY"
+
+response = requests.post(url, json={'text': 'Was auch immer passiert, heute ist ein schöner Tag'})
+
+print(response.status_code, response.reason, response.text)

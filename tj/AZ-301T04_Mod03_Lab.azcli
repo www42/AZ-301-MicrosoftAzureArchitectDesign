@@ -1,0 +1,60 @@
+az account list -o table
+
+azbb --help
+
+ls -l hub-nva.json hub-vnet.json hub-vnet-peering.json spoke1.json spoke2.json
+
+sed -i.bak1 's/"adminUsername": ""/"adminUsername": "Student"/' ~/hub-vnet.json
+sed -i.bak2 's/"adminPassword": ""/"adminPassword": "Pa55w.rd1234"/' ~/hub-vnet.json
+cat hub-vnet.json
+
+sed -i.bak1 's/"adminUsername": ""/"adminUsername": "Student"/' ~/hub-nva.json
+sed -i.bak2 's/"adminPassword": ""/"adminPassword": "Pa55w.rd1234"/' ~/hub-nva.json
+cat ~/hub-nva.json
+
+sed -i.bak1 's/"adminUsername": ""/"adminUsername": "Student"/' ~/spoke1.json
+sed -i.bak2 's/"adminPassword": ""/"adminPassword": "Pa55w.rd1234"/' ~/spoke1.json
+cat ~/spoke1.json
+
+sed -i.bak1 's/"adminUsername": ""/"adminUsername": "Student"/' ~/spoke2.json
+sed -i.bak2 's/"adminPassword": ""/"adminPassword": "Pa55w.rd1234"/' ~/spoke2.json
+cat ~/spoke2.json
+
+#---------------------------------------------------------------------------------------------
+SUBSCRIPTION_ID=$(az account list --query "[0].id" | tr -d '"')
+echo $SUBSCRIPTION_ID
+RESOURCE_GROUP_HUB_VNET='AADesignLab08-hub-vnet-rg'
+echo $RESOURCE_GROUP_HUB_VNET
+LOCATION='westeurope'
+echo $LOCATION
+azbb -g $RESOURCE_GROUP_HUB_VNET -s $SUBSCRIPTION_ID -l $LOCATION -p ~/hub-vnet.json --deploy
+#---------------------------------------------------------------------------------------------
+SUBSCRIPTION_ID=$(az account list --query "[0].id" | tr -d '"')
+echo $SUBSCRIPTION_ID
+RESOURCE_GROUP_SPOKE1_VNET='AADesignLab08-spoke1-vnet-rg'
+echo $RESOURCE_GROUP_SPOKE1_VNET
+LOCATION='westeurope'
+echo $LOCATION
+azbb -g $RESOURCE_GROUP_SPOKE1_VNET -s $SUBSCRIPTION_ID -l $LOCATION -p ~/spoke1.json --deploy
+#---------------------------------------------------------------------------------------------
+SUBSCRIPTION_ID=$(az account list --query "[0].id" | tr -d '"')
+echo $SUBSCRIPTION_ID
+RESOURCE_GROUP_SPOKE2_VNET='AADesignLab08-spoke2-vnet-rg'
+echo $RESOURCE_GROUP_SPOKE2_VNET
+LOCATION='westeurope'
+echo $LOCATION
+azbb -g $RESOURCE_GROUP_SPOKE2_VNET -s $SUBSCRIPTION_ID -l $LOCATION -p ~/spoke2.json --deploy
+#---------------------------------------------------------------------------------------------
+
+az network vnet list -o table
+
+SUBSCRIPTION_ID=$(az account list --query "[0].id" | tr -d '"')
+echo $SUBSCRIPTION_ID
+RESOURCE_GROUP_HUB_VNET='AADesignLab08-hub-vnet-rg'
+echo $RESOURCE_GROUP_HUB_VNET
+LOCATION=$(az group list --query "[?name == 'AADesignLab08-hub-vnet-rg'].location" --output tsv)
+echo $LOCATION
+azbb -g $RESOURCE_GROUP_HUB_VNET -s $SUBSCRIPTION_ID -l $LOCATION -p ~/hub-vnet-peering.json --deploy
+
+RESOURCE_GROUP_HUB_NVA='AADesignLab08-hub-nva-rg'
+azbb -g $RESOURCE_GROUP_HUB_NVA -s $SUBSCRIPTION_ID -l $LOCATION -p ~/hub-nva.json --deploy

@@ -1,0 +1,49 @@
+# AZ-301T03 Module 1 Lab: Deploying Resources with Azure Resource Manager
+# =======================================================================
+
+# Exercise 1
+# ----------
+
+# Exercise 2
+# ----------
+
+az account list -o table
+
+pwd
+mkdir ~/.npm-global
+
+npm --help
+npm config set prefix '~/.npm-global'
+npm config list
+
+cat ~/.bashrc
+echo 'export PATH="$HOME/.npm-global/bin:$PATH"' >> ~/.bashrc
+tail -3 ~/.bashrc
+
+npm install -g @mspnp/azure-building-blocks
+exit
+
+git --version
+git clone https://github.com/mspnp/template-building-blocks.git
+
+cat ./template-building-blocks/scenarios/vnet/vnet-simple.json
+
+SUBSCRIPTION_ID=$(az account list --query "[0].id" | tr -d '"')
+echo $SUBSCRIPTION_ID
+
+RESOURCE_GROUP='AADesignLab0202-RG'
+echo $RESOURCE_GROUP
+
+#LOCATION=$(az group list --query "[?name == 'AADesignLab0201-RG'].location" --output tsv)
+LOCATION='westeurope'
+echo $LOCATION
+
+azbb -g $RESOURCE_GROUP -s $SUBSCRIPTION_ID -l $LOCATION -p ./template-building-blocks/scenarios/vnet/vnet-simple.json --deploy
+
+# Exercise 3
+# ----------
+
+az group list --query "[?starts_with(name,'AADesignLab02')]".name --output tsv
+
+az group list --query "[?starts_with(name,'AADesignLab02')]".name --output tsv \
+    | xargs -L1 bash -c 'az group delete --name $0 --no-wait --yes'

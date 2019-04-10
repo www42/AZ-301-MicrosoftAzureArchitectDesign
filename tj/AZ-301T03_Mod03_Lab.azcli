@@ -1,0 +1,70 @@
+az account list -o table
+
+# Exercise 1: Create Web App
+# --------------------------
+
+RESOURCE_GROUP_APP='AADesignLab0502-RG'
+echo $RESOURCE_GROUP_APP
+
+LOCATION='westeurope' 
+echo $LOCATION
+
+az group create --name $RESOURCE_GROUP_APP --location $LOCATION
+az group list -o table
+
+az appservice plan create \
+    --is-linux \
+    --name "AADesignLab0502-$LOCATION" \
+    --resource-group $RESOURCE_GROUP_APP \
+    --location $LOCATION \
+    --sku B2
+az appservice plan list -o table
+
+az webapp list-runtimes --linux
+
+WEBAPPNAME1=webapp05021$RANDOM$RANDOM
+echo $WEBAPPNAME1
+
+az webapp create \
+    --name $WEBAPPNAME1 \
+    --plan AADesignLab0502-$LOCATION \
+    --resource-group $RESOURCE_GROUP_APP \
+    --runtime "DOTNETCORE|2.1"
+
+az webapp list -o table
+
+
+# Exercise 2: Deploy WebApp Code
+# ------------------------------
+
+RESOURCE_GROUP_APP='AADesignLab0502-RG'
+echo $RESOURCE_GROUP_APP
+
+LOCATION=$(az group list --query "[?name == 'AADesignLab0502-RG'].location" --output tsv)
+echo $LOCATION
+
+WEBAPPNAME2=webapp05022$RANDOM$RANDOM
+echo $WEBAPPNAME2
+
+az webapp create \
+    --name $WEBAPPNAME2 \
+    --plan AADesignLab0502-$LOCATION \
+    --resource-group $RESOURCE_GROUP_APP \
+    --runtime "NODE|9.4"
+
+az webapp list -o table
+
+REPOSITORY_URL='https://github.com/Azure-Samples/nodejs-docs-hello-world'
+echo $REPOSITORY_URL
+
+REPOSITORY_URL_REGEX="$(echo $REPOSITORY_URL | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')"
+echo $REPOSITORY_URL_REGEX
+
+sed -i.bak1 's/"$WEBAPPNAME2"/"'"$WEBAPPNAME2"'"/' ~/parameters.json
+cat ~/parameters.json
+
+az group deployment create \
+    --resource-group $RESOURCE_GROUP_APP \
+    --template-file github.json \
+    --parameters @parameters.json
+

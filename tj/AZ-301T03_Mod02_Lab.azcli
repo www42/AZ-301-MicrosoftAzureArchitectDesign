@@ -1,0 +1,125 @@
+# AZ-301T03 Module 2 Lab: Creating Managed Server Applications in Azure
+# =====================================================================
+
+# Exercise 1
+# ----------
+
+az account list
+
+RESOURCE_GROUP='AADesignLab0402-RG'
+echo $RESOURCE_GROUP
+
+LOCATION='westeurope'
+echo $LOCATION
+
+az group create --name $RESOURCE_GROUP --location $LOCATION
+
+az aks create \
+    --resource-group $RESOURCE_GROUP \
+    --name aad0402-akscluster \
+    --node-count 1 \
+    --node-vm-size Standard_D1_v2 \
+    --generate-ssh-keys
+
+az aks get-credentials \
+    --resource-group $RESOURCE_GROUP \
+    --name aad0402-akscluster
+
+kubectl get nodes
+
+# Exercise 2
+# ----------
+
+kubectl run aad0402-akscluster --image=nginx --replicas=1 --port=80
+
+kubectl get pods
+kubectl get deployment
+kubectl expose deployment aad0402-akscluster --port=80 --type=LoadBalancer
+
+kubectl get service --watch
+
+kubectl scale --replicas=2 deployment/aad0402-akscluster
+kubectl get pods
+
+az aks scale \
+    --resource-group $RESOURCE_GROUP \
+    --name aad0402-akscluster \
+    --node-count 2
+
+kubectl get nodes
+
+kubectl scale --replicas=10 deployment/aad0402-akscluster
+
+kubectl get pods
+
+kubectl get pod -o=custom-columns=NODE:.spec.nodeName,POD:.metadata.name
+
+kubectl delete deployment aad0402-akscluster
+
+
+# Exercise 3
+# ----------
+
+git clone https://github.com/Azure-Samples/azure-voting-app-redis.git
+
+cd azure-voting-app-redis
+cat azure-vote-all-in-one-redis.yaml
+kubectl apply -f azure-vote-all-in-one-redis.yaml
+
+kubectl get pods
+kubectl get service azure-vote-front --watch
+
+cd ~
+git clone https://github.com/kubernetes-incubator/metrics-server.git
+
+kubectl create -f ~/metrics-server/deploy/1.8+/
+
+kubectl autoscale deployment azure-vote-front --cpu-percent=50 --min=3 --max=10
+
+kubectl get hpa
+kubectl get pods
+
+kubectl delete deployment azure-vote-front
+kubectl delete deployment azure-vote-back
+
+kubectl get pods
+
+az aks delete --resource-group AADesignLab0402-RG --name aad0402-akscluster --yes --no-wait
+
+
+# Exercise 4
+# ----------
+ssh-keygen -t rsa -b 2048
+
+PUBLIC_KEY=$(cat ~/.ssh/id_rsa.pub)
+PUBLIC_KEY_REGEX="$(echo $PUBLIC_KEY | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')"
+echo $PUBLIC_KEY_REGEX
+
+RESOURCE_GROUP='AADesignLab0403-RG'
+echo $RESOURCE_GROUP
+
+LOCATION='westeurope'
+echo $LOCATION
+
+az group create --name $RESOURCE_GROUP --location $LOCATION
+az group show --name $RESOURCE_GROUP
+
+# SP2 sic!
+SERVICE_PRINCIPAL=$(az ad sp create-for-rbac --name AADesignLab0403-SP2)
+echo $SERVICE_PRINCIPAL
+
+APP_ID=$(echo $SERVICE_PRINCIPAL | jq .appId | tr -d '"')
+echo $APP_ID
+
+PASSWORD=$(echo $SERVICE_PRINCIPAL | jq .password | tr -d '"')
+echo $PASSWORD
+
+sed -i.bak2 's/"$PASSWORD"/"'"$PASSWORD"'"/' ~/parameters.json
+sed -i.bak3 's/"$PUBLIC_KEY_REGEX"/"'"$PUBLIC_KEY_REGEX"'"/' ~/parameters.json
+
+cat ~/parameters.json
+cat ~/azuredeploy.json
+
+az group deployment create --resource-group $RESOURCE_GROUP \
+    --template-file azuredeploy.json \
+    --parameters @parameters.json 
