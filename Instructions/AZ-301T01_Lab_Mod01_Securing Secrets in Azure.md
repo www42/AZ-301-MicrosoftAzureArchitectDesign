@@ -309,7 +309,7 @@
 
 ## Exercise 2: Deploy Azure VM using Key Vault secret
 
-#### Task 1: Retrive the value of the key vault Resource Id parameter
+#### Task 1: Retrieve the value of the key vault Resource Id parameter
 
 1. At the top of the portal, click the **Cloud Shell** icon to open a new Clould Shell instance.
 
