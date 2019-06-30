@@ -160,35 +160,28 @@
 
 1. At the top of the **New** blade, in the **Search the Marketplace** text box, type **Storage account** and press **Enter**.
 
-1. On the **Everything** blade, in the search results, click **Storage account - blob, file, table, queue**.
+1. On the **Everything** blade, in the search results, click **Storage account**.
 
-1. On the **Storage account - blob, file, table, queue** blade, click the **Create** button.
+1. On the **Storage account** blade, click the **Create** button.
 
 1. On the **Create storage account** blade, perform the following tasks:
 
-    - In the **Name** text box, type a unique name consisting of a combination of between 3 and 24 characters and digits.
-    
-    - In the **Deployment model** section, ensure that the **Resource manager** option is selected.
-
-    - In the **Account kind** drop-down list, ensure that the **Storage (general purpose v1)** option is selected.
-
-    - Leave the **Location** entry set to the same Azure region you selected earlier in this exercise.
-
-    - In the **Replication** drop-down list, select the **Locally-redundant storage (LRS)** entry.
-
-    - In the **Performance** section, ensure that the **Standard** option is selected. 
-
-    - In the **Secure transfer required** section, ensure that the **Disabled** option is selected. 
-
     - Leave the **Subscription** drop-down list entry set to its default value.
-
+    
     - In the **Resource group** section, ensure that the **Use existing** option is selected and, in the drop-down list below, select the resource group you created earlier in this exercise.
 
-    - Leave the **Configure virtual networks** option set to its default value.
+    - In the **Name** text box, type a unique name consisting of a combination of between 3 and 24 characters and digits.
+    
+    - Leave the **Location** entry set to the same Azure region you selected earlier in this exercise.
+    
+    - In the **Performance** section, ensure that the **Standard** option is selected.
+       
 
-    - Leave the **Hierarchical namespaces** option set to its default value.
+    - In the **Account kind** drop-down list, ensure that the **Storage (general purpose v1)** option is selected.
+    
+    - In the **Replication** drop-down list, select the **Locally-redundant storage (LRS)** entry.
 
-    - Click the **Create** button.
+    - Click the **Review + Create** button, and then click **Create**.
 
 1. Wait for the deployment to complete before you proceed to the next task.
 
@@ -250,7 +243,7 @@
 
 1. In the **Choose File to Upload** dialog box, navigate to the **\\allfiles\\AZ-301T04\\Module_02\\LabFiles\\Starter\\** folder, select the **dsc-extension-template.json** file, and click **Open**. This will load the following content into the template editor pane:
 
-    ```
+    ```json
     {
         "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
         "contentVersion": "1.0.0.0",
@@ -454,25 +447,25 @@
 
 1. At the **Cloud Shell** command prompt at the bottom of the portal, type in the following command and press **Enter** to create a local directory to install the Azure Building Blocks npm package:
 
-    ```
+    ```sh
     mkdir ~/.npm-global
     ```
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to update the npm configuration to include the new local directory:
 
-    ```
+    ```sh
     npm config set prefix '~/.npm-global'
     ```
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to open the ~./bashrc configuration file for editing:
 
-    ```
+    ```sh
     vi ~/.bashrc
     ```
 
 1. At the **Cloud Shell** command prompt, in the vi editor interface, scroll down to the bottom of the file (or type **G**), scroll to the right to the right-most character on the last line (or type **$**), type **a** to enter the **INSERT** mode, press **Enter** to start a new line, and then type the following to add the newly created directory to the system path:
 
-    ```
+    ```sh
     export PATH="$HOME/.npm-global/bin:$PATH"
     ```
 
@@ -480,13 +473,13 @@
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to install the Azure Building Blocks npm package:
 
-    ```
+    ```sh
     npm install -g @mspnp/azure-building-blocks
     ```
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to exit the shell:
 
-    ```
+    ```sh
     exit
     ```
 
@@ -505,49 +498,49 @@
 
 1.  At the **Cloud Shell** command prompt, type in the following command and press **Enter** to view the content of the Azure Building Block parameter file you will use for this deployment:
 
-    ```
+    ```sh
     cat ./reference-architectures/virtual-machines/single-vm/parameters/windows/single-vm.json
     ```
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create a variable which value designates the name of your Azure subscription:
 
-    ```
+    ```sh
     SUBSCRIPTION_ID=$(az account list --query "[0].id" | tr -d '"')
     ```
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create a variable which value designates the name of the resource group you created earlier in this exercise:
 
-    ```
+    ```sh
     RESOURCE_GROUP='AADesignLab0303-RG'
     ```
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create a variable which value designates the Azure region you will use for the deployment:
 
-    ```
+    ```sh
     LOCATION=$(az group list --query "[?name == 'AADesignLab0301-RG'].location" --output tsv)
     ```
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to replace the placeholder for the **adminUsername** parameter with the value **Student** in the Building Blocks parameter file:
 
-    ```
+    ```sh
     sed -i.bak1 's/"adminUsername": ""/"adminUsername": "Student"/' ./reference-architectures/virtual-machines/single-vm/parameters/windows/single-vm.json
     ```
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to replace the placeholder for the **adminPassword** parameter with the value **Pa55w.rd1234** in the Building Blocks parameter file:
 
-    ```
+    ```sh
     sed -i.bak2 's/"adminPassword": ""/"adminPassword": "Pa55w.rd1234"/' ./reference-architectures/virtual-machines/single-vm/parameters/windows/single-vm.json
     ```
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to verify that the parameter values were successfully changed in the Building Blocks parameter file:
 
-    ```
+    ```sh
     cat ./reference-architectures/virtual-machines/single-vm/parameters/windows/single-vm.json
     ```
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to deploy a Windows Server 2016 Azure VM by using the Azure Building Blocks:
 
-    ```
+    ```sh
     azbb -g $RESOURCE_GROUP -s $SUBSCRIPTION_ID -l $LOCATION -p ./reference-architectures/virtual-machines/single-vm/parameters/windows/single-vm.json --deploy
     ```
 
@@ -575,13 +568,13 @@
 
 1.  At the **Cloud Shell** command prompt, type in the following command and press **Enter** to view the content of the Azure Building Block parameter file you will use for this deployment:
 
-    ```
+    ```sh
     cat ./reference-architectures/virtual-machines/single-vm/parameters/linux/single-vm.json
     ```
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to generate the SSH key pair that you will use to authenticate when accessing the Linux VM:
 
-    ```
+    ```sh
     ssh-keygen -t rsa -b 2048
     ```
 
@@ -591,13 +584,13 @@
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create a variable which value designates the public key of the newly generated key pair:
 
-    ```
+    ```sh
     PUBLIC_KEY=$(cat ~/.ssh/id_rsa.pub)
     ```
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create a variable which value designates the public key of the newly generated key pair and which takes into account any special character the public key might include:
 
-    ```
+    ```sh
     PUBLIC_KEY_REGEX="$(echo $PUBLIC_KEY | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')"
     ```
 
@@ -605,49 +598,49 @@
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create a variable which value designates the name of your Azure subscription:
 
-    ```
+    ```sh
     SUBSCRIPTION_ID=$(az account list --query "[0].id" | tr -d '"')
     ```
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create a variable which value designates the name of the resource group you will use for the deployment:
 
-    ```
+    ```sh
     RESOURCE_GROUP='AADesignLab0304-RG'
     ```
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create a variable which value designates the Azure region you will use for the deployment:
 
-    ```
+    ```sh
     LOCATION=$(az group list --query "[?name == 'AADesignLab0301-RG'].location" --output tsv)
     ```
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to replace the placeholder for the **adminUsername** parameter with the value **Student** in the Building Blocks parameter file:
 
-    ```
+    ```sh
     sed -i.bak1 's/"adminUsername": ""/"adminUsername": "Student"/' ./reference-architectures/virtual-machines/single-vm/parameters/linux/single-vm.json
     ```
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to replace the placeholder for the **sshPublicKey** parameter with the value of the **$PUBLIC_KEY_REGEX** variable in the Building Blocks parameter file:
 
-    ```
+    ```sh
     sed -i.bak2 's/"sshPublicKey": ""/"sshPublicKey": "'"$PUBLIC_KEY_REGEX"'"/' ./reference-architectures/virtual-machines/single-vm/parameters/linux/single-vm.json
     ```
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to verify that the parameter values were successfully changed in the Building Blocks parameter file:
 
-    ```
+    ```sh
     cat ./reference-architectures/virtual-machines/single-vm/parameters/linux/single-vm.json
     ```
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create a new resource group:
 
-    ```
+    ```sh
     az group create --name $RESOURCE_GROUP --location $LOCATION
     ```
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to deploy a Linux Azure VM by using the Azure Building Blocks:
 
-    ```
+    ```sh
     azbb -g $RESOURCE_GROUP -s $SUBSCRIPTION_ID -l $LOCATION -p ./reference-architectures/virtual-machines/single-vm/parameters/linux/single-vm.json --deploy
     ```
 
@@ -683,7 +676,7 @@
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to list all resource groups you created in this lab:
 
-    ```
+    ```sh
     az group list --query "[?starts_with(name,'AADesignLab03')]".name --output tsv
     ```
 
@@ -693,7 +686,7 @@
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to delete the resource groups you created in this lab
 
-    ```
+    ```sh
     az group list --query "[?starts_with(name,'AADesignLab03')]".name --output tsv | xargs -L1 bash -c 'az group delete --name $0 --no-wait --yes'
     ```
 

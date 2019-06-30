@@ -66,34 +66,34 @@
 
 1. At the **Cloud Shell** command prompt at the bottom of the portal, type in the following command and press **Enter** to create a variable which value designates the name of the resource group you will use in this task:
 
-    ```
+    ```sh
     RESOURCE_GROUP='AADesignLab0402-RG'
     ```
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create a variable which value designates the Azure region you will use for the deployment (replace the placeholder `<Azure region>` with the name of the Azure region to which you intend to deploy resources in this lab):
 
-    ```
+    ```sh
     LOCATION='<Azure region>'
     ```
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create a new resource group:
 
-    ```
+    ```sh
     az group create --name $RESOURCE_GROUP --location $LOCATION
     ```
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create a new AKS cluster:
 
-    ```
+    ```sh
     az aks create --resource-group $RESOURCE_GROUP --name aad0402-akscluster --node-count 1 --node-vm-size Standard_DS1_v2 --generate-ssh-keys
     ```
 
     > **Note**: If you receive an error message regarding availability of the VM size which value is represented by the `--node-vm-size` parameter, review the message and try other suggested VM sizes.
 
-    > **Note**: Alternatively, you can identify VM sizes available in your subscription in a given region by running the following command and reviewing the values in the **Restriction** column (make sure to replace the `<region>` placeholder with the name of the target region):
+    > **Note**: Alternatively, in **PowerShell** on **Cloud Shell**  you can identify VM sizes available in your subscription in a given region by running the following command and reviewing the values in the **Restriction** column (make sure to replace the `region` placeholder with the name of the target region):
 
-    ```
-    Get-AzComputeResourceSku | where {$_.Locations -icontains "region"} | Where-Object {($_.ResourceType -ilike "virtualMachines")}.
+    ```pwsh
+    Get-AzComputeResourceSku | where {$_.Locations -icontains "region"} | Where-Object {($_.ResourceType -ilike "virtualMachines")}
     ```
 
     > **Note**: The **Restriction** column will contain the value **NotAvailableForSubscription** for VM sizes that are not available in your subscription.
@@ -110,7 +110,7 @@
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to retrieve the credentials to access the AKS cluster:
 
-    ```
+    ```sh
     az aks get-credentials --resource-group $RESOURCE_GROUP --name aad0402-akscluster 
     ```
 
@@ -135,7 +135,7 @@
     kubectl run aad0402-akscluster --image=nginx --replicas=1 --port=80
     ```
 
-    > **Note**: Make sure to use lower case letters when typing the name of the deployment.
+    > **Note**: Make sure to use lower case letters when typing the name of the deployment. You will also receive a notification that this command is deprecated and will be removed in a future version, but successfully created the cluster.
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to verify that a Kubernetes pod has been created:
 
@@ -186,7 +186,7 @@
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to scale out the number of cluster nodes:
 
-    ```
+    ```sh
     az aks scale --resource-group $RESOURCE_GROUP --name aad0402-akscluster --node-count 2
     ```
 
@@ -242,19 +242,19 @@
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to navigate to the location of the downloaded app:
 
-    ```
+    ```sh
     cd azure-voting-app-redis
     ```
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to list the content of the application **.yaml** file:
 
-    ```
+    ```sh
     cat azure-vote-all-in-one-redis.yaml
     ```
 
 1. Review the output of the command and verify that the pod defninition includes requests and limits in the followng format:
 
-    ```
+    ```yaml
     resources:
       requests:
          cpu: 250m
@@ -365,13 +365,13 @@
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create a variable which value designates the public key of the newly generated key pair:
 
-    ```
+    ```sh
     PUBLIC_KEY=$(cat ~/.ssh/id_rsa.pub)
     ```
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create a variable which value designates the public key of the newly generated key pair and which takes into account any special character the public key might include:
 
-    ```
+    ```sh
     PUBLIC_KEY_REGEX="$(echo $PUBLIC_KEY | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')"
     ```
 
@@ -379,49 +379,49 @@
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create a variable which value designates the name of the resource group you will use for the deployment:
 
-    ```
+    ```sh
     RESOURCE_GROUP='AADesignLab0403-RG'
     ```
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create a variable which value designates the Azure region you will use for the deployment:
 
-    ```
+    ```sh
     LOCATION=$(az group list --query "[?name == 'AADesignLab0402-RG'].location" --output tsv)
     ```
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create a new resource group:
 
-    ```
+    ```sh
     az group create --name $RESOURCE_GROUP --location $LOCATION
     ```
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create an Azure Active Directory service principal for the authentication of services and resources within the sample solution:
 
-    ```
+    ```sh
     SERVICE_PRINCIPAL=$(az ad sp create-for-rbac --name AADesignLab0403-SP)
     ```
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to retrieve the **appId** attribute of the newly created service principal:
 
-    ```
-    APP_ID=$(echo $SERVICE_PRINCIPAL | jq .appId | tr -d '"')
+    ```sh
+    APP_ID=$(echo $SERVICE_PRINCIPAL | jq -r .appId)
     ```
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to retrieve the **password** attribute of the newly created service principal:
 
-    ```
-    PASSWORD=$(echo $SERVICE_PRINCIPAL | jq .password | tr -d '"')
+    ```sh
+    PASSWORD=$(echo $SERVICE_PRINCIPAL | jq -r .password)
     ```
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create the parameters file you will use for deployment of the sample solution and open it in the vi interface:
 
-    ```
+    ```sh
     vi ~/parameters.json
     ```
 
 1. At the **Cloud Shell** command prompt, in the vi editor interface, add the content of the sample parameters file (**\\allfiles\\AZ-301T03\\Module_02\\Labfiles\\Starter\\parameters.json**):
 
-    ```
+    ```json
     {
       "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
       "contentVersion": "1.0.0.0",
@@ -449,32 +449,32 @@
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to replace the placeholder for the **appId** attibute with the value of the **$APP_ID** variable in the parameters file:
 
-    ```
+    ```sh
     sed -i.bak1 's/"$APP_ID"/"'"$APP_ID"'"/' ~/parameters.json
     ```
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to replace the placeholder for the **password** attribute with the value of the **$PASSWORD** variable in the parameters file:
 
-    ```
+    ```sh
     sed -i.bak2 's/"$PASSWORD"/"'"$PASSWORD"'"/' ~/parameters.json
     ```
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to replace the placeholder for the **sshPublicKey** parameter with the value of the **$PUBLIC_KEY_REGEX** variable in the parameters file:
 
-    ```
+    ```sh
     sed -i.bak3 's/"$PUBLIC_KEY_REGEX"/"'"$PUBLIC_KEY_REGEX"'"/' ~/parameters.json
     ```
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to verify that the placeholders were successfully replaced in the parameters file:
 
-    ```
+    ```sh
     cat ~/parameters.json
     ```
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to deploy the sample solution by using its Azure Resource Manager template residing in a GitHub repository:
 
-    ```
-    az group deployment create --resource-group $RESOURCE_GROUP --template-uri https://raw.githubusercontent.com/mspnp/solution-architectures/master/apps/devops-with-aks/azuredeploy.json --parameters @parameters.json
+    ```sh
+    az group deployment create --resource-group $RESOURCE_GROUP --template-uri https://raw.githubusercontent.com/cjpluta/AZ-301-MicrosoftAzureArchitectDesign/master/allfiles/AZ-301T03/Module_02/LabFiles/Starter/azuredeploy.json --parameters @parameters.json
     ```
 
 1. Wait for the deployment to complete before you proceed to the next task.
@@ -501,7 +501,7 @@
 
 1. At the **Cloud Shell** command prompt at the bottom of the portal, type in the following command and press **Enter** to list all resource groups you created in this lab:
 
-    ```
+    ```sh
     az group list --query "[?starts_with(name,'AADesignLab04')]".name --output tsv
     ```
 
@@ -511,7 +511,7 @@
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to delete the resource groups you created in this lab
 
-    ```
+    ```sh
     az group list --query "[?starts_with(name,'AADesignLab04')]".name --output tsv | xargs -L1 bash -c 'az group delete --name $0 --no-wait --yes'
     ```
 

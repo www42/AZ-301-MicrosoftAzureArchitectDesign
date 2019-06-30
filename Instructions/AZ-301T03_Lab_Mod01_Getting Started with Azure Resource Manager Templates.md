@@ -52,7 +52,7 @@
 
 1. In the **Choose File to Upload** dialog box, navigate to the **\\allfiles\\AZ-301T03\\Module_01\\Labfiles\\Starter\\** folder, select the **vnet-simple-template.json** file, and click **Open**. This will load the following content into the template editor pane:
 
-    ```
+    ```json
     {
         "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
         "contentVersion": "1.0.0.0",
@@ -195,25 +195,25 @@
 
 1. At the **Cloud Shell** command prompt at the bottom of the portal, type in the following command and press **Enter** to create a local directory to install the Azure Building Blocks npm package:
 
-    ```
+    ```sh
     mkdir ~/.npm-global
     ```
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to update the npm configuration to include the new local directory:
 
-    ```
+    ```sh
     npm config set prefix '~/.npm-global'
     ```
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to open the ~./bashrc configuration file for editing:
 
-    ```
+    ```sh
     vi ~/.bashrc
     ```
 
 1. At the **Cloud Shell** command prompt, in the vi editor interface, scroll down to the bottom of the file (or type **G**), scroll to the right to the right-most character on the last line (or type **$**), type **a** to enter the **INSERT** mode, press **Enter** to start a new line, and then type the following to add the newly created directory to the system path:
 
-    ```
+    ```sh
     export PATH="$HOME/.npm-global/bin:$PATH"
     ```
 
@@ -221,13 +221,13 @@
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to install the Azure Building Blocks npm package:
 
-    ```
+    ```sh
     npm install -g @mspnp/azure-building-blocks
     ```
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to exit the shell:
 
-    ```
+    ```sh
     exit
     ```
 
@@ -240,37 +240,37 @@
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to download the GitHub repository containing the Azure Building Blocks templates:
 
-    ```
+    ```sh
     git clone https://github.com/mspnp/template-building-blocks.git
     ```
 
 1.  At the **Cloud Shell** command prompt, type in the following command and press **Enter** to view the content of the Azure Building Block parameter file you will use for this deployment:
 
-    ```
+    ```sh
     cat ./template-building-blocks/scenarios/vnet/vnet-simple.json 
     ```
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create a variable which value designates the name of your Azure subscription:
 
-    ```
+    ```sh
     SUBSCRIPTION_ID=$(az account list --query "[0].id" | tr -d '"')
     ```
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create a variable which value designates the name of the resource group you created earlier in this exercise:
 
-    ```
+    ```sh
     RESOURCE_GROUP='AADesignLab0202-RG'
     ```
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create a variable which value designates the Azure region you will use for the deployment:
 
-    ```
+    ```sh
     LOCATION=$(az group list --query "[?name == 'AADesignLab0201-RG'].location" --output tsv)
     ```
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to deploy a virtual network by using the Azure Building Blocks:
 
-    ```
+    ```sh
     azbb -g $RESOURCE_GROUP -s $SUBSCRIPTION_ID -l $LOCATION -p ./template-building-blocks/scenarios/vnet/vnet-simple.json --deploy
     ```
 
@@ -302,7 +302,7 @@
 
 1. At the **Cloud Shell** command prompt at the bottom of the portal, type in the following command and press **Enter** to list all resource groups you created in this lab:
 
-    ```
+    ```sh
     az group list --query "[?starts_with(name,'AADesignLab02')]".name --output tsv
     ```
 
@@ -312,7 +312,7 @@
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to delete the resource groups you created in this lab
 
-    ```
+    ```sh
     az group list --query "[?starts_with(name,'AADesignLab02')]".name --output tsv | xargs -L1 bash -c 'az group delete --name $0 --no-wait --yes'
     ```
 

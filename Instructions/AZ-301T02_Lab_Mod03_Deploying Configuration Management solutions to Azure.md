@@ -70,7 +70,7 @@
 
 1. In the **Open** dialog box, navigate to the **\\allfiles\\AZ-301T02\\Module_03\\LabFiles\\Starter\\** folder, select the **linux-template.json** file, and click **Open**. The file contains the following template:
 
-    ```
+    ```json
     {
         "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
         "contentVersion": "1.0.0.0",
@@ -191,25 +191,25 @@
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create a variable which value designates the name of the resource group that will contain the hub virtual network:
 
-    ```
+    ```sh
     RESOURCE_GROUP='AADesignLab1202-RG'
     ```
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create a variable which value designates the Azure region you will use for the deployment (replace the placeholder `<Azure region>` with the name of the Azure region to which you intend to deploy resources in this lab):
 
-    ```
+    ```sh
     LOCATION='<Azure region>'
     ```
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create a new resource group:
 
-    ```
+    ```sh
     az group create --name $RESOURCE_GROUP --location $LOCATION
     ```
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to deploy the Azure Resource Manager template with the specified parameters file:
 
-    ```
+    ```sh
     az group deployment create --resource-group $RESOURCE_GROUP --template-file ~/linux-template.json --parameters password=Pa55w.rd1234
     ```
 
@@ -268,7 +268,7 @@
 
 1. Wait for the import process to finish before you proceed to the next task. A status message on the **nx Module** blade will indicate that the module was successfully imported.
 
-    > **Note**: This process shoudl take about 2 minutes.
+    > **Note**: This process should take about 2 minutes.
 
 #### Task 2: Create Linux DSC Configuration
 
@@ -330,9 +330,15 @@
 
 1. Navigate back to the **LinuxAutomation - State Configuration (DSC)** blade.
 
+1. On the **LinuxAutomation - State configuration (DSC)** blade, select in the **NODE** section the virtual machine you deployed in the previous exercise.
+
+1. On the virtual machine blade, click **Assign node configuration**.
+
+1. On the Assign Node Configuration blade, select the node configuration **lampserver.host** and click the **OK** button.
+
 1. Back on the **LinuxAutomation - State Configuration (DSC)** blade, click the **Refresh** button.
 
-1. In the list of DSC nodes, verify that the Linxu virtual machine has the **Compliant** status.
+1. In the list of DSC nodes, verify that the Linux virtual machine has the **Compliant** status.
 
 > **Review**: In this exercise, you created a PowerShell DSC configuration and applied the configuration to a Linux virtual machine.
 
@@ -345,7 +351,7 @@
 
 1. At the **Cloud Shell** command prompt at the bottom of the portal, type in the following command and press **Enter** to list all resource groups you created in this lab:
 
-    ```
+    ```sh
     az group list --query "[?starts_with(name,'AADesignLab12')]".name --output tsv
     ```
 
@@ -355,7 +361,7 @@
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to delete the resource groups you created in this lab
 
-    ```
+    ```sh
     az group list --query "[?starts_with(name,'AADesignLab12')]".name --output tsv | xargs -L1 bash -c 'az group delete --name $0 --no-wait --yes'
     ```
 
