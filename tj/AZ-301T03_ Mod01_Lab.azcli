@@ -21,6 +21,8 @@ echo 'export PATH="$HOME/.npm-global/bin:$PATH"' >> ~/.bashrc
 tail -3 ~/.bashrc
 
 npm install -g @mspnp/azure-building-blocks
+
+# Restart CloudShell (npm package)
 exit
 
 git --version

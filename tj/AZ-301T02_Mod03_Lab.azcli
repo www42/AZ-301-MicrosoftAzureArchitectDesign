@@ -4,9 +4,14 @@ RESOURCE_GROUP='AADesignLab1202-RG'
 LOCATION='westeurope'
 az group create --name $RESOURCE_GROUP --location $LOCATION
 
+# Repo wurde gecloned
+cd ~/az-301/allfiles/AZ-301T02/Module_03/LabFiles/Starter
+cat lampserver.ps1
+cat linux-template.json
+
 az group deployment create \
     --resource-group $RESOURCE_GROUP \
-    --template-file ~/linux-template.json \
+    --template-file linux-template.json \
     --parameters password=Pa55w.rd1234
 
 az vm list -o table

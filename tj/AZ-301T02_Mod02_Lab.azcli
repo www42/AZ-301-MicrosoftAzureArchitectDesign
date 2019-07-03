@@ -1,6 +1,21 @@
-URI='https://foo.documents.azure.com:443/'
-PRIMARYKEY='dKOLDzi8IMkVUwdgSBtEs97Wo801uSIqRDKKIwTPOE4lW7XxDAxXWmx1OB2cEO17mz3n6X4CXkgtsiPYPbEZvg=='
+RESOURCE_GROUP='AADesignLab0701-RG'
 
-# Hier muss noch die id mit rein
-           { "firstName": "Pennington", "lastName": "Oneal", "age": 26, "salary": 90000.00, "company": "Veraq", "isVested": false }
-{ "id": 001, "firstName": "Pennington", "lastName": "Oneal", "age": 26, "salary": 90000.00, "company": "Veraq", "isVested": false }
+COSMOSDB_NAME=$(az cosmosdb list --resource-group $RESOURCE_GROUP --query "[0].name" --output tsv)
+echo $COSMOSDB_NAME
+
+PRIMARY_KEY=$(az cosmosdb list-keys --resource-group $RESOURCE_GROUP --name $COSMOSDB_NAME | jq -r '.primaryMasterKey')
+echo $PRIMARY_KEY
+
+URI="https://$COSMOSDB_NAME.documents.azure.com:443/"
+echo $URI
+
+az cosmosdb database create --url-connection $URI --key $PRIMARY_KEY --db-name 'FinancialClubDatabase'
+az cosmosdb collection create --url-connection $URI --key $PRIMARY_KEY --db-name 'FinancialClubDatabase' --collection-name 'MemberCollection' --throughput 400
+
+# COSMOSDB_NAME='hsvforever'
+# PRIMARY_KEY='93lKJctAbuK4Coil8a4dwfOXTcbsN6dhFJwI2uhvEyyalWcs7kCFTiGTr5s2LiUVUAwKTMNYF1Ycq8fa1dPxhA=='
+# URI='https://hsvforever.documents.azure.com:443/'
+
+
+
+# Azure Search QUERY KEY  9732B7E875D7EDE28056C132313A1B86

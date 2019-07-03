@@ -61,7 +61,9 @@ REPOSITORY_URL_REGEX="$(echo $REPOSITORY_URL | sed -e 's/\\/\\\\/g; s/\//\\\//g;
 echo $REPOSITORY_URL_REGEX
 
 sed -i.bak1 's/"$WEBAPPNAME2"/"'"$WEBAPPNAME2"'"/' ~/parameters.json
+sed -i.bak2 's/"$REPOSITORY_URL"/"'"$REPOSITORY_URL_REGEX"'"/' ~/parameters.json
 cat ~/parameters.json
+
 
 az group deployment create \
     --resource-group $RESOURCE_GROUP_APP \
