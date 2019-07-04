@@ -1,11 +1,13 @@
-# connection string
-Endpoint=sb://foobar42.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=+YT5frjTVC1zUBLpeXj3Xa4I9oSgsMIT67P5125iOdE=
+# Message queue primary connection string
+Endpoint=sb://foo4711.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=J91aOhZqvwMhz4D5G6ECfcKL8flywWAmuRHAZxzNbZ0=
 
 
 npm install azure
 node
+
 var azure = require('azure');
-var connectionString = 'Endpoint=sb://foobar42.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=+YT5frjTVC1zUBLpeXj3Xa4I9oSgsMIT67P5125iOdE=';
+var connectionString = 'Endpoint=sb://foo4711.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=J91aOhZqvwMhz4D5G6ECfcKL8flywWAmuRHAZxzNbZ0=';
 var serviceBusService = azure.createServiceBusService(connectionString);
 
 serviceBusService.sendQueueMessage('messages', { body: 'Hello World' }, function(error) { console.log(error) });
+serviceBusService.sendQueueMessage('messages', { body: 'Hello World 2' }, function(error) { console.log(error) });

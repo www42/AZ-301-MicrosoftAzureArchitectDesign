@@ -1,2 +1,22 @@
+# azbb ist bereits installiert (gestern)
 
-https://lab03storage.blob.core.windows.net/config/IISWebServer.zip
+git clone https://github.com/mspnp/reference-architectures.git
+
+cat ./reference-architectures/virtual-machines/single-vm/parameters/windows/single-vm.json
+
+SUBSCRIPTION_ID=$(az account list --query "[0].id" | tr -d '"')
+echo $SUBSCRIPTION_ID
+
+RESOURCE_GROUP='AADesignLab0303-RG'
+
+LOCATION=$(az group list --query "[?name == 'AADesignLab0301-RG'].location" --output tsv)
+echo $LOCATION
+
+sed -i.bak1 's/"adminUsername": ""/"adminUsername": "Student"/' ./reference-architectures/virtual-machines/single-vm/parameters/windows/single-vm.json
+sed -i.bak2 's/"adminPassword": ""/"adminPassword": "Pa55w.rd1234"/' ./reference-architectures/virtual-machines/single-vm/parameters/windows/single-vm.json
+
+cat ./reference-architectures/virtual-machines/single-vm/parameters/windows/single-vm.json
+
+# ------------ jetzt -------------
+azbb -g $RESOURCE_GROUP -s $SUBSCRIPTION_ID -l $LOCATION -p ./reference-architectures/virtual-machines/single-vm/parameters/windows/single-vm.json --deploy
+# --------------------------------
