@@ -1,0 +1,43 @@
+az group list -o table
+
+# T01 Lab Mod 01 (Key Vault)
+az group delete --name AADesignLab0901-RG --yes --no-wait 
+
+# T01 Lab Mod 02 (Service Instances)
+az group delete --name AADesignLab1001-RG --yes --no-wait 
+
+# T02 Lab Mod 02 (Cosmos DB)
+az group delete --name AADesignLab0701-RG --yes --no-wait 
+
+# T02 Lab Mod 03 (DSC Linux)
+az group delete --name AADesignLab1201-RG --yes --no-wait # RG for CoudShell
+az group delete --name AADesignLab1202-RG --yes --no-wait 
+az group delete --name AADesignLab1203-RG --yes --no-wait 
+
+# T03 Lab Mod 01 (azbb)
+az group delete --name AADesignLab0201-RG --yes --no-wait
+az group delete --name AADesignLab0202-RG --yes --no-wait # RG for CoudShell
+
+# T03 Lab Mod 02 (Kubernetes)
+az group delete --name AADesignLab0401-RG --yes --no-wait # RG for CoudShell
+az group delete --name AADesignLab0402-RG --yes --no-wait 
+az group delete --name AADesignLab0403-RG --yes --no-wait 
+
+# T03 Lab Mod 03 (Web Apps)
+az group delete --name AADesignLab0502-RG --yes --no-wait 
+az group delete --name AADesignLab0503-RG --yes --no-wait 
+
+# T04 Lab Mod 02 (VMs)
+az group delete --name AADesignLab0301-RG --yes --no-wait 
+az group delete --name AADesignLab0302-RG --yes --no-wait 
+az group delete --name AADesignLab0303-RG --yes --no-wait # RG for CoudShell
+az group delete --name AADesignLab0304-RG --yes --no-wait 
+
+# T04 Lab Mod 03 (Vnets)
+az group delete --name AADesignLab08-hub-vnet-rg    --yes --no-wait 
+az group delete --name AADesignLab08-spoke1-vnet-rg --yes --no-wait 
+az group delete --name AADesignLab08-spoke2-vnet-rg --yes --no-wait 
+az group delete --name AADesignLab08-hub-nva-rg     --yes --no-wait 
+
+# T04 Lab Mod 04 (Service Bus)
+az group delete --name AADesignLab1101-RG --yes --no-wait 
