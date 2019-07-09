@@ -54,6 +54,11 @@ az webapp create \
 
 az webapp list -o table
 
+# upload github.json
+# upload parameters.json
+
+ll github.json parameters.json
+
 REPOSITORY_URL='https://github.com/Azure-Samples/nodejs-docs-hello-world'
 echo $REPOSITORY_URL
 
@@ -70,3 +75,19 @@ az group deployment create \
     --template-file github.json \
     --parameters @parameters.json
 
+
+az webapp list -o table
+
+
+
+
+# Task 3 Deploy code with Docker Hub container image
+
+RESOURCE_GROUP_CONTAINER='AADesignLab0502-RG'
+
+LOCATION=$(az group list --query "[?name == 'AADesignLab0502-RG'].location" --output tsv)
+echo $LOCATION
+
+WEBAPPNAME3=webapp05023$RANDOM$RANDOM
+
+az webapp create --name $WEBAPPNAME3 --plan AADesignLab0502-$LOCATION --resource-group $RESOURCE_GROUP_CONTAINER --deployment-container-image ghost
