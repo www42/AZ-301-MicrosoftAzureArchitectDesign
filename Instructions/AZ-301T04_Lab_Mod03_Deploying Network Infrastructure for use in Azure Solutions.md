@@ -82,7 +82,7 @@
     vi ~/.bashrc
     ```
 
-1. At the **Cloud Shell** command prompt, in the vi editor interface, scroll down to the bottom of the file (or type **G**), scroll to the right to the right-most character on the last line (or type **$**), type **a** to enter the **INSERT** mode, press **Enter** to start a new line, and then type the following to add the newly created directory to the system path:
+1. At the **Cloud Shell** command prompt, in the vi editor interface, scroll down to the bottom of the file (or type **G**), scroll to the right to the right-most character on the last line (or type **$**), type **a** to initiate the **INSERT** mode, press **Enter** to start a new line, and then type the following to add the newly created directory to the system path:
 
     ```sh
     export PATH="$HOME/.npm-global/bin:$PATH"
@@ -111,9 +111,7 @@
 
 1. In the **Cloud Shell** pane, click the **Upload/Download files** icon and, in the drop-down menu, click **Upload**. 
 
-1. In the **Open** dialog box, navigate to the **\\allfiles\\AZ-301T04\\Module_03\\LabFiles\\Starter\\** folder, select the **hub-nva.json** file, and click **Open**. 
-
-1. Repeat the previous step to upload to **Cloud Shell** the remaining files in the **\\allfiles\\AZ-301T04\\Module_03\\LabFiles\\Starter\\** folder, including **hub-vnet.json**, **hub-vnet-peering.json**, **spoke1.json**, and **spoke2.json**. 
+1. In the **Open** dialog box, navigate to the **\\allfiles\\AZ-301T04\\Module_03\\LabFiles\\Starter\\** folder, select the files **hub-nva.json**, **hub-vnet.json**, **hub-vnet-peering.json**, **spoke1.json**, and **spoke2.json** and click **Open**. 
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to replace the placeholder for the **adminUsername** parameter with the value **Student** in the **hub-vnet.json** Building Blocks parameter file:
 
