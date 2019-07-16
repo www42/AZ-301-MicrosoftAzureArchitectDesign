@@ -20,7 +20,7 @@ az provider show --namespace Microsoft.KeyVault -o table
 # if not registerd:
 # az provider register --namespace Microsoft.KeyVault
 
-KeyVaultName="bayernmuenchen"
+KeyVaultName="darmstadt98"
 az keyvault create --name $KeyVaultName --location $Location --resource-group $RgName --sku standard
 az keyvault list -o table
 az keyvault show --name $KeyVaultName 
@@ -43,6 +43,7 @@ az keyvault secret set --vault-name $KEY_VAULT_NAME --name firstPartyKey --value
 az keyvault secret list --vault-name $KEY_VAULT_NAME --query "[*].{Id:id,Created:attributes.created}" --out table
 
 ### Task 6: Add secrets to a key vault by using Azure Resource Manager templates
+
 
 ### Tak 7: View key vault secrets
 

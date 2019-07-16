@@ -1,3 +1,8 @@
+# AZ-301 T02 Lab Mod 03
+# ------------------------------------------------------
+# Deploying Configuration Management solutions to Azure
+# ("DSC Linux")
+# ------------------------------------------------------
 az account list -o table
 
 RESOURCE_GROUP='AADesignLab1202-RG'
@@ -25,7 +30,7 @@ configuration lampserver {
             nxPackage $Package {
                 Ensure         = "Present"
                 Name           = $Package
-                PackageManager = "yum"                         # VM ist SuSE, da gibts kein yum sondern zypper!
+                PackageManager = "yum"
             }
         }
         ForEach ($service in $enabledServices) {
