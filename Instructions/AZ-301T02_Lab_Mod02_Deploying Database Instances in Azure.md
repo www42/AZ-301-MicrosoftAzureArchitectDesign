@@ -105,7 +105,7 @@
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create a variable which value designates the primary key of the CosmosDB account you created earlier in this task:
 
     ```sh
-    PRIMARY_KEY=$(az cosmosdb list-keys --resource-group $RESOURCE_GROUP --name $COSMOSDB_NAME | jq -r '.primaryMasterKey')
+    PRIMARY_KEY=$(az cosmosdb keys list --resource-group $RESOURCE_GROUP --name $COSMOSDB_NAME --output json | jq -r '.primaryMasterKey')
     ```
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create a variable which value designates the URI of the CosmosDB account you created earlier in this task:
@@ -369,11 +369,11 @@
 
     - In the **Location** drop-down list, select the Azure region matching or near the location where you deployed Cosmos DB resource earlier in this labb
 
-    - Click **Pricing tier**.
+    - Click **Change Pricing Tier**.
 
-    - On the **Choose your pricing tier** blade, click **Free** and then click the **Select** button.
+    - On the **Select Pricing Tier** blade, click **Free** and then click the **Select** button.
 
-    - Click the **Create** button.
+    - Click the **Review + Create** button, review the settings then click **Create**.
 
 1. Wait for the provisioning to complete before you proceed to the next step.
 

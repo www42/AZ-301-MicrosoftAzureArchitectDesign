@@ -284,7 +284,7 @@
 
     - Next to the **Configuration file** field, click the blue button with a folder icon.
 
-    - In the **Choose File to Upload** dialog box, navigate to the **\\allfiles\\AZ-301T02\\Module_02\\LabFiles\\Starter\\** folder.
+    - In the **Choose File to Upload** dialog box, navigate to the **\\allfiles\\AZ-301T02\\Module_03\\LabFiles\\Starter\\** folder.
 
     - Select the **lampserver.ps1** file.
 

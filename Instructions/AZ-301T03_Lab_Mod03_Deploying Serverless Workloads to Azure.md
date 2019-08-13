@@ -88,12 +88,14 @@
     az appservice plan create --is-linux --name "AADesignLab0502-$LOCATION" --resource-group $RESOURCE_GROUP_APP --location $LOCATION --sku B2
     ```
 
+    > **Note**: In case the command fails with the message *Linux workers are not available in resource group AADesignLab0502-RG. Use this link to learn more https://go.microsoft.com/fwlink/?linkid=831180"*, delete teh resource group, set **LOCATION** to **eastus** and rerun the two previous steps.
+
 #### Task 4: Create a Web App instance
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to view a list of possible runtimes for a Linux-based App Service web app instance: 
 
     ```sh
-    az webapp list-runtimes --linux
+    az webapp list-runtimes --linux --output tsv
     ``` 
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create a new variable which value is a randomly generated string that you will use as the name of a new web app:

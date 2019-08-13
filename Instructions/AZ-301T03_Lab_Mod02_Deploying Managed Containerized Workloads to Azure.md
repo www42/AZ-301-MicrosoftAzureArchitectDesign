@@ -398,7 +398,7 @@
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create an Azure Active Directory service principal for the authentication of services and resources within the sample solution:
 
     ```sh
-    SERVICE_PRINCIPAL=$(az ad sp create-for-rbac --name AADesignLab0403-SP)
+    SERVICE_PRINCIPAL=$(az ad sp create-for-rbac --name AADesignLab0403-SP --output json)
     ```
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to retrieve the **appId** attribute of the newly created service principal:
@@ -490,7 +490,7 @@
 
 1. On the **AADesignLab0403-RG** resource group blade, review the list of resources and compare them with the information available at https://docs.microsoft.com/en-us/azure/architecture/example-scenario/apps/devops-with-aks
 
-> **Review**: In this exercise, you deployed Azure VMs running Windows Server 2016 Datacenter and Linux from Cloud Shell by using Azure Building Blocks.
+> **Review**: In this exercise, you deployed DevOps with AKS architecture.
 
 
 ## Exercise 5: Remove lab resources

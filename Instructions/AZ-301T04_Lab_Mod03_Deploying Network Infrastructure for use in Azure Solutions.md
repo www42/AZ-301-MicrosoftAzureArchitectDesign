@@ -190,7 +190,7 @@
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create a variable which value designates the name of your Azure subscription:
 
     ```sh
-    SUBSCRIPTION_ID=$(az account list --query "[0].id" | tr -d '"')
+    SUBSCRIPTION_ID=$(az account list --query "[0].id" --output tsv | tr -d '"')
     ```
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create a variable which value designates the name of the resource group that will contain the hub virtual network:
@@ -204,6 +204,12 @@
     ```sh
     LOCATION='<Azure region>'
     ```
+1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create the resource group for the deployment.
+
+    ```sh
+    az group create --name $RESOURCE_GROUP_HUB_VNET --location $LOCATION
+    ```
+
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to deploy the hub component of the Hub-and-Spoke topology by using the Azure Building Blocks:
 
@@ -227,7 +233,7 @@
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create a variable which value designates the name of your Azure subscription:
 
     ```sh
-    SUBSCRIPTION_ID=$(az account list --query "[0].id" | tr -d '"')
+    SUBSCRIPTION_ID=$(az account list --query "[0].id" --output tsv | tr -d '"')
     ```
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create a variable which value designates the name of the resource group that will contain the first spoke virtual network:
@@ -240,6 +246,11 @@
 
     ```sh
     LOCATION=$(az group list --query "[?name == 'AADesignLab08-hub-vnet-rg'].location" --output tsv)
+    ```
+1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create the resource group for the deployment:
+
+    ```sh
+    az group create --name $RESOURCE_GROUP_SPOKE1_VNET --location $LOCATION
     ```
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to deploy the first spoke component of the Hub-and-Spoke topology by using the Azure Building Blocks:
@@ -261,7 +272,7 @@
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create a variable which value designates the name of your Azure subscription:
 
     ```sh
-    SUBSCRIPTION_ID=$(az account list --query "[0].id" | tr -d '"')
+    SUBSCRIPTION_ID=$(az account list --query "[0].id" --output tsv | tr -d '"')
     ```
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create a variable which value designates the name of the resource group that will contain the second spoke virtual network:
@@ -274,6 +285,11 @@
 
     ```sh
     LOCATION=$(az group list --query "[?name == 'AADesignLab08-hub-vnet-rg'].location" --output tsv)
+    ```
+1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create the resource group for the deployment:
+
+    ```sh
+    az group create --name $RESOURCE_GROUP_SPOKE2_VNET --location $LOCATION
     ```
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to deploy the second spoke component of the Hub-and-Spoke topology by using the Azure Building Blocks:
@@ -297,7 +313,7 @@
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create a variable which value designates the name of your Azure subscription:
 
     ```sh
-    SUBSCRIPTION_ID=$(az account list --query "[0].id" | tr -d '"')
+    SUBSCRIPTION_ID=$(az account list --query "[0].id" --output tsv | tr -d '"')
     ```
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create a variable which value designates the name of the resource group that contains the hub virtual network:
@@ -334,7 +350,7 @@
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create a variable which value designates the name of your Azure subscription:
 
     ```sh
-    SUBSCRIPTION_ID=$(az account list --query "[0].id" | tr -d '"')
+    SUBSCRIPTION_ID=$(az account list --query "[0].id" --output tsv | tr -d '"')
     ```
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create a variable which value designates the name of the resource group that will contain the hub Network Virtual Appliance (NVA) functioning as a router:
@@ -348,7 +364,12 @@
     ```sh
     LOCATION=$(az group list --query "[?name == 'AADesignLab08-hub-vnet-rg'].location" --output tsv)
     ```
+1. At the **Cloud Shell** command prompt, type in the following command to create the resource group that will be used in the deployment.
 
+    ```sh
+    az group create --name $RESOURCE_GROUP_HUB_NVA --location $LOCATION
+    ```
+    
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to deploy the NVA component of the Hub-and-Spoke topology by using the Azure Building Blocks:
 
     ```sh
@@ -420,13 +441,11 @@
 
     - In the **Virtual machine** drop-down list, leave the default entry.
 
-    - Leave the **Port** text box blank. 
-
     - Ensure that the **Destination** option is set to **Specify manually**.
 
     - In the **URI, FQDN, or IPv4** text box, type **10.2.0.68** entry.
 
-    - In the **Port** text, type 3389. 
+    - In the **Destination Port** text, type 3389. 
 
     - Click the **Check** button.
 

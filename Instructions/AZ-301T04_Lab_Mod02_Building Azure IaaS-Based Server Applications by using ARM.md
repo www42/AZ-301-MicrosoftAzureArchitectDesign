@@ -40,11 +40,11 @@
 
 1. In the upper left corner of the Azure portal, click **Create a resource**.
 
-1. At the top of the **New** blade, in the **Search the Marketplace** text box, type **Windows Server 2016** and press **Enter**.
+1. At the top of the **New** blade, in the **Search the Marketplace** text box, type **Windows Server** and press **Enter**.
 
-1. On the **Everything** blade, in the search results, click **Windows Server 2016 Datacenter**.
+1. On the **Everything** blade, in the search results, click **Windows Server**.
 
-1. On the **Windows Server 2016 Datacenter** blade, click the **Create** button.
+1. On the **Windows Server** blade, select the **[smalldisk] Windows Server 2016 Datacenter** software plan, then click the **Create** button.
 
 1. On the **Basics** tab, perform the following tasks:
 
@@ -227,9 +227,9 @@
 1. In the **Blob properties** popup that appears, locate and record the value of the **URL** property. This URL will be used later in this lab.
 
 
-#### Task 6: Deploy an Azure VM by using an Azure Resource Manager template with PowerShell DSC extension from the Aure portal.
+#### Task 6: Deploy an Azure VM by using an Azure Resource Manager template with PowerShell DSC extension from the Azure portal.
 
-1. In the upper left corner of the Azure portal, click **Create a resource**.
+1. In the upper left corner of the Azure portal, click **Create a resourcetempla**.
 
 1. At the top of the **New** blade, in the **Search the Marketplace** text box, type **Template Deployment** and press **Enter**.
 
@@ -362,7 +362,7 @@
 
 1. On the **Edit template** blade, click **Load file**.
 
-1. In the **Open** file dialog that appears, navigate to the **F:\\Labfiles\\Mod03\\Starter** folder.
+1. In the **Open** file dialog that appears, navigate to the **\\allfiles\\AZ-301T04\\Module_02\\LabFiles\\Starter\\*** folder.
 
 1. Select the **vmss-template.json** file.
 
@@ -432,7 +432,7 @@
 
     - In the **Cloud Shell region** drop-down list, select the Azure region matching or near the location where you intend to deploy resources in this exercise.
 
-    - In the **Resource group** section, ensure that the **Create new** option is selected and then, in the text box, type **AADesignLab0303-RG**.
+    - In the **Resource group** section, ensure that the **Use existing** option is selected and then select **AADesignLab0301-RG**.
 
     - In the **Storage account** section, ensure that the **Create new** option is selected and then, in the text box below, type a unique name consisting of a combination of between 3 and 24 characters and digits. 
 
@@ -505,7 +505,7 @@
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create a variable which value designates the name of your Azure subscription:
 
     ```sh
-    SUBSCRIPTION_ID=$(az account list --query "[0].id" | tr -d '"')
+    SUBSCRIPTION_ID=$(az account list --query "[0].id" --output tsv | tr -d '"')
     ```
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create a variable which value designates the name of the resource group you created earlier in this exercise:
@@ -520,6 +520,11 @@
     LOCATION=$(az group list --query "[?name == 'AADesignLab0301-RG'].location" --output tsv)
     ```
 
+1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create a resource group that you will use for the deployment:
+
+    ```sh
+    az group create --name $RESOURCE_GROUP --location $LOCATION
+    ```
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to replace the placeholder for the **adminUsername** parameter with the value **Student** in the Building Blocks parameter file:
 
     ```sh
@@ -599,7 +604,7 @@
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create a variable which value designates the name of your Azure subscription:
 
     ```sh
-    SUBSCRIPTION_ID=$(az account list --query "[0].id" | tr -d '"')
+    SUBSCRIPTION_ID=$(az account list --query "[0].id" --output tsv | tr -d '"')
     ```
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create a variable which value designates the name of the resource group you will use for the deployment:
