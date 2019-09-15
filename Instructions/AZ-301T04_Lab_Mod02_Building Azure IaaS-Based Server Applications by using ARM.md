@@ -229,7 +229,7 @@
 
 #### Task 6: Deploy an Azure VM by using an Azure Resource Manager template with PowerShell DSC extension from the Azure portal.
 
-1. In the upper left corner of the Azure portal, click **Create a resourcetempla**.
+1. In the upper left corner of the Azure portal, click **Create a resource**.
 
 1. At the top of the **New** blade, in the **Search the Marketplace** text box, type **Template Deployment** and press **Enter**.
 

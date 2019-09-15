@@ -474,7 +474,7 @@
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to deploy the sample solution by using its Azure Resource Manager template residing in a GitHub repository:
 
     ```sh
-    az group deployment create --resource-group $RESOURCE_GROUP --template-uri https://raw.githubusercontent.com/cjpluta/AZ-301-MicrosoftAzureArchitectDesign/master/allfiles/AZ-301T03/Module_02/LabFiles/Starter/azuredeploy.json --parameters @parameters.json
+    az group deployment create --resource-group $RESOURCE_GROUP --template-uri https://github.com/MicrosoftLearning/AZ-301-MicrosoftAzureArchitectDesign/blob/master/allfiles/AZ-301T03/Module_02/LabFiles/Starter/azuredeploy.json --parameters @parameters.json
     ```
 
 1. Wait for the deployment to complete before you proceed to the next task.
