@@ -161,7 +161,7 @@
 
     - In the **Name** text box, type **EndpointUrl**.
 
-    - In the **Value** text box, enter the value of **cognitiveEndpointUrl** you identified earlier.
+    - In the **Value** text box, enter the value of **cognitiveEndpointUrl** you identified earlier followed by **text/analytics/v2.0**.
 
 1. In the **Application Settings** section, click the **Add new setting** link again and pferform the following tasks:
 

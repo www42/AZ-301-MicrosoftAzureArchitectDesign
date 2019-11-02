@@ -163,7 +163,7 @@
     kubectl get service --watch
     ```
 
-1. Wait until the value in the **EXTERNAL-IP** column for the **aad0402-akscluster** entry changes from **<pending>** to a public IP address, then press **Ctrl-C** key combination. Note the public IP address in the **EXTERNAL-IP** column for **aad0402-akscluster**. 
+1. Wait until the value in the **EXTERNAL-IP** column for the **aad0402-akscluster** entry changes from **\<pending\>** to a public IP address, then press **Ctrl-C** key combination. Note the public IP address in the **EXTERNAL-IP** column for **aad0402-akscluster**. 
 
 1. Start Microsoft Edge and browse to the IP address you obtained in the previous step. Verify that Microsoft Edge displays a web page with the **Welcome to nginx!** message. 
 
@@ -280,7 +280,7 @@
     kubectl get service azure-vote-front --watch
     ```
 
-1. Wait until the value in the **EXTERNAL-IP** column for the **azure-vote-front** entry changes from **<pending>** to a public IP address, then press **Ctrl-C** key combination. Note the public IP address in the **EXTERNAL-IP** column for **azure-vote-front**. 
+1. Wait until the value in the **EXTERNAL-IP** column for the **azure-vote-front** entry changes from **\<pending\>** to a public IP address, then press **Ctrl-C** key combination. Note the public IP address in the **EXTERNAL-IP** column for **azure-vote-front**. 
 
 1. Start Microsoft Edge and browse to the IP address you obtained in the previous step. Verify that Microsoft Edge displays a web page with the **Azure Voting App** message. 
 
@@ -351,7 +351,7 @@
 
 #### Task 1: Deploy DevOps with AKS
 
-    > **Note**: This solution is based on the DevOps with Containers solution described at https://docs.microsoft.com/en-us/azure/architecture/example-scenario/apps/devops-with-aks.
+> **Note**: This solution is based on the DevOps with Containers solution described at https://docs.microsoft.com/en-us/azure/architecture/example-scenario/apps/devops-with-aks.
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to generate the SSH key pair that will be used to authenticate when accessing the Linux VMs running the Jenkins instance and Grafana console:
 
@@ -474,7 +474,7 @@
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to deploy the sample solution by using its Azure Resource Manager template residing in a GitHub repository:
 
     ```sh
-    az group deployment create --resource-group $RESOURCE_GROUP --template-uri https://github.com/MicrosoftLearning/AZ-301-MicrosoftAzureArchitectDesign/blob/master/allfiles/AZ-301T03/Module_02/LabFiles/Starter/azuredeploy.json --parameters @parameters.json
+    az group deployment create --resource-group $RESOURCE_GROUP --template-uri https://raw.githubusercontent.com/MicrosoftLearning/AZ-301-MicrosoftAzureArchitectDesign/master/allfiles/AZ-301T03/Module_02/LabFiles/Starter/azuredeploy.json --parameters ~/parameters.json
     ```
 
 1. Wait for the deployment to complete before you proceed to the next task.

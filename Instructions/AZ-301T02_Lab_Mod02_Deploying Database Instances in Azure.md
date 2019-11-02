@@ -66,6 +66,10 @@
 
     > **Note**: The deployment should take less than 5 minutes.
 
+1. Navigate to the blade of the newly created Cosmos DB account and click **Keys**. 
+
+1. On the Cosmos DB account Keys blade, note the value of the **PRIMARY CONNECTION STRING**. You will need it in the third exercise of this lab.
+
 1. At the top of the portal, click the **Cloud Shell** icon to open a new shell instance.
 
     > **Note**: The **Cloud Shell** icon is a symbol that is constructed of the combination of the *greater than* and *underscore* characters.
@@ -138,8 +142,7 @@
     echo $URI
     ```
 
-    > **Note**: Take a note of these values - you will need them in the next exercise. 
-
+    > **Note**: Take a note of these values - you will need them in the third exercise of this lab. 
 
 #### Task 3: Create and query documents in Cosmos DB
 
@@ -394,17 +397,17 @@
 
 1. On the **Resource groups** blade, click **AADesignLab0701-RG**.
 
-1. On the **AADesignLab0701-RG** blade, click the entry representing the Azure Cosmos DB account you created earlier in this lab.
+1. On the **AADesignLab0701-RG** blade, click the entry representing the Azure Search instance you created earlier in this lab.
 
-1. On the Azure Cosmos DB account blade, click **Add Azure Search**.
-
-1. On the Select a search service tab, select the Azure Search service that was previously created, then click **Next: Connect to your data**.
+1. On the **Overview** blade of Azure Search service, click **Import data** and then click **Next: Connect to your data**.
 
 1. On the **Connect to your data** tab, perform the following tasks:
 
+    - In the **Data Source** drop down list, select **Cosmos DB**.
+
     - In the **Name** text box, type **cosmosdata**.
 
-    - In the **Cosmos DB account** text box, accept the default entry.
+    - In the **Cosmos DB account** text box, type the Cosmos DB account connection string you identfied earlier in this lab.
 
     - In the **Database** drop-down list, select the **FinancialClubDatabase** entry.
 
@@ -465,7 +468,7 @@
 
     - In the **Start time (UTC)** field, specify the current date and accept the default value of the time entry.
 
-    - Click the **Submit** button.
+    - Ensure that the **Track deletions** checkbox is clear and click the **Submit** button.
 
 #### Task 3: Validate API App
 
