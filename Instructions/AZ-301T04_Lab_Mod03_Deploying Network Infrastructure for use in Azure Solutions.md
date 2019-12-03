@@ -107,11 +107,11 @@
     > **Note**: You need to restart Cloud Shell for the installation of the Buliding Blocks npm package to take effect.
 
 
-#### Task 3: Prepare Building Blocks Hub and Spoke parameter files
+#### Task 4: Prepare Building Blocks Hub and Spoke parameter files
 
 1. In the **Cloud Shell** pane, click the **Upload/Download files** icon and, in the drop-down menu, click **Upload**. 
 
-1. In the **Open** dialog box, navigate to the **\\allfiles\\AZ-301T04\\Module_03\\LabFiles\\Starter\\** folder, select the files **hub-nva.json**, **hub-vnet.json**, **hub-vnet-peering.json**, **spoke1.json**, and **spoke2.json** and click **Open**. 
+1. In the **Open** dialog box, navigate to the **\\allfiles\\AZ-301T04\\Module_03\\LabFiles\\Starter\\** folder, select **hub-nva.json** and click **Open**. Repeat the same step to upload the files **hub-vnet.json**, **hub-vnet-peering.json**, **spoke1.json**, and **spoke2.json**. 
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to replace the placeholder for the **adminUsername** parameter with the value **Student** in the **hub-vnet.json** Building Blocks parameter file:
 
@@ -185,7 +185,7 @@
     cat ~/spoke2.json
     ```
 
-#### Task 4: Implement the hub component of the Hub and Spoke design
+#### Task 5: Implement the hub component of the Hub and Spoke design
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create a variable which value designates the name of your Azure subscription:
 
@@ -220,7 +220,7 @@
 1. Do not wait for the deployment to complete but proceed to the next task.
 
 
-#### Task 5: Implement the spoke components of the Hub and Spoke design
+#### Task 6: Implement the spoke components of the Hub and Spoke design
 
 1. On the Taskbar, click the **Microsoft Edge** icon.
 
@@ -300,7 +300,7 @@
 
 1. Do not wait for the deployment to complete but proceed to the next task.
 
-#### Task 6: Configure the VNet peering of the Hub and Spoke design
+#### Task 7: Configure the VNet peering of the Hub and Spoke design
 
 1. On the Taskbar, click the **Microsoft Edge** icon.
 
@@ -337,7 +337,7 @@
 1. Do not wait for the deployment to complete but proceed to the next task.
 
 
-#### Task 7: Configure routing of the Hub and Spoke design
+#### Task 8: Configure routing of the Hub and Spoke design
 
 1. On the Taskbar, click the **Microsoft Edge** icon.
 

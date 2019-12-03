@@ -34,7 +34,7 @@
 
 1. In the open browser window, navigate to the **Azure Portal** (<https://portal.azure.com>).
 
-1. When prompted, authenticate with the user account account that has the owner role in the Azure subscription you will be using in this lab.
+1. When prompted, authenticate with a user account account that has the owner role in the Azure subscription you will be using in this lab.
 
 #### Task 2: Deploy Cognitive Service using an Azure Resource Manager template
 
@@ -123,27 +123,33 @@
 
 1. On the **Function App** blade, click the **Create** button.
 
-1. On the next **Function App** blade, perform the following tasks:
+1. On the **Basics** tab of the **Function App** blade, specify the following and click **Next: Hosting >**:
 
-    - In the **App name** text box, type a globally unique name.
+    - Subscription: the name of the Azure subscription you used in the previous task
+
+    - Resource group: **AADesignLab1001-RG**.
+
+    - Function App name: a globally unique name
     
-    - Leave the **Subscription** drop-down list entry set to its default value.
+    - Publish: **Code**
+    
+    - Runtime stack: **.NET Core**
 
-    - In the **Resource group** section, select the **Use existing** option and then, in the drop-down list, select **AADesignLab1001-RG**.
+    - Region: the Azure region to which you deployed an instance of Cognitive Service in the previous task
 
-    - In the **OS** section, ensure that the **Windows** button is selected.
+1. On the **Hosting** tab of the **Function App** blade, specify the following and click **Next: Monitoring >**:
 
-    - In the **Hosting Plan** drop-down list, ensure that the **Consumption Plan** entry is selected.
+    - Storage account: accept the default value of the Storage Account name. 
 
-    - In the **Location** drop-down list, select the Azure region to which you deployed an instance of Cognitive Service in the previous task.
+    - Operating System: **Windows**
 
-    - In the **Runtime Stack** drop-down list, ensure that **.NET Core** entry is selected. 
+    - Plan type: **Consumption** entry is selected.
 
-    - In the **Storage** section, ensure that the **Create new** option is selected and accept the default value of the Storage Account name. 
+1. On the **Monitoring** tab of the **Function App** blade, specify the following and click **Review + create**:
 
-    - In the **Application Insights** section, set the option to **Disabled**.
+    - Enable Application Insights: **No**.
 
-    - Click the **Create** button.
+1. On the **Review + create** tab of the **Function App** blade, click **Create**:
 
 1. Wait for the provisioning of the function app to complete before you proceed to the next step. 
 
@@ -157,23 +163,27 @@
 
 1. On the **Platform features** tab, click the **Configuration** link in the **General Settings** section.
 
-1. On the **Application settings** tab, locate the **Application Settings** section. Click the **+ New application setting** link and perform the following tasks:
+1. On the **Application settings** tab, click the **+ New application setting** link, perform the following tasks, and click **OK**:
 
     - In the **Name** text box, type **EndpointUrl**.
 
-    - In the **Value** text box, enter the value of **cognitiveEndpointUrl** you identified earlier.
+    - In the **Value** text box, enter the value of **cognitiveEndpointUrl** you identified earlier followed by **text/analytics/v2.0**.
+    
+    - Leave the **Deployment slot setting** checkbox cleared.
 
-1. In the **Application Settings** section, click the **Add new setting** link again and pferform the following tasks:
+1. In the **Application Settings** section, click the **+ New application setting** link again, perform the following tasks, and click **OK**:
 
-    - In the **Enter a name** text box, type **EndpointKey**.
+    - In the **Name** text box, type **EndpointKey**.
 
-    - In the **Enter a value** text box, type the value of **cognitiveEndpointKey** you identified earlier.
+    - In the **Value** text box, type the value of **cognitiveEndpointKey** you identified earlier.
+    
+    - Leave the **Deployment slot setting** checkbox cleared.
 
 1. Click the **Save** button at the top of the **Application settings** tab.
 
-1. Navigate back to the function app blade and, on the **Platform features** tab, click the **Deployment Center** link in the **Code Deployment** section.
+1. Navigate back to the function app blade and, on the **Platform features** tab, click the **Container settings** link in the **Code Deployment** section.
 
-1. On the **Deployment Center** blade that appears, click **External** and then click **Continue**.
+1. On the **Deployment Center** blade, click **External** and then click **Continue**.
 
 1. Click **App Service build service** and click **Continue**. 
 
@@ -271,13 +281,13 @@
             "actions": {},
             "contentVersion": "1.0.0.0",
             "outputs": {},
-            "parameters": {},
             "triggers": {}
-        }
+        },
+        "parameters": {}
     }
     ```
 
-1. Replace the default JSON template with the following template that includes an HTTP trigger (****\\allfiles\\AZ-301T01\\Module_02\\LabFiles\\Starter\\logic-app.json**):
+1. Replace the default JSON template with the following template that includes an HTTP trigger (****\\allfiles\\AZ-301T01\\Module_02\\LabFiles\\Starter\\logic-app.json**) and save your changes:
 
     ```json
     {
@@ -286,7 +296,6 @@
             "actions": {},
             "contentVersion": "1.0.0.0",
             "outputs": {},
-            "parameters": {},
             "triggers": {
                 "manual": {
                     "inputs": {
@@ -304,7 +313,8 @@
                     "type": "Request"
                 }
             }
-        }
+        },
+        "parameters": {}
     }
     ```
 
@@ -326,13 +336,13 @@
 
 1. In the **DetermineLanguage** step, perform the following tasks:
 
-    - Click the **Show advanced options** link to display all options.
-
     - In the **Request Body** text box, type **@triggerBody()**.
 
+    - In the **Add new parameter** drop-down list, select the **Method** checkbox.
+    
     - In the **Method** drop-down list, select the **POST** option.
 
-1. Click the **+ New Step** button in the designer. Click the **Add an action** button to open the dialog for creating an action.
+1. Click the **+ New Step** button in the designer. 
 
 1. In the **Choose an action** dialog that displays, perform the following tasks:
 
@@ -346,9 +356,9 @@
 
 1. In the **DetermineKeyPhrases** step, perform the following tasks:
 
-    - Click the **Show advanced options** link to display all options.
-
     - In the **Request Body** text box, enter the value **@body('DetermineLanguage')**.
+
+    - In the **Add new parameter** drop-down list, select the **Method** checkbox.
 
     - In the **Method** drop-down list, select the **POST** option.
 
@@ -364,6 +374,8 @@
 
     - In the **Status Code** text box, ensure that the value **200** is specified.
 
+    - Leave **Headers** entries unchanged 
+    
     - In the **Body** text box, type **@body('DetermineKeyPhrases')**.
 
 1. At the top of the **Logic Apps Designer** blade, click the **Save** button to persist your workflow.

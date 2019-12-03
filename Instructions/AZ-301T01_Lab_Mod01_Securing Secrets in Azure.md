@@ -48,15 +48,15 @@
 
 1. On the **Create key vault** blade, perform the following tasks:
 
-    - In the **Name** text box, type a globally unique value.
-
     - Leave the **Subscription** drop-down list entry set to its default value.
+    
+    - In the **Resource group** section, select the **Create new** option and then, in the text box, type **AADesignLab0901-RG**.
+    
+    - In the **Key vault name** text box, type a globally unique value.
 
-    - In the **Resource group** section, ensure that the **Create new** option is selected and then, in the text box, type **AADesignLab0901-RG**.
+    - In the **Region** drop-down list, select the Azure region to which you intend to deploy resources in this lab.
 
-    - In the **Location** drop-down list, select the Azure region to which you intend to deploy resources in this lab.
-
-    - Click **Pricing tier**, on the **Pricing tier** blade, click **A1 Standard**, and then click **Select**.
+    - Click **Pricing tier**, on the **Pricing tier** blade, click **Standard**, and then click **Select**.
 
     - Leave all remaining settings with their default values.
 
