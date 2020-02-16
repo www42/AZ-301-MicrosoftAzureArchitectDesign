@@ -1,4 +1,4 @@
-﻿# Deploying Resources with Azure Resource Manager
+# Deploying Resources with Azure Resource Manager
 # Lab Answer Key: Getting Started with Azure Resource Manager Templates and Azure Building Blocks
 
 ## Before we start
@@ -62,7 +62,7 @@
                 "defaultValue": "vnet-",
                 "metadata": {
                     "description": "Name prefix of the vnet"
-                 }
+                }
             },
             "vnetIPPrefix": {
                 "type": "string",
@@ -107,7 +107,7 @@
                     {
                         "name": "[concat(parameters('subnetNamePrefix'), variables('subnetNameSuffix'))]",
                         "properties": {
-                        "addressPrefix": "[parameters('subnetIPPrefix')]"
+                            "addressPrefix": "[parameters('subnetIPPrefix')]"
                         }
                     }
                 ],
@@ -152,7 +152,7 @@
 
 1. On the **Resource groups** blade, click the entry representing the resource group to which you deployed the template in the previous task.
 
-1. With the **Overview** selection active, on the resource group blade, click the **Deployments** link. 
+1. With the **Overview** selection active, on the resource group blade, click the **Deployments** link.
 
 1. On the resulting blade, click the latest deployment to view its metadata in a new blade.
 
@@ -172,7 +172,7 @@
 
 1. If this is your first time opening the **Cloud Shell** using your subscription, you will see a wizard to configure **Cloud Shell** for first-time usage. When prompted, in the **Welcome to Azure Cloud Shell** pane, click **Bash (Linux)**.
 
-    > **Note**: If you do not see the configuration options for **Cloud Shell**, this is most likely because you are using an existing subscription with this course's labs. If so, proceed directly to the next task. 
+    > **Note**: If you do not see the configuration options for **Cloud Shell**, this is most likely because you are using an existing subscription with this course's labs. If so, proceed directly to the next task.
 
 1. In the **You have no storage mounted** pane, click **Show advanced settings**, perform the following tasks:
 
@@ -182,7 +182,7 @@
 
     - Resource group: ensure that the **Use Existing** option is selected and select **AADesignLab0201-RG**.
 
-    - In the **Storage account** section, ensure that the **Create new** option is selected and then, in the text box below, type a unique name consisting of a combination of between 3 and 24 characters and digits. 
+    - In the **Storage account** section, ensure that the **Create new** option is selected and then, in the text box below, type a unique name consisting of a combination of between 3 and 24 characters and digits.
 
     - In the **File share** section, ensure that the **Create new** option is selected and then, in the text box below, type **cloudshell**.
 
@@ -231,7 +231,7 @@
     exit
     ```
 
-1. In the **Cloud Shell timed out** pane, click **Reconnect**. 
+1. In the **Cloud Shell timed out** pane, click **Reconnect**.
 
     > **Note**: You need to restart Cloud Shell for the installation of the Buliding Blocks npm package to take effect.
 
@@ -247,7 +247,7 @@
 1.  At the **Cloud Shell** command prompt, type in the following command and press **Enter** to view the content of the Azure Building Block parameter file you will use for this deployment:
 
     ```sh
-    cat ./template-building-blocks/scenarios/vnet/vnet-simple.json 
+    cat ./template-building-blocks/scenarios/vnet/vnet-simple.json
     ```
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create a variable which value designates the name of your Azure subscription:
@@ -288,7 +288,7 @@
 
 1. On the **Resource groups** blade, click the entry representing the resource group you created earlier in this exercise.
 
-1. With the **Overview** selection active, on the resource group blade, click the **Deployments** link. 
+1. With the **Overview** selection active, on the resource group blade, click the **Deployments** link.
 
 1. On the resulting blade, click the latest deployment to view its metadata in a new blade.
 

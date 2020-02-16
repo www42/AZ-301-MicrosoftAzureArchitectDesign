@@ -1,4 +1,4 @@
-﻿# Building Azure IaaS-Based Server Applications.
+# Building Azure IaaS-Based Server Applications.
 # Lab Answer Key: Building Azure IaaS-Based Server Applications by using Azure Resource Manager Templates and Azure Building Blocks.
 
 ## Before we start
@@ -49,13 +49,13 @@
 1. On the **Basics** tab, perform the following tasks:
 
     - Leave the **Subscription** drop-down list entry set to its default value.
-    
+
     - In the **Resource group** section, click **Create new**, in the text box, type **AADesignLab0301-RG**, and click **OK**.
-      
+
     - In the **Name** text box, enter the value **lab03vm0**.
 
     - In the **Region** drop-down list, select an Azure region to which you want to deploy resources in this lab.
-    
+
     - In the **Availability options** drop-down list, select **Availability set**.
 
     - In the **Availability set** section, click **Create new**, box, enter the value **lab03avset0**, set **Fault domains** to the maximum value, leave **Update domains** with its default value, and click **OK**.
@@ -71,19 +71,19 @@
     - In the **Public inbound ports** section, select the **Allow selected port** option and, in the **Select inbound ports** drop-down list, select **HTTP**.
 
     - Leave the **Already have a Windows license?** option set to **No**.
-    
+
     - Click **Next: Disks >**
-    
+
 1. On the **Disks** tab, perform the following tasks:
 
     - Ensure that the **OS disk type** dropdown list entry is set to **Premium SSD**
 
     - Click **Next: Networking >**
-    
-1. On the **Networking** tab, perform the following tasks: 
 
-    - In the **Virtual network** section, click **Create new**. 
-    
+1. On the **Networking** tab, perform the following tasks:
+
+    - In the **Virtual network** section, click **Create new**.
+
     - On the **Create virtual network** blade, specify the following settings and click **OK**:
 
         - In the **Name** text box, enter the value **lab03vnet0**.
@@ -95,33 +95,33 @@
         - In the **Subnet address range** text box, enter the value **10.3.0.0/24**, and click **OK**.
 
     - Leave the **Public IP** entry set to its default value.
-    
+
     - Leave the **NIC network security group** option set to **Basic**.
-    
+
     - Leave the **Public inbound ports** option set to **Allow selected ports**
-    
+
     - Leave the **Select inbound ports** entry set to **HTTP**
 
     - Leave the **Accelerated networking** entry set to its default value.
 
     - Click **Next: Management >**
-    
-1. On the **Management** tab, perform the following tasks: 
+
+1. On the **Management** tab, perform the following tasks:
 
     - Leave the **Boot diagnostics** option set to its default value.
 
     - Leave the **OS guest diagnostics** option set to its default value.
 
     - Leave the **Diagnostics storage account** entry set to its default value.
-    
+
     - Leave the **System assigned managed identity** option set to its default value.
-    
+
     - Leave the **Enable auto-shutdown** option set to its default value.
 
     - Leave the **Enable backup** option set to its default value.
 
     - Click the **Review + create** button.
-    
+
 1. On the **Create a virtual machine** blade, review the settings of your new virtual machine and click the **Create** button.
 
 1. Do not wait for the deployment to complete and proceed to the next task.
@@ -140,7 +140,7 @@
     - In the **Files will be extracted to this folder:** field, enter the name of the folder into which you want to extract the files.
 
     - Ensure that the **Show extracted files when complete** checkbox is selected.
-    
+
     - Click the **Extract** button.
 
 1. In the new **File Explorer** window that appears, right-click the **IISWebServer.ps1** file and select the **Open with Code** option to start the **Visual Studio Code** application.
@@ -167,18 +167,18 @@
 1. On the **Create storage account** blade, perform the following tasks:
 
     - Leave the **Subscription** drop-down list entry set to its default value.
-    
+
     - In the **Resource group** section, ensure that the **Use existing** option is selected and, in the drop-down list below, select the resource group you created earlier in this exercise.
 
     - In the **Name** text box, type a unique name consisting of a combination of between 3 and 24 characters and digits.
-    
+
     - Leave the **Location** entry set to the same Azure region you selected earlier in this exercise.
-    
+
     - In the **Performance** section, ensure that the **Standard** option is selected.
-       
+
 
     - In the **Account kind** drop-down list, ensure that the **Storage (general purpose v1)** option is selected.
-    
+
     - In the **Replication** drop-down list, select the **Locally-redundant storage (LRS)** entry.
 
     - Click the **Review + Create** button, and then click **Create**.
@@ -196,7 +196,7 @@
 
 1. On the resource group blade, click the entry representing the newly created storage account.
 
-1. With the **Overview** selection active, on the storage account blade, click **Blobs**.
+1. With the **Overview** selection active, on the storage account blade, click **Containers**.
 
 1. Click the **Container** button at the top of the blade.
 
@@ -424,7 +424,7 @@
 
 1. If this is your first time opening the **Cloud Shell** using your subscription, you will see a wizard to configure **Cloud Shell** for first-time usage. When prompted, in the **Welcome to Azure Cloud Shell** pane, click **Bash (Linux)**.
 
-    > **Note**: If you do not see the configuration options for **Cloud Shell**, this is most likely because you are using an existing subscription with this course's labs. If so, proceed directly to the next task. 
+    > **Note**: If you do not see the configuration options for **Cloud Shell**, this is most likely because you are using an existing subscription with this course's labs. If so, proceed directly to the next task.
 
 1. In the **You have no storage mounted** pane, click **Show advanced settings**, perform the following tasks:
 
@@ -434,7 +434,7 @@
 
     - In the **Resource group** section, ensure that the **Use existing** option is selected and then select **AADesignLab0301-RG**.
 
-    - In the **Storage account** section, ensure that the **Create new** option is selected and then, in the text box below, type a unique name consisting of a combination of between 3 and 24 characters and digits. 
+    - In the **Storage account** section, ensure that the **Create new** option is selected and then, in the text box below, type a unique name consisting of a combination of between 3 and 24 characters and digits.
 
     - In the **File share** section, ensure that the **Create new** option is selected and then, in the text box below, type **cloudshell**.
 
@@ -483,7 +483,7 @@
     exit
     ```
 
-1. In the **Cloud Shell timed out** pane, click **Reconnect**. 
+1. In the **Cloud Shell timed out** pane, click **Reconnect**.
 
     > **Note**: You need to restart Cloud Shell for the installation of the Buliding Blocks npm package to take effect.
 

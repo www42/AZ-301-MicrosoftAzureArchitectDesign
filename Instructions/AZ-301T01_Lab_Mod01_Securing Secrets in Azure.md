@@ -1,4 +1,4 @@
-# Managing Security and Identity for Azure Solutions 
+# Managing Security and Identity for Azure Solutions
 
 # Lab Answer Key: Securing Secrets in Azure
 
@@ -48,15 +48,15 @@
 
 1. On the **Create key vault** blade, perform the following tasks:
 
-    - In the **Name** text box, type a globally unique value.
-
     - Leave the **Subscription** drop-down list entry set to its default value.
 
-    - In the **Resource group** section, ensure that the **Create new** option is selected and then, in the text box, type **AADesignLab0901-RG**.
+    - In the **Resource group** section, select the **Create new** option and then, in the text box, type **AADesignLab0901-RG**.
 
-    - In the **Location** drop-down list, select the Azure region to which you intend to deploy resources in this lab.
+    - In the **Key vault name** text box, type a globally unique value.
 
-    - Click **Pricing tier**, on the **Pricing tier** blade, click **A1 Standard**, and then click **Select**.
+    - In the **Region** drop-down list, select the Azure region to which you intend to deploy resources in this lab.
+
+    - Click **Pricing tier**, on the **Pricing tier** blade, click **Standard**, and then click **Select**.
 
     - Leave all remaining settings with their default values.
 
@@ -96,7 +96,7 @@
 
 1. If this is your first time opening the **Cloud Shell** using your subscription, you will see a wizard to configure **Cloud Shell** for first-time usage. When prompted, in the **Welcome to Azure Cloud Shell** pane, click **Bash (Linux)**.
 
-    > **Note**: If you do not see the configuration options for **Cloud Shell**, this is most likely because you are using an existing subscription with this course's labs. If so, proceed directly to the next task. 
+    > **Note**: If you do not see the configuration options for **Cloud Shell**, this is most likely because you are using an existing subscription with this course's labs. If so, proceed directly to the next task.
 
 1. In the **You have no storage mounted** pane, click **Show advanced settings**, perform the following tasks:
 
@@ -106,7 +106,7 @@
 
     - In the **Resource group** section, select the **Use existing** option and then, in the drop-down list, select **AADesignLab0901-RG**.
 
-    - In the **Storage account** section, ensure that the **Create new** option is selected and then, in the text box below, type a unique name consisting of a combination of between 3 and 24 characters and digits. 
+    - In the **Storage account** section, ensure that the **Create new** option is selected and then, in the text box below, type a unique name consisting of a combination of between 3 and 24 characters and digits.
 
     - In the **File share** section, ensure that the **Create new** option is selected and then, in the text box below, type **cloudshell**.
 
@@ -249,7 +249,7 @@
                 "sku": {
                     "name": "Standard_LRS"
                 },
-                "properties": {                
+                "properties": {
                 }
             },
             {
@@ -333,13 +333,13 @@
 
 #### Task 2: Prepare the Azure Resource Manager deployment template and parameters files
 
-1. In the **Cloud Shell** pane, click the **Upload/Download files** icon and, in the drop-down menu, click **Upload**. 
+1. In the **Cloud Shell** pane, click the **Upload/Download files** icon and, in the drop-down menu, click **Upload**.
 
-1. In the **Open** dialog box, navigate to the **\\allfiles\\AZ-301T01\\Module_01\\LabFiles\\Starter\\** folder, select the **vm-template.json** file, and click **Open**. 
+1. In the **Open** dialog box, navigate to the **\\allfiles\\AZ-301T01\\Module_01\\LabFiles\\Starter\\** folder, select the **vm-template.json** file, and click **Open**.
 
-1. In the **Cloud Shell** pane, click the **Upload/Download files** icon and, in the drop-down menu, click **Upload**. 
+1. In the **Cloud Shell** pane, click the **Upload/Download files** icon and, in the drop-down menu, click **Upload**.
 
-1. In the **Open** dialog box, navigate to the **\\allfiles\\AZ-301T01\\Module_01\\LabFiles\\Starter\\** folder, select the **vm-template.parameters.json** file, and click **Open**. 
+1. In the **Open** dialog box, navigate to the **\\allfiles\\AZ-301T01\\Module_01\\LabFiles\\Starter\\** folder, select the **vm-template.parameters.json** file, and click **Open**.
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to replace the placeholder for the **$KEY_VAULT_ID** parameter in the **vm-template.parameters.json** parameters file with the value of the **$KEY_VAULT_ID** variable:
 

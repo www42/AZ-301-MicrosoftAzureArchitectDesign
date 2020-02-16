@@ -1,4 +1,4 @@
-﻿# Creating Managed Server Applications in Azure
+# Creating Managed Server Applications in Azure
 
 # Lab Answer Key: Deploying Managed Containerized Workloads to Azure
 
@@ -44,7 +44,7 @@
 
 1. If this is your first time opening the **Cloud Shell** using your subscription, you will see a wizard to configure **Cloud Shell** for first-time usage. When prompted, in the **Welcome to Azure Cloud Shell** pane, click **Bash (Linux)**.
 
-    > **Note**: If you do not see the configuration options for **Cloud Shell**, this is most likely because you are using an existing subscription with this course's labs. If so, proceed directly to the next task. 
+    > **Note**: If you do not see the configuration options for **Cloud Shell**, this is most likely because you are using an existing subscription with this course's labs. If so, proceed directly to the next task.
 
 1. In the **You have no storage mounted** pane, click **Show advanced settings**, perform the following tasks:
 
@@ -54,7 +54,7 @@
 
     - In the **Resource group** section, ensure that the **Create new** option is selected and then, in the text box, type **AADesignLab0401-RG**.
 
-    - In the **Storage account** section, ensure that the **Create new** option is selected and then, in the text box below, type a unique name consisting of a combination of between 3 and 24 characters and digits. 
+    - In the **Storage account** section, ensure that the **Create new** option is selected and then, in the text box below, type a unique name consisting of a combination of between 3 and 24 characters and digits.
 
     - In the **File share** section, ensure that the **Create new** option is selected and then, in the text box below, type **cloudshell**.
 
@@ -70,7 +70,7 @@
     RESOURCE_GROUP='AADesignLab0402-RG'
     ```
 
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create a variable which value designates the Azure region you will use for the deployment (replace the placeholder `<Azure region>` with the name of the Azure region to which you intend to deploy resources in this lab):
+1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create a variable which value designates the Azure region you will use for the deployment (replace the placeholder `<Azure region>` with the name of the Azure region to which you intend to deploy resources in this lab. `az account list-locations` will list all available locations for your subscription.):
 
     ```sh
     LOCATION='<Azure region>'
@@ -111,7 +111,7 @@
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to retrieve the credentials to access the AKS cluster:
 
     ```sh
-    az aks get-credentials --resource-group $RESOURCE_GROUP --name aad0402-akscluster 
+    az aks get-credentials --resource-group $RESOURCE_GROUP --name aad0402-akscluster
     ```
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to verify connectivity to the AKS cluster:
@@ -121,13 +121,13 @@
     ```
 
 1. At the **Cloud Shell** command prompt, review the output and verify that the node is reporting the **Ready** status. Rerun the command until the correct status is shown.
-  
-> **Result**: After you complete this exercise, you should have successfully deployed a new AKS cluster. 
+
+> **Result**: After you complete this exercise, you should have successfully deployed a new AKS cluster.
 
 
 ## Exercise 2: Managing an AKS cluster and its containerized workloads.
 
-#### Task 1: Deploy a containerized application to an AKS cluster 
+#### Task 1: Deploy a containerized application to an AKS cluster
 
 1. In the Microsoft Edge window, in the Azure portal, at the **Cloud Shell** prompt, type the following command and press **Enter** in order to deploy the **nginx** image from the Docker Hub:
 
@@ -163,12 +163,12 @@
     kubectl get service --watch
     ```
 
-1. Wait until the value in the **EXTERNAL-IP** column for the **aad0402-akscluster** entry changes from **\<pending\>** to a public IP address, then press **Ctrl-C** key combination. Note the public IP address in the **EXTERNAL-IP** column for **aad0402-akscluster**. 
+1. Wait until the value in the **EXTERNAL-IP** column for the **aad0402-akscluster** entry changes from **\<pending\>** to a public IP address, then press **Ctrl-C** key combination. Note the public IP address in the **EXTERNAL-IP** column for **aad0402-akscluster**.
 
-1. Start Microsoft Edge and browse to the IP address you obtained in the previous step. Verify that Microsoft Edge displays a web page with the **Welcome to nginx!** message. 
+1. Start Microsoft Edge and browse to the IP address you obtained in the previous step. Verify that Microsoft Edge displays a web page with the **Welcome to nginx!** message.
 
 
-#### Task 2: Scaling containerized applications and AKS cluster nodes 
+#### Task 2: Scaling containerized applications and AKS cluster nodes
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to scale the deployment:
 
@@ -216,7 +216,7 @@
 
     > **Note**: Review the output of the command and verify that the number of pods increased to 10.
 
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to review the pods distribution across cluster nodes: 
+1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to review the pods distribution across cluster nodes:
 
     ```
     kubectl get pod -o=custom-columns=NODE:.spec.nodeName,POD:.metadata.name
@@ -227,7 +227,7 @@
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to delete the deployment:
 
     ```
-    kubectl delete deployment aad0402-akscluster 
+    kubectl delete deployment aad0402-akscluster
     ```
 
 ## Exercise 3: Autoscaling pods in an AKS cluster
@@ -257,9 +257,9 @@
     ```yaml
     resources:
       requests:
-         cpu: 250m
+        cpu: 250m
       limits:
-         cpu: 500m
+        cpu: 500m
     ```
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to deploy the application based on the **.yaml** file:
@@ -280,22 +280,23 @@
     kubectl get service azure-vote-front --watch
     ```
 
-1. Wait until the value in the **EXTERNAL-IP** column for the **azure-vote-front** entry changes from **\<pending\>** to a public IP address, then press **Ctrl-C** key combination. Note the public IP address in the **EXTERNAL-IP** column for **azure-vote-front**. 
+1. Wait until the value in the **EXTERNAL-IP** column for the **azure-vote-front** entry changes from **\<pending\>** to a public IP address, then press **Ctrl-C** key combination. Note the public IP address in the **EXTERNAL-IP** column for **azure-vote-front**.
 
-1. Start Microsoft Edge and browse to the IP address you obtained in the previous step. Verify that Microsoft Edge displays a web page with the **Azure Voting App** message. 
+1. Start Microsoft Edge and browse to the IP address you obtained in the previous step. Verify that Microsoft Edge displays a web page with the **Azure Voting App** message.
 
 #### Task 2: Autoscale Kubernetes pods.
 
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to download a sample containerized application:
+1. At the **Cloud Shell** command prompt, type in the following commands and press **Enter** after each to change the current directory and download a sample containerized application:
 
     ```
+    cd ..
     git clone https://github.com/kubernetes-incubator/metrics-server.git
     ```
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to install **Metrics Server**:
 
     ```
-    kubectl create -f ~/metrics-server/deploy/1.8+/
+    kubectl create -f ~/metrics-server/deploy/kubernetes/
     ```
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to configure autoscaling for the **azure-vote-front** deployment:
@@ -316,18 +317,18 @@
     kubectl get pods
     ```
 
-    > **Note**: Verify that the number of replicas incrased to 3. If that is not the case, wait one minute and rerun the two previous steps.
+    > **Note**: Verify that the number of replicas increased to 3. If that is not the case, wait one minute and rerun the two previous steps.
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to delete the deployment:
 
     ```
-    kubectl delete deployment azure-vote-front 
+    kubectl delete deployment azure-vote-front
     ```
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to delete the deployment:
 
     ```
-    kubectl delete deployment azure-vote-back 
+    kubectl delete deployment azure-vote-back
     ```
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to verify that the commands you ran in the previous steps completed successfully:
@@ -429,16 +430,16 @@
         "spClientId": {
           "value": "$APP_ID"
         },
-        "spClientSecret": {		
+        "spClientSecret": {
           "value": "$PASSWORD"
         },
         "linuxAdminUsername": {
           "value": "Student"
         },
-        "linuxAdminPassword": {		
+        "linuxAdminPassword": {
           "value": "Pa55w.rd1234"
         },
-        "linuxSSHPublicKey": {		
+        "linuxSSHPublicKey": {
           "value": "$PUBLIC_KEY_REGEX"
         }
       }

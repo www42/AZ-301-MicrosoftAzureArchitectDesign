@@ -66,7 +66,7 @@
 
     > **Note**: The deployment should take less than 5 minutes.
 
-1. Navigate to the blade of the newly created Cosmos DB account and click **Keys**. 
+1. Navigate to the blade of the newly created Cosmos DB account and click **Keys**.
 
 1. On the Cosmos DB account Keys blade, note the value of the **PRIMARY CONNECTION STRING**. You will need it in the third exercise of this lab.
 
@@ -76,7 +76,7 @@
 
 1. If this is your first time opening the **Cloud Shell** using your subscription, you will see a wizard to configure **Cloud Shell** for first-time usage. When prompted, in the **Welcome to Azure Cloud Shell** pane, click **Bash (Linux)**.
 
-    > **Note**: If you do not see the configuration options for **Cloud Shell**, this is most likely because you are using an existing subscription with this course's labs. If so, proceed directly to the next task. 
+    > **Note**: If you do not see the configuration options for **Cloud Shell**, this is most likely because you are using an existing subscription with this course's labs. If so, proceed directly to the next task.
 
 1. In the **You have no storage mounted** pane, click **Show advanced settings**, perform the following tasks:
 
@@ -86,7 +86,7 @@
 
     - In the **Resource group** section, select the **Use existing** option and then, in the drop-down list, select **AADesignLab0701-RG**.
 
-    - In the **Storage account** section, ensure that the **Create new** option is selected and then, in the text box below, type a unique name consisting of a combination of between 3 and 24 characters and digits. 
+    - In the **Storage account** section, ensure that the **Create new** option is selected and then, in the text box below, type a unique name consisting of a combination of between 3 and 24 characters and digits.
 
     - In the **File share** section, ensure that the **Create new** option is selected and then, in the text box below, type **cloudshell**.
 
@@ -123,7 +123,7 @@
     ```sh
     az cosmosdb database create --url-connection $URI --key $PRIMARY_KEY --db-name 'FinancialClubDatabase'
     ```
-    
+
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create a fixed collection named **MemberCollection** in the newly created database:
 
     ```sh
@@ -135,14 +135,14 @@
     ```sh
     echo $PRIMARY_KEY
     ```
-    
+
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to display the value of the URI variable:
 
     ```sh
     echo $URI
     ```
 
-    > **Note**: Take a note of these values - you will need them in the third exercise of this lab. 
+    > **Note**: Take a note of these values - you will need them in the third exercise of this lab.
 
 #### Task 3: Create and query documents in Cosmos DB
 
@@ -200,13 +200,13 @@
 1. In the query editor, replace the default query with the following query:
 
     ```sql
-    SELECT 
-        c.id, 
-        c.firstName, 
+    SELECT
+        c.id,
+        c.firstName,
         c.lastName,
         c.isVested,
         c.company
-    FROM 
+    FROM
         c
     WHERE
         IS_DEFINED(c.isVested)
@@ -217,12 +217,12 @@
 1. In the query editor, replace the existing query with the following query:
 
     ```sql
-    SELECT 
-        c.id, 
-        c.firstName, 
+    SELECT
+        c.id,
+        c.firstName,
         c.lastName,
         c.age
-    FROM 
+    FROM
         c
     WHERE
         c.age > 20
@@ -233,8 +233,8 @@
 1. In the query editor, replace the existing query with the following query:
 
     ```sql
-    SELECT VALUE 
-        c.id 
+    SELECT VALUE
+        c.id
     FROM
         c
     ```
@@ -244,7 +244,7 @@
 1. In the query editor, replace the existing query with the following query:
 
     ```sql
-    SELECT VALUE { 
+    SELECT VALUE {
         "badgeNumber": SUBSTRING(c.id, 0, 8),
         "company": c.company,
         "fullName": CONCAT(c.firstName, " ", c.lastName)
@@ -313,7 +313,7 @@
 
 1. On the left-side of the API app blade, click **Overview**.
 
-1. Click the **Restart** button at the top of the blade and, when prompted to confirm, click **Yes**. 
+1. Click the **Restart** button at the top of the blade and, when prompted to confirm, click **Yes**.
 
 1. Click the **Browse** button at the top of the blade. This will open a new browser tab displaying the **Swagger UI** homepage.
 
@@ -352,23 +352,23 @@
 
 ## Exercise 3: Connect Cosmos DB to Azure Search
 
-#### Task 1: Create Azure Search Instance
+#### Task 1: Create Azure Cognitive Search Instance
 
 1. In the upper left corner of the Azure portal, click **Create a resource**.
 
 1. At the top of the **New** blade, in the **Search the Marketplace** text box, type **Search** and press **Enter**.
 
-1. On the **Everything** blade, in the search results, click **Azure Search**.
+1. On the **Showing All Results** blade, in the search results, click **Azure Cognitive Search**.
 
-1. On the **Azure Search** blade, click the **Create** button.
+1. On the **Azure Cognitive Search** blade, click the **Create** button.
 
 1. On the **New Search Service** blade, perform the following tasks:
-
-    - In the **URL** text box, enter a globally unique name. Record its value. You will use it later in this lab.
 
     - Leave the **Subscription** drop-down list entry set to its default value.
 
     - In the **Resource group** section, select the **Use existing** option and then, in the drop-down list, select **AADesignLab0701-RG**.
+
+    - In the **URL** text box, enter a globally unique name. Record its value. You will use it later in this lab.
 
     - In the **Location** drop-down list, select the Azure region matching or near the location where you deployed Cosmos DB resource earlier in this labb
 
@@ -415,7 +415,8 @@
 
     - In the **Query** field, enter the following SQL query:
 
-        SELECT 
+        ```sql
+        SELECT
             c.id,
             c.firstName,
             c.lastName,
@@ -429,6 +430,7 @@
         WHERE
             c._ts >= @HighWaterMark
         ORDER BY c._ts
+        ```
 
     - Ensure that the **Query results ordered by _ts** checkbox is selected.
 
@@ -485,14 +487,14 @@
     - Set the value of the **Search:AccountName** setting to the name of the Azure Search instance you created earlier in this lab.
 
     - Set the value of the **Search:QueryKey** setting to the value of the **QUERY KEY** of the Azure Search instance you created earlier in this lab.
-    
-    - Set the value of the **Search:IndexId** setting to the value **memberindex**. 
+
+    - Set the value of the **Search:IndexId** setting to the value **memberindex**.
 
     - Click the **Save** button at the top of the blade.
 
 1. On the API app blade, click **Overview**.
 
-1. Click the **Restart** button at the top of the blade and, when prompted to confirm, click **Yes**. 
+1. Click the **Restart** button at the top of the blade and, when prompted to confirm, click **Yes**.
 
 1. Click the **Browse** button at the top of the blade. This will open a new browser tab displaying the **Swagger UI** homepage.
 
@@ -534,7 +536,7 @@
 
 1. On the **Resource groups** blade, click **AADesignLab0701-RG**.
 
-1. On the **AADesignLab0701-RG** blade, click **Delete resource group**. 
+1. On the **AADesignLab0701-RG** blade, click **Delete resource group**.
 
 1. In the **Are you sure you want to delete "AADesignLab0701-RG"?** pane, in the **TYPE THE RESOURCE GROUP NAME** text box, type **AADesignLab0701-RG** and click **Delete**.
 

@@ -15,9 +15,9 @@
         "subnetName": "Linux",
         "imageReference": {
             "publisher": "SUSE",
-            "offer": "openSUSE-Leap",
-            "sku": "15-0",
-            "version": "latest"
+            "offer": "SLES",
+            "sku": "12-SP4",
+            "version": "2019.11.13"
         }
     },
     "resources": [

@@ -1,4 +1,4 @@
-# Networking Azure Application Components 
+# Networking Azure Application Components
 
 # Lab Answer Key: Deploying Network Infrastructure for Use in Azure Solutions
 
@@ -44,7 +44,7 @@
 
 1. If this is your first time opening the **Cloud Shell** using your subscription, you will see a wizard to configure **Cloud Shell** for first-time usage. When prompted, in the **Welcome to Azure Cloud Shell** pane, click **Bash (Linux)**.
 
-    > **Note**: If you do not see the configuration options for **Cloud Shell**, this is most likely because you are using an existing subscription with this course's labs. If so, proceed directly to the next task. 
+    > **Note**: If you do not see the configuration options for **Cloud Shell**, this is most likely because you are using an existing subscription with this course's labs. If so, proceed directly to the next task.
 
 1. In the **You have no storage mounted** pane, click **Show advanced settings**, perform the following tasks:
 
@@ -54,7 +54,7 @@
 
     - In the **Resource group** section, select the **Use existing** option and then, in the drop-down list, select **AADesignLab0901-RG**.
 
-    - In the **Storage account** section, ensure that the **Create new** option is selected and then, in the text box below, type a unique name consisting of a combination of between 3 and 24 characters and digits. 
+    - In the **Storage account** section, ensure that the **Create new** option is selected and then, in the text box below, type a unique name consisting of a combination of between 3 and 24 characters and digits.
 
     - In the **File share** section, ensure that the **Create new** option is selected and then, in the text box below, type **cloudshell**.
 
@@ -102,16 +102,16 @@
     exit
     ```
 
-1. In the **Cloud Shell timed out** pane, click **Reconnect**. 
+1. In the **Cloud Shell timed out** pane, click **Reconnect**.
 
     > **Note**: You need to restart Cloud Shell for the installation of the Buliding Blocks npm package to take effect.
 
 
 #### Task 4: Prepare Building Blocks Hub and Spoke parameter files
 
-1. In the **Cloud Shell** pane, click the **Upload/Download files** icon and, in the drop-down menu, click **Upload**. 
+1. In the **Cloud Shell** pane, click the **Upload/Download files** icon and, in the drop-down menu, click **Upload**.
 
-1. In the **Open** dialog box, navigate to the **\\allfiles\\AZ-301T04\\Module_03\\LabFiles\\Starter\\** folder, select **hub-nva.json** and click **Open**. Repeat the same step to upload the files **hub-vnet.json**, **hub-vnet-peering.json**, **spoke1.json**, and **spoke2.json**. 
+1. In the **Open** dialog box, navigate to the **\\allfiles\\AZ-301T04\\Module_03\\LabFiles\\Starter\\** folder, select **hub-nva.json** and click **Open**. Repeat the same step to upload the files **hub-vnet.json**, **hub-vnet-peering.json**, **spoke1.json**, and **spoke2.json**.
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to replace the placeholder for the **adminUsername** parameter with the value **Student** in the **hub-vnet.json** Building Blocks parameter file:
 
@@ -369,7 +369,7 @@
     ```sh
     az group create --name $RESOURCE_GROUP_HUB_NVA --location $LOCATION
     ```
-    
+
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to deploy the NVA component of the Hub-and-Spoke topology by using the Azure Building Blocks:
 
     ```sh
@@ -417,11 +417,11 @@
 
 1. On the **Route tables** blade, click **spoke1-rt**.
 
-1. On the **spoke1-rt** blade, review the list of routes. Note the **NEXT HOP** entry for the route **toSpoke2**. 
+1. On the **spoke1-rt** blade, review the list of routes. Note the **NEXT HOP** entry for the route **toSpoke2**.
 
 1. Navigate back to the **Route tables** blade and click **spoke2-rt**.
 
-1. On the **spoke2-rt** blade, review the list of routes. Note the **NEXT HOP** entry for the route **toSpoke1**. 
+1. On the **spoke2-rt** blade, review the list of routes. Note the **NEXT HOP** entry for the route **toSpoke1**.
 
 #### Task 3: Verify connectivity between spokes
 
@@ -445,7 +445,7 @@
 
     - In the **URI, FQDN, or IPv4** text box, type **10.2.0.68** entry.
 
-    - In the **Destination Port** text, type 3389. 
+    - In the **Destination Port** text, type 3389.
 
     - Click the **Check** button.
 

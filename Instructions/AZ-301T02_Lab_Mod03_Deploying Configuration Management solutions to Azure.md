@@ -44,7 +44,7 @@
 
 1. If this is your first time opening the **Cloud Shell** using your subscription, you will see a wizard to configure **Cloud Shell** for first-time usage. When prompted, in the **Welcome to Azure Cloud Shell** pane, click **Bash (Linux)**.
 
-    > **Note**: If you do not see the configuration options for **Cloud Shell**, this is most likely because you are using an existing subscription with this course's labs. If so, proceed directly to the next task. 
+    > **Note**: If you do not see the configuration options for **Cloud Shell**, this is most likely because you are using an existing subscription with this course's labs. If so, proceed directly to the next task.
 
 1. In the **You have no storage mounted** pane, click **Show advanced settings**, perform the following tasks:
 
@@ -54,7 +54,7 @@
 
     - In the **Resource group** section, select the **Create New** option and then, in the text box, type **AADesignLab1201-RG**.
 
-    - In the **Storage account** section, ensure that the **Create new** option is selected and then, in the text box below, type a unique name consisting of a combination of between 3 and 24 characters and digits. 
+    - In the **Storage account** section, ensure that the **Create new** option is selected and then, in the text box below, type a unique name consisting of a combination of between 3 and 24 characters and digits.
 
     - In the **File share** section, ensure that the **Create new** option is selected and then, in the text box below, type **cloudshell**.
 
@@ -66,7 +66,7 @@
 
 1. At the top of the portal, click the **Cloud Shell** icon to open a new Clould Shell instance.
 
-1. In the **Cloud Shell** pane, click the **Upload/Download files** icon and, in the drop-down menu, click **Upload**. 
+1. In the **Cloud Shell** pane, click the **Upload/Download files** icon and, in the drop-down menu, click **Upload**.
 
 1. In the **Open** dialog box, navigate to the **\\allfiles\\AZ-301T02\\Module_03\\LabFiles\\Starter\\** folder, select the **linux-template.json** file, and click **Open**. The file contains the following template:
 
@@ -228,7 +228,7 @@
 1. On the **Add Automation Account** blade, perform the following tasks:
 
     - In the **Name** text box, type **LinuxAutomation**.
-    
+
     - Leave the **Subscription** drop-down list entry set to its default value.
 
     - In the **Resource group** section, select the **Create new** option and then, in the text box, type **AADesignLab1203-RG**.
@@ -239,7 +239,7 @@
 
     - Click the **Create** button.
 
-1. Wait for the provisioning to complete before you proceed to the next task. 
+1. Wait for the provisioning to complete before you proceed to the next task.
 
 > **Review**: In this exercise, you created a Linux VM using an Azure Resource Manager template and provisioned an Azure Automation account from the Azure portal.
 

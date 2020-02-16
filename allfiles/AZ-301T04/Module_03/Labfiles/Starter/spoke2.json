@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "buildingBlocks": {
-            "value": [           
+            "value": [
                 {
                     "type": "VirtualNetwork",
                     "resourceGroupName": "AADesignLab08-spoke2-vnet-rg",
@@ -59,7 +59,7 @@
                             }
                         ]
                     }
-                }                                     
+                }
             ]
         }
     }

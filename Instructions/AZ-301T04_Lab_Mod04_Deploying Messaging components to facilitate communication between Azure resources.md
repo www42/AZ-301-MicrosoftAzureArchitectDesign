@@ -51,7 +51,7 @@
     - In the **Name** text box, enter a globally unique name.
 
     - In the **Pricing tier** drop-down list, select the **Basic** option.
-    
+
     - Leave the **Subscription** drop-down list entry set to its default value.
 
     - In the **Resource group** section, ensure that the **Create new** option is selected and then, in the text box, type **AADesignLab1101-RG**.
@@ -60,7 +60,7 @@
 
     - Click the **Create** button.
 
-1. Wait for the provisioning to complete before you proceed to the next step. 
+1. Wait for the provisioning to complete before you proceed to the next step.
 
 #### Task 3: Create a Service Bus Queue
 
@@ -107,7 +107,7 @@
 1. On the **Create storage account** blade, perform the following tasks:
 
     - In the **Name** text box, type a unique name consisting of a combination of between 3 and 24 characters and digits.
-    
+
     - In the **Deployment model** section, ensure that the **Resource manager** option is selected.
 
     - In the **Account kind** drop-down list, ensure that the **Storage (general purpose v1)** option is selected.
@@ -116,9 +116,9 @@
 
     - In the **Replication** drop-down list, select the **Locally-redundant storage (LRS)** entry.
 
-    - In the **Performance** section, ensure that the **Standard** option is selected. 
+    - In the **Performance** section, ensure that the **Standard** option is selected.
 
-    - In the **Secure transfer required** section, ensure that the **Disabled** option is selected. 
+    - In the **Secure transfer required** section, ensure that the **Disabled** option is selected.
 
     - Leave the **Subscription** drop-down list entry set to its default value.
 
@@ -136,9 +136,9 @@
 
 1. On the **Resource groups** blade, click **AADesignLab1101-RG**.
 
-1. On the **AADesignLab1101-RG** blade, click the newly created Azure Storage account. 
+1. On the **AADesignLab1101-RG** blade, click the newly created Azure Storage account.
 
-1. On the Storage account blade, click the **Blobs** tile. 
+1. On the Storage account blade, click the **Blobs** tile.
 
 1. On the Storage account blade, click the **+ Container** button.
 
@@ -161,18 +161,18 @@
 1. On the **Create logic app** blade, perform the following tasks:
 
     - In the **Name** text box, type **ServiceBusWorkflow**.
-    
+
     - Leave the **Subscription** drop-down list entry set to its default value.
 
     - In the **Resource group** section, select the **Use existing** option and then, in the drop-down list, select **AADesignLab1101-RG**.
 
-    - In the **Location** drop-down list, select the same Azure region you chose in the previous task. 
+    - In the **Location** drop-down list, select the same Azure region you chose in the previous task.
 
     - In the **Log Analytics** section, ensure that the **Off** button is selected.
 
     - Click the **Create** button.
 
-1. Wait for the provisioning to complete before you proceed to the next task. 
+1. Wait for the provisioning to complete before you proceed to the next task.
 
 #### Task 3: Configure logic app steps.
 
@@ -191,7 +191,7 @@
     - In the search results, select the trigger named **When a message is received in a queue (auto-complete) - Service Bus**.
 
     - In the **Connection Name** text box, type **ServiceBusConnection**.
-    
+
     - In the list of **Service Bus namespaces**, select the namespace you created earlier in this lab.
 
     - In the list of policies, select the **RootManageSharedAccessKey** policy.
@@ -215,10 +215,10 @@
     - In the search results, select the action named **Create blob - Azure Blob Storage**.
 
     - In the **Connection Name** text box, type **StorageConnection**.
-    
+
     - In the list of *Storage accounts*, select the account you created earlier in this lab.
 
-    - Click the **Create** button.  
+    - Click the **Create** button.
 
 1. In the **Create Blob** step, perform the following tasks:
 
@@ -238,7 +238,7 @@
 
 1. If this is your first time opening the **Cloud Shell** using your subscription, you will see a wizard to configure **Cloud Shell** for first-time usage. When prompted, in the **Welcome to Azure Cloud Shell** pane, click **Bash (Linux)**.
 
-    > **Note**: If you do not see the configuration options for **Cloud Shell**, this is most likely because you are using an existing subscription with this course's labs. If so, proceed directly to the next task. 
+    > **Note**: If you do not see the configuration options for **Cloud Shell**, this is most likely because you are using an existing subscription with this course's labs. If so, proceed directly to the next task.
 
 1. In the **You have no storage mounted** pane, click **Show advanced settings**, perform the following tasks:
 
@@ -248,7 +248,7 @@
 
     - In the **Resource group** section, select the **Use existing** option and then, in the drop-down list, select **AADesignLab1101-RG**.
 
-    - In the **Storage account** section, ensure that the **Create new** option is selected and then, in the text box below, type a unique name consisting of a combination of between 3 and 24 characters and digits. 
+    - In the **Storage account** section, ensure that the **Create new** option is selected and then, in the text box below, type a unique name consisting of a combination of between 3 and 24 characters and digits.
 
     - In the **File share** section, ensure that the **Create new** option is selected and then, in the text box below, type **cloudshell**.
 
@@ -278,7 +278,7 @@
     var azure = require('azure');
     ```
     > **Note**: The output will show **undefined**. This is expected.
-    
+
 1. At the **Cloud Shell** command prompt, type in the following command (replacing the placeholder `<Service Bus namespace connection string>` with the value of your url you recorded earlier in this lab) and press **Enter** to create a new variable for your Service Bus namespace connection string:
 
     ```sh
@@ -294,7 +294,7 @@
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to send a message to Service Bus namespace queue using the client.
 
     ```sh
-    serviceBusService.sendQueueMessage('messages', { body: 'Hello World' }, function(error) { console.log(error) });    
+    serviceBusService.sendQueueMessage('messages', { body: 'Hello World' }, function(error) { console.log(error) });
     ```
 
 1. In the hub menu of the Azure portal, click **Resource groups**.
@@ -303,7 +303,7 @@
 
 1. On the **AADesignLab1101-RG** blade, click the Azure Storage account you created earlier in this lab.
 
-1. On the Storage account blade, click the **Blobs** tile. 
+1. On the Storage account blade, click the **Blobs** tile.
 
 1. On the Storage account container blade, click the **messageoutput** container.
 
