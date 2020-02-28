@@ -1,10 +1,10 @@
 # AZ-301T03 Module 2 Lab: Creating Managed Server Applications in Azure
 # =====================================================================
 
-# Exercise 1
-# ----------
+# Exercise 1: Create Azure Kubernetes Service (AKS) cluster
+# ---------------------------------------------------------
 
-az account list
+az account list -o table
 
 RESOURCE_GROUP='AADesignLab0402-RG'
 echo $RESOURCE_GROUP
@@ -21,14 +21,20 @@ az aks create \
     --node-vm-size Standard_D1_v2 \
     --generate-ssh-keys
 
+az aks list -o table
+
 az aks get-credentials \
     --resource-group $RESOURCE_GROUP \
     --name aad0402-akscluster
 
+k config get-contexts
+ls -l ~/.kube/config
+cat ~/.kube/config
+
 kubectl get nodes
 
-# Exercise 2
-# ----------
+# Exercise 2: Managing an AKS cluster and its containerized workloads
+# -------------------------------------------------------------------
 
 kubectl run aad0402-akscluster --image=nginx --replicas=1 --port=80
 
