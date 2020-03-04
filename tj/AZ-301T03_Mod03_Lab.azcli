@@ -20,7 +20,7 @@ az appservice plan create \
     --sku B2
 az appservice plan list -o table
 
-az webapp list-runtimes --linux
+az webapp list-runtimes --linux --output tsv
 
 WEBAPPNAME1=webapp05021$RANDOM$RANDOM
 echo $WEBAPPNAME1
