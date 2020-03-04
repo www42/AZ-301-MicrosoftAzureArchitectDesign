@@ -12,10 +12,6 @@ echo $URI
 az cosmosdb database create --url-connection $URI --key $PRIMARY_KEY --db-name 'FinancialClubDatabase'
 az cosmosdb collection create --url-connection $URI --key $PRIMARY_KEY --db-name 'FinancialClubDatabase' --collection-name 'MemberCollection' --throughput 400
 
-# COSMOSDB_NAME='hsvforever'
-# PRIMARY_KEY='93lKJctAbuK4Coil8a4dwfOXTcbsN6dhFJwI2uhvEyyalWcs7kCFTiGTr5s2LiUVUAwKTMNYF1Ycq8fa1dPxhA=='
-# URI='https://hsvforever.documents.azure.com:443/'
 
-
-
-# Azure Search QUERY KEY  9732B7E875D7EDE28056C132313A1B86
+echo $PRIMARY_KEY
+echo $URI

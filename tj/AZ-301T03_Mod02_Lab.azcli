@@ -117,22 +117,24 @@ az group create --name $RESOURCE_GROUP --location $LOCATION
 az group show --name $RESOURCE_GROUP
 
 
-SERVICE_PRINCIPAL=$(az ad sp create-for-rbac --name AADesignLab0403-SP)
+SERVICE_PRINCIPAL=$(az ad sp create-for-rbac --name AADesignLab0403-SP  --output json)
 echo $SERVICE_PRINCIPAL
 
 APP_ID=$(echo $SERVICE_PRINCIPAL | jq .appId | tr -d '"')
 echo $APP_ID
 
-PASSWORD=$(echo $SERVICE_PRINCIPAL | jq .password | tr -d '"')
+PASSWORD=$(echo $SERVICE_PRINCIPAL | jq -r .password)
 echo $PASSWORD
+
+# upload parameters.json
+cat ~/parameters.json
 
 sed -i.bak1 's/"$APP_ID"/"'"$APP_ID"'"/' ~/parameters.json
 sed -i.bak2 's/"$PASSWORD"/"'"$PASSWORD"'"/' ~/parameters.json
 sed -i.bak3 's/"$PUBLIC_KEY_REGEX"/"'"$PUBLIC_KEY_REGEX"'"/' ~/parameters.json
 
 cat ~/parameters.json
-cat ~/azuredeploy.json
 
 az group deployment create --resource-group $RESOURCE_GROUP \
-    --template-file azuredeploy.json \
-    --parameters @parameters.json 
+    --template-uri https://raw.githubusercontent.com/MicrosoftLearning/AZ-301-MicrosoftAzureArchitectDesign/master/allfiles/AZ-301T03/Module_02/LabFiles/Starter/azuredeploy.json \
+    --parameters ~/parameters.json
