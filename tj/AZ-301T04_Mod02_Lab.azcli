@@ -1,15 +1,20 @@
-# azbb ist bereits installiert (gestern)
+# azbb ist bereits installiert
+azbb -V
 
 git clone https://github.com/mspnp/reference-architectures.git
 
 cat ./reference-architectures/virtual-machines/single-vm/parameters/windows/single-vm.json
 
 SUBSCRIPTION_ID=$(az account list --query "[0].id" | tr -d '"')
+SUBSCRIPTION_ID='e79f9614-f78d-4268-ad5e-baabb23b16f5'
+
 echo $SUBSCRIPTION_ID
 
 RESOURCE_GROUP='AADesignLab0303-RG'
+az group create --name $RESOURCE_GROUP --location westeurope
 
 LOCATION=$(az group list --query "[?name == 'AADesignLab0301-RG'].location" --output tsv)
+LOCATION=westeurope
 echo $LOCATION
 
 sed -i.bak1 's/"adminUsername": ""/"adminUsername": "Student"/' ./reference-architectures/virtual-machines/single-vm/parameters/windows/single-vm.json
@@ -20,3 +25,18 @@ cat ./reference-architectures/virtual-machines/single-vm/parameters/windows/sing
 # ------------ jetzt -------------
 azbb -g $RESOURCE_GROUP -s $SUBSCRIPTION_ID -l $LOCATION -p ./reference-architectures/virtual-machines/single-vm/parameters/windows/single-vm.json --deploy
 # --------------------------------
+
+# Task 5 Deploy a Linux Azure VM from Cloud Shell by using Azure Building Blocks
+# -------------------------------------------------------------------------------
+cat ./reference-architectures/virtual-machines/single-vm/parameters/linux/single-vm.json
+PUBLIC_KEY=$(cat ~/.ssh/id_rsa.pub)
+PUBLIC_KEY_REGEX="$(echo $PUBLIC_KEY | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')"
+echo $PUBLIC_KEY
+echo $SUBSCRIPTION_ID
+echo $LOCATION
+RESOURCE_GROUP='AADesignLab0304-RG'
+sed -i.bak1 's/"adminUsername": ""/"adminUsername": "Student"/' ./reference-architectures/virtual-machines/single-vm/parameters/linux/single-vm.json
+sed -i.bak2 's/"sshPublicKey": ""/"sshPublicKey": "'"$PUBLIC_KEY_REGEX"'"/' ./reference-architectures/virtual-machines/single-vm/parameters/linux/single-vm.json
+cat ./reference-architectures/virtual-machines/single-vm/parameters/linux/single-vm.json
+az group create --name $RESOURCE_GROUP --location $LOCATION
+azbb -g $RESOURCE_GROUP -s $SUBSCRIPTION_ID -l $LOCATION -p ./reference-architectures/virtual-machines/single-vm/parameters/linux/single-vm.json --deploy
