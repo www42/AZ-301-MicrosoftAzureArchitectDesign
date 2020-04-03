@@ -18,7 +18,7 @@ az aks create \
     --resource-group $RESOURCE_GROUP \
     --name aad0402-akscluster \
     --node-count 1 \
-    --node-vm-size Standard_D1_v2 \
+    --node-vm-size Standard_F2s_v2 \
     --generate-ssh-keys
 
 az aks list -o table
@@ -27,11 +27,16 @@ az aks get-credentials \
     --resource-group $RESOURCE_GROUP \
     --name aad0402-akscluster
 
-k config get-contexts
+kubectl config get-contexts
 ls -l ~/.kube/config
 cat ~/.kube/config
 
+kubectl config current-context
+
 kubectl get nodes
+kubectl get pods
+kubectl get deployment
+kubectl get service
 
 # Exercise 2: Managing an AKS cluster and its containerized workloads
 # -------------------------------------------------------------------
@@ -80,7 +85,7 @@ kubectl get service azure-vote-front --watch
 cd ~
 git clone https://github.com/kubernetes-incubator/metrics-server.git
 
-kubectl create -f ~/metrics-server/deploy/1.8+/
+kubectl create -f ~/metrics-server/deploy/kubernetes
 
 kubectl autoscale deployment azure-vote-front --cpu-percent=50 --min=3 --max=10
 
