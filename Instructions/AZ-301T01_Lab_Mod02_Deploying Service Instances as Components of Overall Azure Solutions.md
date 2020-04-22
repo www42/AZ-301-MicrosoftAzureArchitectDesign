@@ -165,9 +165,9 @@
 
 1. On the **Application settings** tab, click the **+ New application setting** link, perform the following tasks, and click **OK**:
 
-    - In the **Name** text box, type **EndpointUrl**.
+    - In the **Name** text box, type **EndpointUrl**
 
-    - In the **Value** text box, enter the value of **cognitiveEndpointUrl** you identified earlier followed by **text/analytics/v2.0**.
+    - In the **Value** text box, enter the value of **cognitiveEndpointUrl** 
 
     - Leave the **Deployment slot setting** checkbox cleared.
 
@@ -189,7 +189,7 @@
 
 1. Once the **Code** section is displayed, perform the following tasks
 
-    - In the **Repository** text box, type **https://github.com/azure-labs/cognitive-services-function**.
+    - In the **Repository** text box, type **https://github.com/polichtm/cognitive-services-function**.
 
     - In the **Branch** text box, type **master**.
 
@@ -246,11 +246,11 @@
 
 1. On the **Create logic app** blade, perform the following tasks:
 
-    - In the **Name** text box, enter the value **CognitiveWorkflow**.
-
     - Leave the **Subscription** drop-down list entry set to its default value.
 
     - In the **Resource group** section, select the **Use existing** option and then, in the drop-down list, select **AADesignLab1001-RG**.
+
+    - In the **Name** text box, enter the value **CognitiveWorkflow**.
 
     - In the **Location** drop-down list, select the same Azure region you chose in the previous exercise of this lab.
 
@@ -287,7 +287,7 @@
     }
     ```
 
-1. Replace the default JSON template with the following template that includes an HTTP trigger (****\\allfiles\\AZ-301T01\\Module_02\\LabFiles\\Starter\\logic-app.json**) and save your changes:
+1. Replace the default JSON template with the following template that includes an HTTP trigger (**\\\\allfiles\\AZ-301T01\\Module_02\\LabFiles\\Starter\\logic-app.json**) and save your changes:
 
     ```json
     {
