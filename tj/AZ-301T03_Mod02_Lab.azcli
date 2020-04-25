@@ -21,6 +21,23 @@ az aks create \
     --node-vm-size Standard_F2s_v2 \
     --generate-ssh-keys
 
+# Error: ... The credentials in ServicePrincipalProfile were invalid. ...
+SP=$(az ad sp create-for-rbac --name "MyKubeCluster" --skip-assignment)
+echo $SP
+
+SP_appId=$(echo $SP | jq .appId | tr -d '""')
+SP_password=$(echo $SP | jq .password | tr -d '""')
+
+az aks create \
+    --resource-group $RESOURCE_GROUP \
+    --name Mein-kleiner-K8s-Cluster \
+    --node-count 1 \
+    --node-vm-size Standard_F2s_v2 \
+    --generate-ssh-keys \
+    --service-principal $SP_appId \
+    --client-secret $SP_password
+
+
 az aks list -o table
 
 az aks get-credentials \
@@ -104,8 +121,14 @@ az aks browse --resource-group AADesignLab0402-RG --name aad0402-akscluster
 az aks delete --resource-group AADesignLab0402-RG --name aad0402-akscluster --yes --no-wait
 
 
-# Exercise 4
-# ----------
+# Exercise 4: Implement DevOps with AKS
+# -------------------------------------
+# Note: This solution is based on the DevOps with Containers solution described at 
+# https://docs.microsoft.com/en-us/azure/architecture/example-scenario/apps/devops-with-aks
+
+# GitHub repo already cloned
+# git clone https://github.com/Azure-Samples/azure-voting-app-redis.git
+
 ssh-keygen -t rsa -b 2048
 
 PUBLIC_KEY=$(cat ~/.ssh/id_rsa.pub)
@@ -131,7 +154,9 @@ echo $APP_ID
 PASSWORD=$(echo $SERVICE_PRINCIPAL | jq -r .password)
 echo $PASSWORD
 
-# upload parameters.json
+# original Lab instruction: upload parameters.json
+# here: copy parameter.json
+cp allfiles/AZ-301T03/Module_02/LabFiles/Starter/parameters.json ~/parameters.json
 cat ~/parameters.json
 
 sed -i.bak1 's/"$APP_ID"/"'"$APP_ID"'"/' ~/parameters.json
@@ -140,6 +165,13 @@ sed -i.bak3 's/"$PUBLIC_KEY_REGEX"/"'"$PUBLIC_KEY_REGEX"'"/' ~/parameters.json
 
 cat ~/parameters.json
 
-az group deployment create --resource-group $RESOURCE_GROUP \
+az aks get-versions --location $LOCATION --output table
+
+az group deployment create \
+    --resource-group $RESOURCE_GROUP \
     --template-uri https://raw.githubusercontent.com/MicrosoftLearning/AZ-301-MicrosoftAzureArchitectDesign/master/allfiles/AZ-301T03/Module_02/LabFiles/Starter/azuredeploy.json \
     --parameters ~/parameters.json
+
+
+# Delete copied parameters.json
+rm ~/parameters.json
