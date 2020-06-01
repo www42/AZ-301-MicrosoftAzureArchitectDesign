@@ -104,31 +104,25 @@
 
 1. On the **Storage Account** blade, click the **Create** button.
 
-1. On the **Create storage account** blade, perform the following tasks:
+1. On the **Create storage account** blade, perform the following tasks (leave all other settings with their default values):
 
-    - In the **Name** text box, type a unique name consisting of a combination of between 3 and 24 characters and digits.
+    - On the **Basics** tab, in the **Resource group** section, in the drop-down list, select the resource group you created earlier in this exercise.
 
-    - In the **Deployment model** section, ensure that the **Resource manager** option is selected.
+    - On the **Basics** tab, in the **Storage account name** text box, type a unique name consisting of a combination of between 3 and 24 characters and digits.
 
-    - In the **Account kind** drop-down list, ensure that the **Storage (general purpose v1)** option is selected.
+    - On the **Basics** tab, ensure that the **Location** entry is set to the same Azure region you selected earlier in this exercise.
+    
+    - On the **Basics** tab, in the **Performance** section, ensure that the **Standard** option is selected.
 
-    - Leave the **Location** entry set to the same Azure region you selected earlier in this exercise.
+    - On the **Basics** tab, in the **Account kind** drop-down list, ensure that the **Storage (general purpose v1)** option is selected.
 
     - In the **Replication** drop-down list, select the **Locally-redundant storage (LRS)** entry.
 
-    - In the **Performance** section, ensure that the **Standard** option is selected.
+    - On the **Networking** tab, ensure that the **Connectivity method** option set to **Public endpoint (all networks)**.
 
-    - In the **Secure transfer required** section, ensure that the **Disabled** option is selected.
+    - On the **Advanced** tab, in the **Secure transfer required** section, select the **Disabled** option.
 
-    - Leave the **Subscription** drop-down list entry set to its default value.
-
-    - In the **Resource group** section, ensure that the **Use existing** option is selected and, in the drop-down list below, select the resource group you created earlier in this exercise.
-
-    - Leave the **Configure virtual networks** option set to its default value.
-
-    - Leave the **Hierarchical namespaces** option set to its default value.
-
-    - Click the **Create** button.
+    - Click the **Review + create** button and then click the **Create** button.
 
 1. Wait for the provisioning to complete before you proceed to the next step.
 
@@ -138,7 +132,7 @@
 
 1. On the **AADesignLab1101-RG** blade, click the newly created Azure Storage account.
 
-1. On the Storage account blade, click the **Blobs** tile.
+1. On the Storage account blade, click the **Containers** tile.
 
 1. On the Storage account blade, click the **+ Container** button.
 
@@ -148,7 +142,7 @@
 
     - In the **Public access level** drop-down list, select the **Blob (anonymous read access for blobs only)** option.
 
-    - Click the **OK** button.
+    - Click the **Create** button.
 
 #### Task 2: Create a logic app
 
@@ -170,7 +164,7 @@
 
     - In the **Log Analytics** section, ensure that the **Off** button is selected.
 
-    - Click the **Create** button.
+    - Click the **Review + create** button and then click the **Create** button.
 
 1. Wait for the provisioning to complete before you proceed to the next task.
 
@@ -230,7 +224,7 @@
 
 1. At the top of the **Logic Apps Designer** blade, click the **Save** button to persist your workflow.
 
-#### Task 2: Open Cloud Shell
+#### Task 4: Open Cloud Shell
 
 1. At the top of the portal, click the **Cloud Shell** icon to open a new shell instance.
 
@@ -256,7 +250,7 @@
 
 1. Wait for the **Cloud Shell** to finish its first-time setup procedures before you proceed to the next task.
 
-#### Task 4: Validate Logic App using Node.js
+#### Task 5: Validate Logic App using Node.js
 
 1. At the top of the portal, click the **Cloud Shell** icon to open a new shell instance.
 
@@ -303,11 +297,11 @@
 
 1. On the **AADesignLab1101-RG** blade, click the Azure Storage account you created earlier in this lab.
 
-1. On the Storage account blade, click the **Blobs** tile.
+1. On the Storage account blade, click the **Containers** tile.
 
 1. On the Storage account container blade, click the **messageoutput** container.
 
-1. Note the newly created blob in your container.
+1. Note the newly created blob in your container and select **Edit** to view its content.
 
 > **Review**: In this exercise, you created a logic app that is triggered by messages from a queue in a Service Bus namespace.
 

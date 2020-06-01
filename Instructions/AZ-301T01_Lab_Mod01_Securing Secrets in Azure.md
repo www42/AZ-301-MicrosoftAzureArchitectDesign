@@ -56,11 +56,9 @@
 
     - In the **Region** drop-down list, select the Azure region to which you intend to deploy resources in this lab.
 
-    - Click **Pricing tier**, on the **Pricing tier** blade, click **Standard**, and then click **Select**.
-
     - Leave all remaining settings with their default values.
 
-    - Click the **Create** button.
+    - Click the **Review + Create** button and then click the **Create** button.
 
 1. Wait for the provisioning to complete before you proceed to the next task.
 
@@ -372,7 +370,7 @@
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to deploy the Azure Resource Manager template with the specified parameters file:
 
     ```sh
-    az group deployment create --resource-group $RESOURCE_GROUP --template-file ~/vm-template.json --parameters @~/vm-template.parameters.json
+    az deployment group create --resource-group $RESOURCE_GROUP --template-file ~/vm-template.json --parameters @~/vm-template.parameters.json
     ```
 
 1. Wait for the deployment to complete before you proceed to the next task.
@@ -412,6 +410,8 @@
 1. At the **Cloud Shell** command prompt, when prompted whether you want to continue connecting, type `yes` and press **Enter**.
 
 1. At the **Cloud Shell** command prompt, when prompted for password, type the value of the secret you retrieved earlier in this task and press **Enter**.
+
+    > **Note**: The cursor will not move when you type in the password.
 
 1. Verify that you successfully authenticated.
 

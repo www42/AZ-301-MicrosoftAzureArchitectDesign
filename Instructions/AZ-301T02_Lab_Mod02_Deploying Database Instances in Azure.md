@@ -60,11 +60,11 @@
 
     - Leave all remaining settings with their default values.
 
-    - Click the **Create** button.
+    - Click the **Review + Create** button and then click the **Create** button.
 
 1. Wait for the provisioning to complete before you proceed to the next step.
 
-    > **Note**: The deployment should take less than 5 minutes.
+    > **Note**: The deployment could take up to 15 minutes.
 
 1. Navigate to the blade of the newly created Cosmos DB account and click **Keys**.
 
@@ -148,7 +148,7 @@
 
 1. On the left side of the Azure Cosmos DB account blade, click **Data Explorer**.
 
-1. In the **Data Explorer** pane, click the **MemberCollection** child node of the **FinancialClubDatabase** node.
+1. In the **Data Explorer** pane, if necessary, refresh the pane and then click the **MemberCollection** child node of the **FinancialClubDatabase** node.
 
 1. Click the **New SQL Query** button at the top of the **Data Explorer** pane.
 
@@ -158,7 +158,7 @@
     SELECT * FROM c
     ```
 
-1. Click the **Execute Query** button at the top of the query editor.
+1. Click the **Execute Query** button at the top of the query editor and verify that the query does not return any results.
 
 1. In the left pane of the Data Explorer, expand the **MemberCollection** node.
 
@@ -179,7 +179,7 @@
     }
     ```
 
-1. Click the **Save** button at the top of the **Items** tab.
+1. Click the **Save** button at the top of the **Items** tab (you might need to first click the ellipsis toolbar button).
 
 1. In the **Items** tab, click the **New Item** button at the top of the tab.
 
@@ -309,7 +309,7 @@
 
     - Update the value of the **CosmosDB:EndpointUrl** setting to the value of the **URI** setting of the **Cosmos DB** instance you created earlier in this lab.
 
-    - Click the **Save** button at the top of the pane.
+    - Click the **Save** button at the top of the pane (if prompted, click **Continue**).
 
 1. On the left-side of the API app blade, click **Overview**.
 
@@ -323,7 +323,7 @@
 
 1. Click the **Try it out!** button.
 
-1. Review the results of the request.
+1. Review the results of the request (the results should include 2 items).
 
 1. Back on the **Swagger UI** homepage, click **POST/Populate**.
 
@@ -337,13 +337,13 @@
 
 1. In the **Response Messages** section, click the **Try it out!** button.
 
-1. Review the results of the request.
+1. Review the results of the request (the results should include 50 items).
 
 1. Back on the **Swagger UI** homepage, click **GET/Documents**.
 
 1. Locate the **Response Messages** section. Click the **Try it out!** button.
 
-1. Review the results of the request.
+1. Review the results of the request (the results should include 52 items).
 
 1. Close the new browser tab and return to the browser tab displaying the Azure portal.
 
@@ -399,7 +399,7 @@
 
 1. On the **AADesignLab0701-RG** blade, click the entry representing the Azure Search instance you created earlier in this lab.
 
-1. On the **Overview** blade of Azure Search service, click **Import data** and then click **Next: Connect to your data**.
+1. On the **Overview** blade of Azure Search service, click **Import data**.
 
 1. On the **Connect to your data** tab, perform the following tasks:
 
@@ -434,11 +434,11 @@
 
     - Ensure that the **Query results ordered by _ts** checkbox is selected.
 
-    - Click the **Next: Add cognitive search (optional)** button.
+    - Click the **Next: Add cognitive skills (optional)** button.
 
 1. On the **Cognitive Search** blade, click the **Skip to: Customize target index** button.
 
-1. On the **Index** blade, perform the following tasks:
+1. On the **Customize target index** blade, perform the following tasks:
 
     - In the **Index name** text box, type **memberindex**.
 
@@ -490,7 +490,7 @@
 
     - Set the value of the **Search:IndexId** setting to the value **memberindex**.
 
-    - Click the **Save** button at the top of the blade.
+    - Click the **Save** button at the top of the blade (if prompted, click **Continue**).
 
 1. On the API app blade, click **Overview**.
 
@@ -512,7 +512,7 @@
 
 1. In the **Response Messages** section, click the **Try it out!** button.
 
-1. Review the results of the request.
+1. Review the results of the request (the results should include 2 items).
 
 1. In the **Parameters** section, in the **Value** text box of the **query** parameter, type the following text:
 
@@ -522,7 +522,7 @@
 
 1. In the **Response Messages** section, click the **Try it out!** button.
 
-1. Review the results of the request.
+1. Review the results of the request (the results should include 1 item).
 
 1. Close the new browser tab and return to the browser tab displaying the Azure portal.
 

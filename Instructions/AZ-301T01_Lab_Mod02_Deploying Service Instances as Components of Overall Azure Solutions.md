@@ -159,9 +159,7 @@
 
 1. On the **AADesignLab1001-RG** blade, in the list of resources, click the newly provisioned function app.
 
-1. On the function app blade, click the **Platform features** tab at the top of the blade.
-
-1. On the **Platform features** tab, click the **Configuration** link in the **General Settings** section.
+1. On the Azure function blade, under **Settings** click on **Configuration** at the left.
 
 1. On the **Application settings** tab, click the **+ New application setting** link, perform the following tasks, and click **OK**:
 
@@ -181,9 +179,9 @@
 
 1. Click the **Save** button at the top of the **Application settings** tab.
 
-1. Navigate back to the function app blade and, on the **Platform features** tab, click the **Container settings** link in the **Code Deployment** section.
+1. Under **Deployment** at the left, click on the **Deployment Center** section.
 
-1. On the **Deployment Center** blade, click **External** and then click **Continue**.
+1. On the **Deployment Center** blade, scroll down to the bottom of the blade and click **External** and then click **Continue**.
 
 1. Click **App Service build service** and click **Continue**.
 
@@ -213,7 +211,9 @@
 
 1. Select the **DetermineLanguage** function from the list of functions.
 
-1. In the **run.csx** pane that opens, click **Test** on the right side of the pane.
+1. On the left, under **Developer**, select the **Code + Test** option
+
+1. In the **run.csx** pane that opens, scroll to the right and click **Test** on the right side of the pane.
 
 1. In the **Test** pane, perform the following tasks:
 
@@ -225,9 +225,9 @@
     }
     ```
 
-    - Click the **Run** button.
+    - Locate and click the **Run** button.
 
-    - Review the output in the **Output** section. The output should identify the language as **en** (English).
+    - Locate and review the output in the **Output** section. The output should identify the language as **en** (English).
 
 > **Review**: In this exercise, you created a function app that uses Azure Cognitive Services.
 
@@ -256,7 +256,7 @@
 
     - In the **Log Analytics** section, ensure that the **Off** button is selected.
 
-    - Click the **Create** button.
+    - Click the **Create + Review** button and then click the **Create** button.
 
 1. Wait for the provisioning to complete before you proceed to the next task.
 

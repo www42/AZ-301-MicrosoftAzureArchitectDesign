@@ -64,8 +64,6 @@
 
 #### Task 3: Deploy a Linux VM
 
-1. At the top of the portal, click the **Cloud Shell** icon to open a new Clould Shell instance.
-
 1. In the **Cloud Shell** pane, click the **Upload/Download files** icon and, in the drop-down menu, click **Upload**.
 
 1. In the **Open** dialog box, navigate to the **\\allfiles\\AZ-301T02\\Module_03\\LabFiles\\Starter\\** folder, select the **linux-template.json** file, and click **Open**. The file contains the following template:
@@ -332,6 +330,8 @@
 
 1. On the **LinuxAutomation - State configuration (DSC)** blade, select in the **NODE** section the virtual machine you deployed in the previous exercise.
 
+    > **Note**: You may need to refresh the blade.
+
 1. On the virtual machine blade, click **Assign node configuration**.
 
 1. On the Assign Node Configuration blade, select the node configuration **lampserver.host** and click the **OK** button.
@@ -340,6 +340,8 @@
 
 1. In the list of DSC nodes, verify that the Linux virtual machine has the **Compliant** status.
 
+    > **Note**: You may need to wait for up to 30 minutes for the new status to be updated.
+    
 > **Review**: In this exercise, you created a PowerShell DSC configuration and applied the configuration to a Linux virtual machine.
 
 
