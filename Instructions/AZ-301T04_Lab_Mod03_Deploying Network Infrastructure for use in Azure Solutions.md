@@ -28,15 +28,13 @@
 
 ## Exercise 1: Configure the lab environment
 
-#### Task 1: Open the Azure Portal
+#### Task 1: Open the Azure Portal and Cloud Shell.
 
 1. On the Taskbar, click the **Microsoft Edge** icon.
 
 1. In the open browser window, navigate to the **Azure Portal** (<https://portal.azure.com>).
 
 1. When prompted, authenticate with the user account account that has the owner role in the Azure subscription you will be using in this lab.
-
-#### Task 2: Open Cloud Shell
 
 1. At the top of the portal, click the **Cloud Shell** icon to open a new shell instance.
 
@@ -62,90 +60,234 @@
 
 1. Wait for the **Cloud Shell** to finish its first-time setup procedures before you proceed to the next task.
 
-#### Task 3: Install the Azure Building Blocks npm package in Azure Cloud Shell
+#### Task 2: Deploy an Azure VM running Linux Ubuntu 18.04 that will be used to perform Azure Building Blocks-based deployments.
 
-1. At the **Cloud Shell** command prompt at the bottom of the portal, type in the following command and press **Enter** to create a local directory to install the Azure Building Blocks npm package:
+> **Note**: This is necessary to account for breaking changes affecting running from Cloud Shell.
+
+1. At the **Cloud Shell** command prompt, run the following to create a variable which value designates the name of your Azure subscription:
+
+1. At the **Cloud Shell** command prompt, run the following to create a variable which value designates the name of the resource group you will use in this exercise:
 
     ```sh
-    mkdir ~/.npm-global
+    RESOURCE_GROUP='AADesignLab0802-RG'
     ```
 
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to update the npm configuration to include the new local directory:
+1. At the **Cloud Shell** command prompt, run the following to create a variable which value designates the Azure region you will use for the deployment (replace the `<location>` placeholder with the name of the Azure region you want to use in this lab):
+
+    ```sh
+    LOCATION='<location>'
+    ```
+
+1. At the **Cloud Shell** command prompt, run the following to create a resource group that you will use for the deployment:
+
+    ```sh
+    az group create --name $RESOURCE_GROUP --location $LOCATION
+    ```
+
+1. At the **Cloud Shell** command prompt, run the following to deploy an Azure VM running Linux Ubuntu 18.04 that you will use for deploying resources via Azure Building Blocks:
+
+    ```sh
+    UBUNTU_IMAGE='Canonical:UbuntuServer:18.04-LTS:latest'
+    VM_NAME='lab08vm1'
+    USER_NAME='student'
+    az vm create \
+    --name $VM_NAME \
+    --resource-group $RESOURCE_GROUP \
+    --location $LOCATION \
+    --image $UBUNTU_IMAGE \
+    --admin-username $USER_NAME \
+    --generate-ssh-keys \
+    --size Standard_DS1_v2
+    ```
+
+> **Note**: Wait until the deployment completes.
+
+1. At the **Cloud Shell** command prompt, run the following to retrieve the public IP address of the newly deployed Azure VM **lab08vm1**:
+
+    ```sh
+    IP_ADDRESS=$(az vm show -d --resource-group $RESOURCE_GROUP --name $VM_NAME --query publicIps -o tsv)
+    ```
+
+1. In the **Cloud Shell** pane, run the following to open an SSH session to the newly deployed Azure VM **lab08vm1**:
+
+    ```sh
+    ssh student@$IP_ADDRESS
+    ```
+
+1. In the **Cloud Shell** pane, when prompted whether to continue, type **y** and press Enter.
+
+#### Task 3: Install the Azure Building Blocks npm package in the Azure VM running Linux.
+
+1. Within the SSH session to the Azure VM **lab08vm1**, run the following to update locally installed packages and their dependencies:
+
+    ```sh
+    sudo apt-get upgrade
+    ```
+
+1. Within the SSH session to the Azure VM **lab08vm1**, run the following to ensure that there are no remaining updates to be processed:
+
+    ```sh
+    sudo -i apt update
+    ```
+
+1. Within the SSH session to the Azure VM **lab08vm1**, run the following to install Azure CLI: 
+
+    ```sh
+    curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+    ```
+
+1. Within the SSH session to the Azure VM **lab08vm1**, run the following to install node.js v10: 
+
+    ```sh
+    curl -sL https://deb.nodesource.com/setup_10.x | sudo bash -
+    sudo apt-get install -y nodejs
+    ```
+
+1. Within the SSH session to the Azure VM **lab08vm1**, run the following to verify the versions of node.js and npm:
+
+    ```sh
+    node --version
+    npm --version
+    ```
+
+    > **Note**: Verify that the versions are **v10.21.0** and **6.14.4**, respectively.
+
+1. Within the SSH session to the Azure VM **lab08vm1**, run the following to install Azure Building Blocks:
+
+    ```sh
+    sudo su - 
+    npm install -g @mspnp/azure-building-blocks
+    ```
+
+1. Within the SSH session to the Azure VM **lab08vm1**, run the following to exit the root mode and switch to the home directory:
+
+    ```sh
+    exit
+    cd $HOME
+    ```
+
+1. Within the SSH session to the Azure VM **lab08vm1**, run the following to set the npm path: 
 
     ```sh
     npm config set prefix '~/.npm-global'
     ```
 
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to open the ~./bashrc configuration file for editing:
-
-    ```sh
-    vi ~/.bashrc
-    ```
-
-1. At the **Cloud Shell** command prompt, in the vi editor interface, scroll down to the bottom of the file (or type **G**), scroll to the right to the right-most character on the last line (or type **$**), type **a** to initiate the **INSERT** mode, press **Enter** to start a new line, and then type the following to add the newly created directory to the system path:
-
-    ```sh
-    export PATH="$HOME/.npm-global/bin:$PATH"
-    ```
-
-1. At the **Cloud Shell** command prompt, in the vi editor interface, to save your changes and close the file, press **Esc**, press **:**, type **wq!** and press **Enter**.
-
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to install the Azure Building Blocks npm package:
-
-    ```sh
-    npm install -g @mspnp/azure-building-blocks
-    ```
-
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to exit the shell:
-
-    ```sh
-    exit
-    ```
-
-1. In the **Cloud Shell timed out** pane, click **Reconnect**.
-
-    > **Note**: You need to restart Cloud Shell for the installation of the Buliding Blocks npm package to take effect.
-
-
 #### Task 4: Prepare Building Blocks Hub and Spoke parameter files
 
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to download the GitHub repository containing the Azure Building Blocks reference architecture files:
+1. Within the SSH session to the Azure VM **lab08vm1**, run the following to download the GitHub repository containing the Azure Building Blocks reference architecture files:
 
     ```
     git clone https://github.com/mspnp/reference-architectures.git
     ```
 
-1.  At the **Cloud Shell** command prompt, type in the following command and press **Enter** to view the content of the Azure Building Block parameter file you will use for this deployment:
+1. Within the SSH session to the Azure VM **lab08vm1**, run the following to view the content of the Azure Building Block parameter file you will use for this deployment:
 
     ```sh
     cat ./reference-architectures/hybrid-networking/hub-spoke/hub-spoke.json
     ```
     
-1.  At the **Cloud Shell** command prompt, type in the following command and press **Enter** to change the current directory to the one hosting the **hub-spoke.json** file you will use for this deployment:
+1. Within the SSH session to the Azure VM **lab08vm1**, run the following to change the current directory to the one hosting the **hub-spoke.json** file you will use for this deployment:
 
     ```sh
     cd ./reference-architectures/hybrid-networking/hub-spoke
     ```
 
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to replace the placeholder **[replace-with-username]** with the value **Student** in the **hub-spoke.json** Building Blocks parameter file:
+1. Within the SSH session to the Azure VM **lab08vm1**, type in the following command and press **Enter** to create a new file:
+
+    ```sh
+    vi hub-spoke.json.patch
+    ```
+
+1. Within the SSH session to the Azure VM **lab08vm1**, in the vi editor interface, type **a** to initiate the **INSERT** mode, press **Enter** to start a new line, and then type the following:
+
+    ```sh
+    --- hub-spoke.json.orig	2020-06-11 16:08:04.175635600 +0200
+    +++ hub-spoke.json	2020-06-11 16:12:07.494153300 +0200
+    @@ -271,27 +271,6 @@
+                             {
+                                 "resourceGroupName": "spoke1-vnet-rg",
+                                 "vmCount": 1,
+    -                            "namePrefix": "s1jb",
+    -                            "computerNamePrefix": "s1jb",
+    -                            "adminUsername": "[replace-with-username]",
+    -                            "adminPassword": "[replace-with-password]",
+    -                            "osType": "windows",
+    -                            "virtualNetwork": {
+    -                                "resourceGroupName": "spoke1-vnet-rg",
+    -                                "name": "spoke1-vnet"
+    -                            },
+    -                            "nics": [
+    -                                {
+    -                                    "isPublic": false,
+    -                                    "subnetName": "mgmt",
+    -                                    "privateIPAllocationMethod": "Static",
+    -                                    "startingIPAddress": "10.1.0.36"
+    -                                }
+    -                            ]
+    -                        },
+    -                        {
+    -                            "resourceGroupName": "spoke1-vnet-rg",
+    -                            "vmCount": 1,
+                                 "namePrefix": "s1jbl",
+                                 "computerNamePrefix": "s1jbl",
+                                 "adminUsername": "[replace-with-username]",
+    @@ -330,27 +309,6 @@
+                                         "startingIPAddress": "10.2.0.36"
+                                     }
+                                 ]
+    -                        },
+    -                        {
+    -                            "resourceGroupName": "spoke2-vnet-rg",
+    -                            "vmCount": 1,
+    -                            "namePrefix": "s2jbl",
+    -                            "computerNamePrefix": "s2jbl",
+    -                            "adminUsername": "[replace-with-username]",
+    -                            "adminPassword": "[replace-with-password]",
+    -                            "osType": "linux",
+    -                            "virtualNetwork": {
+    -                                "resourceGroupName": "spoke2-vnet-rg",
+    -                                "name": "spoke2-vnet"
+    -                            },
+    -                            "nics": [
+    -                                {
+    -                                    "isPublic": false,
+    -                                    "subnetName": "mgmt",
+    -                                    "privateIPAllocationMethod": "Static",
+    -                                    "startingIPAddress": "10.2.0.37"
+    -                                }
+    -                            ]
+                             }
+                         ]
+                     },
+    ```
+
+1. Within the SSH session to the Azure VM **lab08vm1**, in the vi editor interface, press **Esc**, press **:**, type **wq!** and press **Enter** to save your changes and close the file.
+
+1. Within the SSH session to the Azure VM **lab08vm1**, run the following to patch the **hub-spoke.json** (two virtual machines have to be removed due to a quota limitation in the Free Azure Pass subscription - 10 virtual machines in total):
+
+    ```sh
+    patch < hub-spoke.json.patch
+    ```
+
+1. Within the SSH session to the Azure VM **lab08vm1**, run the following to replace the placeholder **[replace-with-username]** with the value **Student** in the **hub-spoke.json** Building Blocks parameter file:
 
     ```sh
     sed -i.bak1 's/\[replace-with-username\]/Student/g' ./hub-spoke.json
     ```
 
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to replace the placeholder **[replace-with-password]** with the value **Pa55w.rd1234** in the **hub-spoke.json** Building Blocks parameter file:
+1. Within the SSH session to the Azure VM **lab08vm1**, run the following to replace the placeholder **[replace-with-password]** with the value **Pa55w.rd1234** in the **hub-spoke.json** Building Blocks parameter file:
 
     ```sh
     sed -i.bak2 's/\[replace-with-password\]/Pa55w.rd1234/g' ./hub-spoke.json
     ```
 
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to replace the placeholder **[replace-with-shared-key]** parameter with the value **shared12345** in the **hub-spoke.json** Building Blocks parameter file:
+1. Within the SSH session to the Azure VM **lab08vm1**, run the following to replace the placeholder **[replace-with-shared-key]** parameter with the value **shared12345** in the **hub-spoke.json** Building Blocks parameter file:
 
     ```sh
     sed -i.bak3 's/\[replace-with-shared-key\]/shared12345/g' ./hub-spoke.json
     ```
 
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to verify that the parameter values were successfully changed in the **hub-spoke.json** Building Blocks parameter file:
+1. Within the SSH session to the Azure VM **lab08vm1**, run the following to verify that the parameter values were successfully changed in the **hub-spoke.json** Building Blocks parameter file:
 
     ```sh
     cat ./hub-spoke.json
@@ -153,25 +295,33 @@
 
 #### Task 5: Implement the hub component of the Hub and Spoke design
 
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create a variable which value designates the name of your Azure subscription:
+1. Within the SSH session to the Azure VM **lab08vm1**, run the following to authenticate to your Azure subscription:
+
+    ```sh
+    az login
+    ```
+
+    > **Note**: Follow the instructions provided in the output of the command to authenticate to your Azure subscription.
+
+1. Once you authenticated, return to the Cloud Shell pane displaying the SSH session to the Azure VM **lab08vm1**, and run the following to create a variable which value designates the name of your Azure subscription:
 
     ```sh
     SUBSCRIPTION_ID=$(az account list --query "[0].id" --output tsv | tr -d '"')
     ```
 
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create a variable which value designates the name of the resource group that will contain the hub virtual network:
+1. Within the SSH session to the Azure VM **lab08vm1**, run the following to create a variable which value designates the name of the resource group that will contain the hub virtual network:
 
     ```sh
     RESOURCE_GROUP=onprem-vnet-rg
     ```
 
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create a variable which value designates the Azure region you will use for the deployment (replace the placeholder `<Azure region>` with the name of the Azure region to which you intend to deploy resources in this lab):
+1. Within the SSH session to the Azure VM **lab08vm1**, run the following to create a variable which value designates the Azure region you will use for the deployment (replace the placeholder `<Azure region>` with the name of the Azure region to which you intend to deploy resources in this lab):
 
     ```sh
     LOCATION='<Azure region>'
     ```
 
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to deploy the hub component of the Hub-and-Spoke topology by using the Azure Building Blocks:
+1. Within the SSH session to the Azure VM **lab08vm1**, run the following to deploy the hub component of the Hub-and-Spoke topology by using the Azure Building Blocks:
 
     ```sh
     azbb -s  $SUBSCRIPTION_ID -g $RESOURCE_GROUP -l $LOCATION -p ./hub-spoke.json --deploy
@@ -261,7 +411,7 @@
 
 1. At the top of the portal, click the **Cloud Shell** icon to open the Cloud Shell pane.
 
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to list all resource groups you created in this lab:
+1. In the Cloud Shell pane, run the following command and press **Enter** to list all resource groups you created in this lab:
 
     ```sh
     az group list --query "[?starts_with(name,'AADesignLab08')]".name --output tsv
@@ -271,7 +421,7 @@
 
 #### Task 2: Delete resource groups
 
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to delete the resource groups you created in this lab
+1. In the Cloud Shell pane, run the following command and press **Enter** to delete the resource groups you created in this lab
 
     ```sh
     az group list --query "[?starts_with(name,'AADesignLab08')]".name --output tsv | xargs -L1 bash -c 'az group delete --name $0 --no-wait --yes'

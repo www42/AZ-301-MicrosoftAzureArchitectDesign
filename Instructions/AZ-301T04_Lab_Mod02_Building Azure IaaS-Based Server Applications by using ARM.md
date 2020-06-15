@@ -81,7 +81,7 @@
     - Click **Next: Networking >**
 
 1. On the **Networking** tab, perform the following tasks (leave all other settings with their default values):
-
+o
     - In the **Virtual network** section, click **Create new**.
 
     - On the **Create virtual network** blade, specify the following settings and click **OK**:
@@ -414,7 +414,7 @@
 > **Review**: In this exercise, you created a Virtual Machine scale set and configured the individual instances using PowerShell DSC.
 
 
-## Exercise 3: Deploy Azure VMs running Windows Server 2016 and Linux by using Azure Building Blocks with PowerShell Desired State Configuration (DSC) extension from the Azure Cloud Shell.
+## Exercise 3: Deploy Azure VMs running Windows Server 2016 and Linux by using Azure Building Blocks with PowerShell Desired State Configuration (DSC) extension.
 
 #### Task 1: Open Cloud Shell
 
@@ -443,113 +443,189 @@
 1. Wait for the **Cloud Shell** to finish its first-time setup procedures before you proceed to the next task.
 
 
-#### Task 2: Install the Azure Building Blocks npm package in Azure Cloud Shell
+#### Task 2: Deploy an Azure VM running Linux Ubuntu 18.04 that will be used to perform Azure Building Blocks-based deployments.
 
-1. At the **Cloud Shell** command prompt at the bottom of the portal, type in the following command and press **Enter** to create a local directory to install the Azure Building Blocks npm package:
+> **Note**: This is necessary to account for breaking changes affecting running from Cloud Shell.
 
-    ```sh
-    mkdir ~/.npm-global
-    ```
+1. In the **Cloud Shell** pane, run the following to create a variable which value designates the name of your Azure subscription:
 
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to update the npm configuration to include the new local directory:
-
-    ```sh
-    npm config set prefix '~/.npm-global'
-    ```
-
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to open the ~./bashrc configuration file for editing:
-
-    ```sh
-    vi ~/.bashrc
-    ```
-
-1. At the **Cloud Shell** command prompt, in the vi editor interface, scroll down to the bottom of the file (or type **G**), scroll to the right to the right-most character on the last line (or type **$**), type **a** to enter the **INSERT** mode, press **Enter** to start a new line, and then type the following to add the newly created directory to the system path:
-
-    ```sh
-    export PATH="$HOME/.npm-global/bin:$PATH"
-    ```
-
-1. At the **Cloud Shell** command prompt, in the vi editor interface, to save your changes and close the file, press **Esc**, press **:**, type **wq!** and press **Enter**.
-
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to install the Azure Building Blocks npm package:
-
-    ```sh
-    npm install -g @mspnp/azure-building-blocks
-    ```
-
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to exit the shell:
-
-    ```sh
-    exit
-    ```
-
-1. In the **Cloud Shell timed out** pane, click **Reconnect**.
-
-    > **Note**: You need to restart Cloud Shell for the installation of the Buliding Blocks npm package to take effect.
-
-
-#### Task 3: Deploy a Windows Server 2016 Azure VM from Cloud Shell by using Azure Building Blocks
-
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to download the GitHub repository containing the Azure Building Blocks reference architecture files:
-
-    ```
-    git clone https://github.com/mspnp/reference-architectures.git
-    ```
-
-1.  At the **Cloud Shell** command prompt, type in the following command and press **Enter** to view the content of the Azure Building Block parameter file you will use for this deployment:
-
-    ```sh
-    cat ./reference-architectures/virtual-machines/single-vm/parameters/windows/single-vm.json
-    ```
-
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create a variable which value designates the name of your Azure subscription:
-
-    ```sh
-    SUBSCRIPTION_ID=$(az account list --query "[0].id" --output tsv | tr -d '"')
-    ```
-
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create a variable which value designates the name of the resource group you created earlier in this exercise:
+1. In the **Cloud Shell** pane, run the following to create a variable which value designates the name of the resource group you will use in this exercise:
 
     ```sh
     RESOURCE_GROUP='AADesignLab0303-RG'
     ```
 
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create a variable which value designates the Azure region you will use for the deployment:
+1. In the **Cloud Shell** pane, run the following to create a variable which value designates the Azure region you will use for the deployment:
 
     ```sh
     LOCATION=$(az group list --query "[?name == 'AADesignLab0301-RG'].location" --output tsv)
     ```
 
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create a resource group that you will use for the deployment:
+1. In the **Cloud Shell** pane, run the following to create a resource group that you will use for the deployment:
 
     ```sh
     az group create --name $RESOURCE_GROUP --location $LOCATION
     ```
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to replace the placeholder for the **adminUsername** parameter with the value **Student** in the Building Blocks parameter file:
+
+1. In the **Cloud Shell** pane, run the following to deploy an Azure VM running Linux Ubuntu 18.04 that you will use for deploying resources via Azure Building Blocks:
 
     ```sh
-    sed -i.bak1 's/"adminUsername": ""/"adminUsername": "Student"/' ./reference-architectures/virtual-machines/single-vm/parameters/windows/single-vm.json
+    UBUNTU_IMAGE='Canonical:UbuntuServer:18.04-LTS:latest'
+    VM_NAME='lab03vm1'
+    USER_NAME='student'
+    az vm create \
+    --name $VM_NAME \
+    --resource-group $RESOURCE_GROUP \
+    --location $LOCATION \
+    --image $UBUNTU_IMAGE \
+    --admin-username $USER_NAME \
+    --generate-ssh-keys \
+    --size Standard_D2s_v3
     ```
 
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to replace the placeholder for the **adminPassword** parameter with the value **Pa55w.rd1234** in the Building Blocks parameter file:
+> **Note**: Wait until the deployment completes.
+
+1. In the **Cloud Shell** pane, run the following to retrieve the public IP address of the newly deployed Azure VM **lab03vm1**:
 
     ```sh
-    sed -i.bak2 's/"adminPassword": ""/"adminPassword": "Pa55w.rd1234"/' ./reference-architectures/virtual-machines/single-vm/parameters/windows/single-vm.json
+    IP_ADDRESS=$(az vm show -d --resource-group $RESOURCE_GROUP --name $VM_NAME --query publicIps -o tsv)
     ```
 
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to set the value of the size parameter of the virtual machines to **Standard_D2s_v3** in the Building Blocks parameter file:
+1. In the **Cloud Shell** pane, run the following to open an SSH session to the newly deployed Azure VM **lab03vm1**:
 
     ```sh
-    sed -i.bak3 's/"Standard_DS1_v2"/"Standard_D2s_v3"/g' ./reference-architectures/virtual-machines/single-vm/parameters/windows/single-vm.json
+    ssh student@$IP_ADDRESS
     ```
 
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to verify that the parameter values were successfully changed in the Building Blocks parameter file:
+1. In the **Cloud Shell** pane, when prompted whether to continue, type **y** and press Enter.
+
+
+#### Task 3: Install the Azure Building Blocks npm package in the Azure VM running Linux.
+
+1. Within the SSH session to the Azure VM **lab03vm1**, run the following to update locally installed packages and their dependencies:
+
+    ```sh
+    sudo apt-get upgrade
+    ```
+
+1. Within the SSH session to the Azure VM **lab03vm1**, run the following to ensure that there are no remaining updates to be processed:
+
+    ```sh
+    sudo -i apt update
+    ```
+
+1. Within the SSH session to the Azure VM **lab03vm1**, run the following to install Azure CLI: 
+
+    ```sh
+    curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+    ```
+
+1. Within the SSH session to the Azure VM **lab03vm1**, run the following to install node.js v10: 
+
+    ```sh
+    curl -sL https://deb.nodesource.com/setup_10.x | sudo bash -
+    sudo apt-get install -y nodejs
+    ```
+
+1. Within the SSH session to the Azure VM **lab03vm1**, run the following to verify the versions of node.js and npm:
+
+    ```sh
+    node --version
+    npm --version
+    ```
+
+    > **Note**: Verify that the versions are **v10.21.0** and **6.14.4**, respectively.
+
+1. Within the SSH session to the Azure VM **lab03vm1**, run the following to install Azure Building Blocks:
+
+    ```sh
+    sudo su - 
+    npm install -g @mspnp/azure-building-blocks
+    ```
+
+1. Within the SSH session to the Azure VM **lab03vm1**, run the following to exit the root mode and switch to the home directory:
+
+    ```sh
+    exit
+    cd $HOME
+    ```
+
+1. Within the SSH session to the Azure VM **lab03vm1**, run the following to set the npm path: 
+
+    ```sh
+    npm config set prefix '~/.npm-global'
+    ```
+
+#### Task 4: Deploy a Windows Server 2016 Azure VM from Cloud Shell by using Azure Building Blocks
+
+1. Within the SSH session to the Azure VM **lab03vm1**, run the following to download the GitHub repository containing the Azure Building Blocks reference architecture files:
+
+    ```
+    git clone https://github.com/mspnp/reference-architectures.git
+    ```
+
+1. Within the SSH session to the Azure VM **lab03vm1**, run the following to view the content of the Azure Building Block parameter file you will use for this deployment:
 
     ```sh
     cat ./reference-architectures/virtual-machines/single-vm/parameters/windows/single-vm.json
     ```
 
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to deploy a Windows Server 2016 Azure VM by using the Azure Building Blocks:
+1. Within the SSH session to the Azure VM **lab03vm1**, run the following to authenticate to your Azure subscription:
+
+    ```sh
+    az login
+    ```
+
+    > **Note**: Follow the instructions provided in the output of the command to authenticate to your Azure subscription.
+
+1. Once you authenticated, return to the Cloud Shell pane displaying the SSH session to the Azure VM **lab03vm1**, and run the following to create a variable which value designates the name of your Azure subscription:
+
+    ```sh
+    SUBSCRIPTION_ID=$(az account list --query "[0].id" --output tsv | tr -d '"')
+    ```
+
+1. Within the SSH session to the Azure VM **lab03vm1**, run the following to create a variable which value designates the name of the resource group you created earlier in this exercise:
+
+    ```sh
+    RESOURCE_GROUP='AADesignLab0303-RG'
+    ```
+
+1. Within the SSH session to the Azure VM **lab03vm1**, run the following to create a variable which value designates the Azure region you will use for the deployment:
+
+    ```sh
+    LOCATION=$(az group list --query "[?name == 'AADesignLab0301-RG'].location" --output tsv)
+    ```
+
+1. Within the SSH session to the Azure VM **lab03vm1**, run the following to create a resource group that you will use for the deployment:
+
+    ```sh
+    az group create --name $RESOURCE_GROUP --location $LOCATION
+    ```
+1. Within the SSH session to the Azure VM **lab03vm1**, run the following to replace the placeholder for the **adminUsername** parameter with the value **Student** in the Building Blocks parameter file:
+
+    ```sh
+    sed -i.bak1 's/"adminUsername": ""/"adminUsername": "Student"/' ./reference-architectures/virtual-machines/single-vm/parameters/windows/single-vm.json
+    ```
+
+1. Within the SSH session to the Azure VM **lab03vm1**, run the following to replace the placeholder for the **adminPassword** parameter with the value **Pa55w.rd1234** in the Building Blocks parameter file:
+
+    ```sh
+    sed -i.bak2 's/"adminPassword": ""/"adminPassword": "Pa55w.rd1234"/' ./reference-architectures/virtual-machines/single-vm/parameters/windows/single-vm.json
+    ```
+
+1. Within the SSH session to the Azure VM **lab03vm1**, run the following to set the value of the size parameter of the virtual machines to **Standard_D2s_v3** in the Building Blocks parameter file:
+
+    ```sh
+    sed -i.bak3 's/"Standard_DS1_v2"/"Standard_D2s_v3"/g' ./reference-architectures/virtual-machines/single-vm/parameters/windows/single-vm.json
+    ```
+
+1. Within the SSH session to the Azure VM **lab03vm1**, run the following to verify that the parameter values were successfully changed in the Building Blocks parameter file:
+
+    ```sh
+    cat ./reference-architectures/virtual-machines/single-vm/parameters/windows/single-vm.json
+    ```
+
+1. Within the SSH session to the Azure VM **lab03vm1**, run the following to deploy a Windows Server 2016 Azure VM by using the Azure Building Blocks:
 
     ```sh
     azbb -g $RESOURCE_GROUP -s $SUBSCRIPTION_ID -l $LOCATION -p ./reference-architectures/virtual-machines/single-vm/parameters/windows/single-vm.json --deploy
@@ -558,13 +634,13 @@
 1. Wait for the deployment to complete before you proceed to the next task.
 
 
-#### Task 4: Validate that the Windows Server 2016 Azure VM is serving web content
+#### Task 5: Validate that the Windows Server 2016 Azure VM is serving web content
 
 1. In the hub menu in the Azure portal, click **Resource groups**.
 
-1. On the **Resource groups** blade, click the entry representing the resource group into which you deployed the Windows Server 2016 Datacenter virtual machine earlier in this exercise.
+1. On the **Resource groups** blade, click the **AADesignLab0303-RG** entry representing the resource group into which you deployed the Windows Server 2016 Datacenter virtual machine earlier in this exercise.
 
-1. On the resource group blade, click the entry representing the virtual machine you deployed.
+1. On the resource group blade, click the **ra-single-windows-vm1** entry representing the virtual machine you deployed by using Azure Building Blocks.
 
 1. On the **Virtual machine** blade, locate the **Public IP address** entry, and identify its value.
 
@@ -575,15 +651,15 @@
 1. Close the new browser tab.
 
 
-#### Task 5: Deploy a Linux Azure VM from Cloud Shell by using Azure Building Blocks
+#### Task 6: Deploy a Linux Azure VM from Cloud Shell by using Azure Building Blocks
 
-1.  At the **Cloud Shell** command prompt, type in the following command and press **Enter** to view the content of the Azure Building Block parameter file you will use for this deployment:
+1.  In the **Cloud Shell** pane, within the SSH session to the Azure VM **lab03vm1**, run the following to view the content of the Azure Building Block parameter file you will use for this deployment:
 
     ```sh
     cat ./reference-architectures/virtual-machines/single-vm/parameters/linux/single-vm.json
     ```
 
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to generate the SSH key pair that you will use to authenticate when accessing the Linux VM:
+1.  Within the SSH session to the Azure VM **lab03vm1**, run the following to generate the SSH key pair that you will use to authenticate when accessing the Linux VM:
 
     ```sh
     ssh-keygen -t rsa -b 2048
@@ -593,13 +669,13 @@
 
     - When prompted to enter passphrase, press **Enter** twice.
 
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create a variable which value designates the public key of the newly generated key pair:
+1.  Within the SSH session to the Azure VM **lab03vm1**, run the following to create a variable which value designates the public key of the newly generated key pair:
 
     ```sh
     PUBLIC_KEY=$(cat ~/.ssh/id_rsa.pub)
     ```
 
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create a variable which value designates the public key of the newly generated key pair and which takes into account any special character the public key might include:
+1.  Within the SSH session to the Azure VM **lab03vm1**, run the following to create a variable which value designates the public key of the newly generated key pair and which takes into account any special character the public key might include:
 
     ```sh
     PUBLIC_KEY_REGEX="$(echo $PUBLIC_KEY | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')"
@@ -607,55 +683,55 @@
 
     > **Note**: This is necessary because you will use the **sed** utility to insert this string into the Azure Building Blocks parameter file. Alternatively, you could simply open the file and enter the public key string directly into the file.
 
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create a variable which value designates the name of your Azure subscription:
+1.  Within the SSH session to the Azure VM **lab03vm1**, run the following to create a variable which value designates the name of your Azure subscription:
 
     ```sh
     SUBSCRIPTION_ID=$(az account list --query "[0].id" --output tsv | tr -d '"')
     ```
 
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create a variable which value designates the name of the resource group you will use for the deployment:
+1.  Within the SSH session to the Azure VM **lab03vm1**, run the following to create a variable which value designates the name of the resource group you will use for the deployment:
 
     ```sh
     RESOURCE_GROUP='AADesignLab0304-RG'
     ```
 
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create a variable which value designates the Azure region you will use for the deployment:
+1.  Within the SSH session to the Azure VM **lab03vm1**, run the following to create a variable which value designates the Azure region you will use for the deployment:
 
     ```sh
     LOCATION=$(az group list --query "[?name == 'AADesignLab0301-RG'].location" --output tsv)
     ```
 
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to replace the placeholder for the **adminUsername** parameter with the value **Student** in the Building Blocks parameter file:
+1.  Within the SSH session to the Azure VM **lab03vm1**, run the following to replace the placeholder for the **adminUsername** parameter with the value **Student** in the Building Blocks parameter file:
 
     ```sh
     sed -i.bak1 's/"adminUsername": ""/"adminUsername": "Student"/' ./reference-architectures/virtual-machines/single-vm/parameters/linux/single-vm.json
     ```
 
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to replace the placeholder for the **sshPublicKey** parameter with the value of the **$PUBLIC_KEY_REGEX** variable in the Building Blocks parameter file:
+1.  Within the SSH session to the Azure VM **lab03vm1**, run the following to replace the placeholder for the **sshPublicKey** parameter with the value of the **$PUBLIC_KEY_REGEX** variable in the Building Blocks parameter file:
 
     ```sh
     sed -i.bak2 's/"sshPublicKey": ""/"sshPublicKey": "'"$PUBLIC_KEY_REGEX"'"/' ./reference-architectures/virtual-machines/single-vm/parameters/linux/single-vm.json
     ```
 
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to set the value of the size parameter of the virtual machines to **Standard_D2s_v3** in the Building Blocks parameter file:
+1.  Within the SSH session to the Azure VM **lab03vm1**, run the following to set the value of the size parameter of the virtual machines to **Standard_D2s_v3** in the Building Blocks parameter file:
 
     ```sh
     sed -i.bak3 's/"Standard_DS1_v2"/"Standard_D2s_v3"/g' ./reference-architectures/virtual-machines/single-vm/parameters/linux/single-vm.json
     ```
 
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to verify that the parameter values were successfully changed in the Building Blocks parameter file:
+1.  Within the SSH session to the Azure VM **lab03vm1**, run the following to verify that the parameter values were successfully changed in the Building Blocks parameter file:
 
     ```sh
     cat ./reference-architectures/virtual-machines/single-vm/parameters/linux/single-vm.json
     ```
 
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create a new resource group:
+1.  Within the SSH session to the Azure VM **lab03vm1**, run the following to create a new resource group:
 
     ```sh
     az group create --name $RESOURCE_GROUP --location $LOCATION
     ```
 
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to deploy a Linux Azure VM by using the Azure Building Blocks:
+1.  Within the SSH session to the Azure VM **lab03vm1**, run the following to deploy a Linux Azure VM by using the Azure Building Blocks:
 
     ```sh
     azbb -g $RESOURCE_GROUP -s $SUBSCRIPTION_ID -l $LOCATION -p ./reference-architectures/virtual-machines/single-vm/parameters/linux/single-vm.json --deploy
@@ -691,7 +767,7 @@
 
 1. At the top of the portal, click the **Cloud Shell** icon to open the Cloud Shell pane.
 
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to list all resource groups you created in this lab:
+1.  Within the SSH session to the Azure VM **lab03vm1**, run the following to list all resource groups you created in this lab:
 
     ```sh
     az group list --query "[?starts_with(name,'AADesignLab03')]".name --output tsv
@@ -701,7 +777,7 @@
 
 #### Task 2: Delete resource groups
 
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to delete the resource groups you created in this lab
+1.  Within the SSH session to the Azure VM **lab03vm1**, run the following to delete the resource groups you created in this lab
 
     ```sh
     az group list --query "[?starts_with(name,'AADesignLab03')]".name --output tsv | xargs -L1 bash -c 'az group delete --name $0 --no-wait --yes'
