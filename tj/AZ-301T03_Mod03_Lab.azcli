@@ -18,7 +18,7 @@ az appservice plan create \
     --resource-group $RESOURCE_GROUP_APP \
     --location $LOCATION \
     --sku B2
-az appservice plan list -o table
+az appservice plan list --query "[].{name:name,size:sku.size,location:location,status:status}" -o table
 
 az webapp list-runtimes --linux --output tsv
 

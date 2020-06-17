@@ -1,60 +1,68 @@
-az account list -o table
+# Exercise 1: Configure the lab environment
+# -----------------------------------------
 
-azbb --help
-
-ls -l hub-nva.json hub-vnet.json hub-vnet-peering.json spoke1.json spoke2.json
-
-sed -i.bak1 's/"adminUsername": ""/"adminUsername": "Student"/' ~/hub-vnet.json
-sed -i.bak2 's/"adminPassword": ""/"adminPassword": "Pa55w.rd1234"/' ~/hub-vnet.json
-cat hub-vnet.json
-
-sed -i.bak1 's/"adminUsername": ""/"adminUsername": "Student"/' ~/hub-nva.json
-sed -i.bak2 's/"adminPassword": ""/"adminPassword": "Pa55w.rd1234"/' ~/hub-nva.json
-cat ~/hub-nva.json
-
-sed -i.bak1 's/"adminUsername": ""/"adminUsername": "Student"/' ~/spoke1.json
-sed -i.bak2 's/"adminPassword": ""/"adminPassword": "Pa55w.rd1234"/' ~/spoke1.json
-cat ~/spoke1.json
-
-sed -i.bak1 's/"adminUsername": ""/"adminUsername": "Student"/' ~/spoke2.json
-sed -i.bak2 's/"adminPassword": ""/"adminPassword": "Pa55w.rd1234"/' ~/spoke2.json
-cat ~/spoke2.json
-
-#---------------------------------------------------------------------------------------------
-SUBSCRIPTION_ID=$(az account list --query "[0].id" | tr -d '"')
-echo $SUBSCRIPTION_ID
-RESOURCE_GROUP_HUB_VNET='AADesignLab08-hub-vnet-rg'
-echo $RESOURCE_GROUP_HUB_VNET
+# Task 1: Configure CloudShell - done already
+# Task 2: Deploy Linux VM
+RESOURCE_GROUP='AADesignLab0802-RG'
 LOCATION='westeurope'
-echo $LOCATION
-azbb -g $RESOURCE_GROUP_HUB_VNET -s $SUBSCRIPTION_ID -l $LOCATION -p ~/hub-vnet.json --deploy
-#---------------------------------------------------------------------------------------------
-SUBSCRIPTION_ID=$(az account list --query "[0].id" | tr -d '"')
-echo $SUBSCRIPTION_ID
-RESOURCE_GROUP_SPOKE1_VNET='AADesignLab08-spoke1-vnet-rg'
-echo $RESOURCE_GROUP_SPOKE1_VNET
-LOCATION='westeurope'
-echo $LOCATION
-azbb -g $RESOURCE_GROUP_SPOKE1_VNET -s $SUBSCRIPTION_ID -l $LOCATION -p ~/spoke1.json --deploy
-#---------------------------------------------------------------------------------------------
-SUBSCRIPTION_ID=$(az account list --query "[0].id" | tr -d '"')
-echo $SUBSCRIPTION_ID
-RESOURCE_GROUP_SPOKE2_VNET='AADesignLab08-spoke2-vnet-rg'
-echo $RESOURCE_GROUP_SPOKE2_VNET
-LOCATION='westeurope'
-echo $LOCATION
-azbb -g $RESOURCE_GROUP_SPOKE2_VNET -s $SUBSCRIPTION_ID -l $LOCATION -p ~/spoke2.json --deploy
-#---------------------------------------------------------------------------------------------
 
-az network vnet list -o table
+az group create --name $RESOURCE_GROUP --location $LOCATION
 
-SUBSCRIPTION_ID=$(az account list --query "[0].id" | tr -d '"')
+UBUNTU_IMAGE='Canonical:UbuntuServer:18.04-LTS:latest'
+VM_NAME='lab08vm1'
+USER_NAME='student'
+
+az vm create \
+    --name $VM_NAME \
+    --resource-group $RESOURCE_GROUP \
+    --location $LOCATION \
+    --image $UBUNTU_IMAGE \
+    --admin-username $USER_NAME \
+    --generate-ssh-keys \
+    --size Standard_DS1_v2
+
+IP_ADDRESS=$(az vm show -d --resource-group $RESOURCE_GROUP --name $VM_NAME --query publicIps -o tsv)
+
+ssh student@$IP_ADDRESS
+
+# Task 3: Install azbb on Linux VM
+sudo apt-get upgrade
+sudo -i apt update
+curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+curl -sL https://deb.nodesource.com/setup_10.x | sudo bash -
+sudo apt-get install -y nodejs
+node --version
+npm --version
+sudo su -
+npm install -g @mspnp/azure-building-blocks
+exit   # exit from root
+cd $HOME
+npm config set prefix '~/.npm-global'
+azbb --version
+
+# Task 4: Prepare parameter file
+git clone https://github.com/mspnp/reference-architectures.git
+cat ./reference-architectures/hybrid-networking/hub-spoke/hub-spoke.json
+cd ./reference-architectures/hybrid-networking/hub-spoke
+
+vi         # see lab md
+patch      # see lab md
+sed        # see lab md
+sed        # see lab md
+sed        # see lab md
+sed        # see lab md
+
+cat ./hub-spoke.json
+
+# Task 5: Implement
+az login
+
+SUBSCRIPTION_ID=$(az account list --query "[0].id" --output tsv | tr -d '"')
 echo $SUBSCRIPTION_ID
-RESOURCE_GROUP_HUB_VNET='AADesignLab08-hub-vnet-rg'
-echo $RESOURCE_GROUP_HUB_VNET
-LOCATION=$(az group list --query "[?name == 'AADesignLab08-hub-vnet-rg'].location" --output tsv)
-echo $LOCATION
-azbb -g $RESOURCE_GROUP_HUB_VNET -s $SUBSCRIPTION_ID -l $LOCATION -p ~/hub-vnet-peering.json --deploy
 
-RESOURCE_GROUP_HUB_NVA='AADesignLab08-hub-nva-rg'
-azbb -g $RESOURCE_GROUP_HUB_NVA -s $SUBSCRIPTION_ID -l $LOCATION -p ~/hub-nva.json --deploy
+RESOURCE_GROUP=onprem-vnet-rg
+
+# Attention! Choose location different to location of Task 2!
+LOCATION='westus2'
+
+azbb -s  $SUBSCRIPTION_ID -g $RESOURCE_GROUP -l $LOCATION -p ./hub-spoke.json --deploy
