@@ -1,3 +1,30 @@
+RESOURCE_GROUP='AADesignLab0303-RG'
+#LOCATION=$(az group list --query "[?name == 'AADesignLab0301-RG'].location" --output tsv)
+LOCATION=westeurope
+az group create --name $RESOURCE_GROUP --location $LOCATION
+
+UBUNTU_IMAGE='Canonical:UbuntuServer:18.04-LTS:latest'
+VM_NAME='lab03vm1'
+USER_NAME='student'
+az vm create \
+--name $VM_NAME \
+--resource-group $RESOURCE_GROUP \
+--location $LOCATION \
+--image $UBUNTU_IMAGE \
+--admin-username $USER_NAME \
+--generate-ssh-keys \
+--size Standard_D2s_v3
+
+IP_ADDRESS=$(az vm show -d --resource-group $RESOURCE_GROUP --name $VM_NAME --query publicIps -o tsv)
+echo $IP_ADDRESS
+
+ssh student@$IP_ADDRESS
+
+
+
+
+
+# veraltet! --------------------------
 # azbb ist bereits installiert
 azbb -V
 
