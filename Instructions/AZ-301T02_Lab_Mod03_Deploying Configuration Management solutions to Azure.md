@@ -192,8 +192,12 @@
     ```sh
     RESOURCE_GROUP='AADesignLab1202-RG'
     ```
+1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to list all region names to choose.
 
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create a variable which value designates the Azure region you will use for the deployment (replace the placeholder `<Azure region>` with the name of the Azure region to which you intend to deploy resources in this lab):
+    ```sh
+    az account list-locations --query "[].name" --output tsv
+    ```
+1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create a variable which value designates the Azure region you will use for the deployment (replace the placeholder `<Azure region>` with the name of the Azure region from one of the list in previous **Cloud Shell** output. to which you intend to deploy resources in this lab):
 
     ```sh
     LOCATION='<Azure region>'
@@ -272,7 +276,7 @@
 
 1. Navigate back to the **LinuxAutomation** blade.
 
-1. Back on the **LinuxAutomation** blade, in the **CONFIGURATION MANAGEMENT** section, click **State configuration (DSC)**.
+1. Back on the **LinuxAutomation** blade, in the **Configuration Management** section, click **State configuration (DSC)**.
 
 1. On the **LinuxAutomation - State configuration (DSC)** blade, click the **Configurations** link.
 

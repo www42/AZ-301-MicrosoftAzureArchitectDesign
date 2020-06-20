@@ -447,8 +447,6 @@ o
 
 > **Note**: This is necessary to account for breaking changes affecting running from Cloud Shell.
 
-1. In the **Cloud Shell** pane, run the following to create a variable which value designates the name of your Azure subscription:
-
 1. In the **Cloud Shell** pane, run the following to create a variable which value designates the name of the resource group you will use in this exercise:
 
     ```sh

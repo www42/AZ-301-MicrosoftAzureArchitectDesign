@@ -256,7 +256,7 @@
 
     - In the **Log Analytics** section, ensure that the **Off** button is selected.
 
-    - Click the **Create + Review** button and then click the **Create** button.
+    - Click the **Review + create** button and then click the **Create** button.
 
 1. Wait for the provisioning to complete before you proceed to the next task.
 

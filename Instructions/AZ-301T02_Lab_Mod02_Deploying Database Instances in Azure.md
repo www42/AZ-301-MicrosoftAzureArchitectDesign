@@ -60,7 +60,7 @@
 
     - Leave all remaining settings with their default values.
 
-    - Click the **Review + Create** button and then click the **Create** button.
+    - Click the **Review + create** button and then click the **Create** button.
 
 1. Wait for the provisioning to complete before you proceed to the next step.
 
@@ -376,7 +376,7 @@
 
     - On the **Select Pricing Tier** blade, click **Free** and then click the **Select** button.
 
-    - Click the **Review + Create** button, review the settings then click **Create**.
+    - Click the **Review + create** button, review the settings then click **Create**.
 
 1. Wait for the provisioning to complete before you proceed to the next step.
 

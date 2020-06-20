@@ -396,7 +396,7 @@
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create an Azure Active Directory service principal for the authentication of services and resources within the sample solution:
 
     ```sh
-    SERVICE_PRINCIPAL=$(az ad sp create-for-rbac --name AADesignLab0403-SP --output json)
+    SERVICE_PRINCIPAL=$(az ad sp create-for-rbac --name http://AADesignLab0403-SP --output json)
     ```
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to retrieve the **appId** attribute of the newly created service principal:
