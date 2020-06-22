@@ -4,8 +4,6 @@
 # Exercise 1: Create Azure Kubernetes Service (AKS) cluster
 # ---------------------------------------------------------
 
-az account list -o table
-
 RESOURCE_GROUP='AADesignLab0402-RG'
 echo $RESOURCE_GROUP
 
@@ -126,8 +124,6 @@ az aks delete --resource-group AADesignLab0402-RG --name aad0402-akscluster --ye
 # Note: This solution is based on the DevOps with Containers solution described at 
 # https://docs.microsoft.com/en-us/azure/architecture/example-scenario/apps/devops-with-aks
 
-# GitHub repo already cloned
-# git clone https://github.com/Azure-Samples/azure-voting-app-redis.git
 
 ssh-keygen -t rsa -b 2048
 
@@ -136,17 +132,11 @@ PUBLIC_KEY_REGEX="$(echo $PUBLIC_KEY | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\
 echo $PUBLIC_KEY_REGEX
 
 RESOURCE_GROUP='AADesignLab0403-RG'
-echo $RESOURCE_GROUP
-
-LOCATION='westeurope'
-echo $LOCATION
+LOCATION='eastus2'
 
 az group create --name $RESOURCE_GROUP --location $LOCATION
-az group show --name $RESOURCE_GROUP
-
 
 SERVICE_PRINCIPAL=$(az ad sp create-for-rbac --name AADesignLab0403-SP  --output json)
-echo $SERVICE_PRINCIPAL
 
 APP_ID=$(echo $SERVICE_PRINCIPAL | jq .appId | tr -d '"')
 echo $APP_ID
@@ -154,8 +144,8 @@ echo $APP_ID
 PASSWORD=$(echo $SERVICE_PRINCIPAL | jq -r .password)
 echo $PASSWORD
 
-# original Lab instruction: upload parameters.json
-# here: copy parameter.json
+# --- parameter.json ---
+ll allfiles/AZ-301T03/Module_02/LabFiles/Starter/parameters.json
 cp allfiles/AZ-301T03/Module_02/LabFiles/Starter/parameters.json ~/parameters.json
 cat ~/parameters.json
 
@@ -166,12 +156,103 @@ sed -i.bak3 's/"$PUBLIC_KEY_REGEX"/"'"$PUBLIC_KEY_REGEX"'"/' ~/parameters.json
 cat ~/parameters.json
 
 az aks get-versions --location $LOCATION --output table
+cat allfiles/AZ-301T03/Module_02/LabFiles/Starter/azuredeploy.json | jq .variables.kubernetesVersion | tr -d '"'
 
-az group deployment create \
+# ARM template from GitHub says 1.16.9
+# Jenkins pipeline stage 4 fails with Kubernetes version 1.16.9
+# Let's test other Kubernetes version!
+# Problem: "kubernetesVersion" is not a parameter (it's a variable) in ARM template on GitHub
+# Solution: clone GitHub repo (it's cloned already!)
+
+# --- Original deployment - ARM template from GitHub repo
+# az group deployment create \
+#     --resource-group $RESOURCE_GROUP \
+#     --template-uri https://raw.githubusercontent.com/MicrosoftLearning/AZ-301-MicrosoftAzureArchitectDesign/master/allfiles/AZ-301T03/Module_02/LabFiles/Starter/azuredeploy.json \
+#     --parameters ~/parameters.json
+
+# Kubernetes version    Jenkins pipeline (stage 4)
+# ------------------    --------------------------
+#   1.16.9                  fail
+#   1.16.8                  fail
+#   1.15.11                 success
+#   1.14.7                  success
+
+# --- New deployment - ARM template local file
+cp allfiles/AZ-301T03/Module_02/LabFiles/Starter/azuredeploy.json ~/azuredeploy.json
+#     Replace Kubernetes version
+sed -i.bak1 's/"1.16.9"/"1.15.11"/g' ~/azuredeploy.json
+
+az deployment group create \
     --resource-group $RESOURCE_GROUP \
-    --template-uri https://raw.githubusercontent.com/MicrosoftLearning/AZ-301-MicrosoftAzureArchitectDesign/master/allfiles/AZ-301T03/Module_02/LabFiles/Starter/azuredeploy.json \
+    --template-file ~/azuredeploy.json \
     --parameters ~/parameters.json
 
 
-# Delete copied parameters.json
-rm ~/parameters.json
+
+# =========================
+#        Follow up
+# =========================
+az resource list --resource-group $RESOURCE_GROUP -o table
+
+# Jenkins
+# -------
+az vm list --show-details --resource-group $RESOURCE_GROUP --output table
+jenkinsFqdn=$(az vm show --show-details --name jenkins --resource-group $RESOURCE_GROUP --query "fqdns" --output tsv)
+
+# connect to Jenkis dashboard via ssh tunnel
+jenkinsSSH=$(az deployment group show --name azuredeploy --resource-group $RESOURCE_GROUP --query "properties.outputs.jenkinsSSH.value" --output tsv)
+$jenkinsSSH
+# get Jenkins admin password
+sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+# open in browser http://localhost:8080
+# login to Jenkins dashboard with the admin password
+
+
+# Registry
+# --------
+acrId=$(az resource list --resource-type Microsoft.ContainerRegistry/registries --resource-group $RESOURCE_GROUP --query "[].id" --output tsv)
+acrName=$(az resource show --ids $acrId --query "name" --output tsv)
+
+az acr repository list --name $acrName 
+az acr repository show --name $acrName --repository hello-world 
+az acr repository show --name $acrName --image hello-world:1
+
+
+# Kubernetes
+# ----------
+aksName=$(az aks list --resource-group $RESOURCE_GROUP --query "[].name" --output tsv)
+az aks get-credentials --name $aksName --resource-group $RESOURCE_GROUP
+
+kubectl get deployments
+kubectl get pods
+kubectl get services
+# record the public ip of "hello-world-service", open in browser
+
+
+# Vnet (for VMs)
+# --------------
+vnetName="virtual-network"
+# add Bastion for better connections
+bastionSubnet="10.0.255.32/27"
+az network vnet subnet create --name "AzureBastionSubnet" --address-prefixes $bastionSubnet --vnet-name $vnetName --resource-group $RESOURCE_GROUP
+az network vnet subnet list --vnet-name $vnetName --resource-group $RESOURCE_GROUP --query "[].{name:name,addressPrefix:addressPrefix}" --output table
+az network public-ip create --name "DevOpsBastionIp" --allocation-method Static --sku Standard --resource-group $RESOURCE_GROUP
+az network bastion create --name "DevOpsBastion" --public-ip-address "DevOpsBastionIp" --vnet-name $vnetName --resource-group $RESOURCE_GROUP
+az network bastion list --output table
+
+
+# Clean up
+# --------
+az group delete --name $RESOURCE_GROUP --yes --no-wait
+az ad sp delete --id $APP_ID
+rm ~/parameters.json*
+rm ~/azuredeploy.json*
+ssh-keygen -R $jenkinsFqdn
+kubectl config view
+kubectl config delete-context $aksName
+kubectl config delete-cluster $aksName
+kubectl config unset users.clusterUser_AADesignLab0403-RG_$aksName
+
+# $aksName
+# 2. deployment  aksmytggs3hzesb6
+# 3. deployment  aksmytggs3hzesb6
