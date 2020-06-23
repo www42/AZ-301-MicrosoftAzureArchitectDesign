@@ -143,7 +143,7 @@
 
     - Operating System: **Windows**
 
-    - Plan type: **Consumption** entry is selected.
+    - Plan type: **Consumption (Serverless)**
 
 1. On the **Monitoring** tab of the **Function App** blade, specify the following and click **Review + create**:
 
@@ -179,7 +179,7 @@
 
 1. Click the **Save** button at the top of the **Application settings** tab.
 
-1. Under **Deployment** at the left, click on the **Deployment Center** section.
+1. In the **Deployment** section, select the **Deployment Center** entry.
 
 1. On the **Deployment Center** blade, scroll down to the bottom of the blade and click **External** and then click **Continue**.
 
@@ -205,19 +205,15 @@
 
 #### Task 4: Test a function app using Cognitive Services
 
-1. Back on the function app blade, click **Functions** to expand the list of functions.
-
-    > **Note**: You may need to click **Functions** twice to refresh the list of functions.
+1. On the function app blade, in the **Functions** section, click **Functions**.
 
 1. Select the **DetermineLanguage** function from the list of functions.
 
-1. On the left, under **Developer**, select the **Code + Test** option
+1. On the left, under **Developer**, select the **Code + Test** option.
 
-1. In the **run.csx** pane that opens, scroll to the right and click **Test** on the right side of the pane.
+1. On the **DetermineLanguage | Code + Test** blade, click **Test/Run**.
 
-1. In the **Test** pane, perform the following tasks:
-
-    - In the **Request body** text box, type the following:
+1. On the **Input** tab, ensure that the **HTTP method** is set to **POST**, scroll down to the **Body** section, and set its content to the following JSON formatted text:
 
     ```json
     {
@@ -225,9 +221,9 @@
     }
     ```
 
-    - Locate and click the **Run** button.
+1. Click the **Run** button.
 
-    - Locate and review the output in the **Output** section. The output should identify the language as **en** (English).
+1. Switch to the **Output** tab and review its content. The output should identify the language as **en** (English).
 
 > **Review**: In this exercise, you created a function app that uses Azure Cognitive Services.
 
