@@ -330,6 +330,48 @@
 1. Wait for the deployment to complete but proceed to the next task.
 
     > **Note**: The deployment can take about 40 minutes.
+    
+1. In case the Cloud Shell session timed out, reopen it, reestablish the SSH session to the Azure VM **lab08vm1**, and run the following to authenticate to your Azure subscription:
+
+    ```sh
+    az login
+    ```
+
+    > **Note**: Follow the instructions provided in the output of the command to authenticate to your Azure subscription.
+
+1. Within the SSH session to the Azure VM **lab08vm1**, and run the following to create a variable which value designates the name of your Azure subscription:
+
+    ```sh
+    SUBSCRIPTION_ID=$(az account list --query "[0].id" --output tsv | tr -d '"')
+    ```
+
+1. Within the SSH session to the Azure VM **lab08vm1**, run the following to create a variable which value designates the name of the resource group that will contain the hub virtual network:
+
+    ```sh
+    RESOURCE_GROUP=onprem-vnet-rg
+    ```
+
+1. Within the SSH session to the Azure VM **lab08vm1**, run the following to create a variable which value designates the Azure region you will use for the deployment (replace the placeholder `<Azure region>` with the name of the Azure region to which you intend to deploy resources in this lab):
+
+    ```sh
+    LOCATION='<Azure region>'
+    ```
+
+1. Within the SSH session to the Azure VM **lab08vm1**, run the following to change the current directory to the one hosting the **hub-spoke.json** file you will use for this deployment:
+
+    ```sh
+    cd ./reference-architectures/hybrid-networking/hub-spoke
+    ```
+    
+1. Within the SSH session to the Azure VM **lab08vm1**, run the following to deploy the hub component of the Hub-and-Spoke topology by using the Azure Building Blocks:
+
+    ```sh
+    azbb -s  $SUBSCRIPTION_ID -g $RESOURCE_GROUP -l $LOCATION -p ./hub-firewall.json --deploy
+    ```
+
+1. Wait for the deployment to complete but proceed to the next task.
+
+    > **Note**: The deployment can take about 2 minutes.   
 
 
 ## Exercise 2: Review the Hub-spoke topology
