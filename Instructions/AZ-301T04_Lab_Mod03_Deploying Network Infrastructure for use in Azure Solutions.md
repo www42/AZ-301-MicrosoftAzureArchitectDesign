@@ -25,6 +25,8 @@
     - Windows PowerShell
 
     > **Note**: You can also find shortcuts to these applications in the **Start Menu**.
+    
+1. Ensure that you have 12 available Standard DSv2 Family vCPUs cores in the region that you will use in the lab. If this is not the case, follow the procedure described in [Standard quota: Increase limits by VM series](https://docs.microsoft.com/en-us/azure/azure-portal/supportability/per-vm-quota-requests) to increase the quotas.
 
 ## Exercise 1: Configure the lab environment
 
