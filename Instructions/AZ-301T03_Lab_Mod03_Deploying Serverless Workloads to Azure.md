@@ -158,7 +158,7 @@
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create a new web app using a unique name:
 
     ```sh
-    az webapp create --name $WEBAPPNAME2 --plan AADesignLab0502-$LOCATION --resource-group $RESOURCE_GROUP_APP --runtime "NODE|9.4"
+    az webapp create --name $WEBAPPNAME2 --plan AADesignLab0502-$LOCATION --resource-group $RESOURCE_GROUP_APP --runtime "NODE|14-lts"
     ```
 
     > **Note**: In case the command fails due to duplicate web app name, re-run the last two steps until the command completes successfully
