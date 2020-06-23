@@ -70,121 +70,121 @@
 
     ```json
     {
-        "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-        "contentVersion": "1.0.0.0",
-        "parameters": {
-            "userName": {
-                "type": "string",
-                "defaultValue": "Student"
-            },
-            "password": {
-                "type": "securestring"
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "userName": {
+            "type": "string",
+            "defaultValue": "Student"
+        },
+        "password": {
+            "type": "securestring"
+        }
+    },
+    "variables": {
+        "vmName": "[concat('lvm', uniqueString(resourceGroup().id))]",
+        "nicName": "[concat('nic', uniqueString(resourceGroup().id))]",
+        "publicIPAddressName": "[concat('pip', uniqueString(resourceGroup().id))]",
+        "virtualNetworkName": "[concat('vnt', uniqueString(resourceGroup().id))]",
+        "subnetName": "Linux",
+        "imageReference": {
+            "publisher": "OpenLogic",
+            "offer": "CentOS",
+            "sku": "7.5",
+            "version": "latest"
+        }
+    },
+    "resources": [
+        {
+            "apiVersion": "2017-06-01",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "name": "[variables('publicIPAddressName')]",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "publicIPAllocationMethod": "Dynamic"
             }
         },
-        "variables": {
-            "vmName": "[concat('lvm', uniqueString(resourceGroup().id))]",
-            "nicName": "[concat('nic', uniqueString(resourceGroup().id))]",
-            "publicIPAddressName": "[concat('pip', uniqueString(resourceGroup().id))]",
-            "virtualNetworkName": "[concat('vnt', uniqueString(resourceGroup().id))]",
-            "subnetName": "Linux",
-            "imageReference": {
-                "publisher": "suse",
-                "offer": "opensuse-leap",
-                "sku": "42.3",
-                "version": "latest"
-            }
-        },
-        "resources": [
-            {
-                "apiVersion": "2017-06-01",
-                "type": "Microsoft.Network/publicIPAddresses",
-                "name": "[variables('publicIPAddressName')]",
-                "location": "[resourceGroup().location]",
-                "properties": {
-                    "publicIPAllocationMethod": "Dynamic"
-                }
-            },
-            {
-                "apiVersion": "2017-06-01",
-                "type": "Microsoft.Network/virtualNetworks",
-                "name": "[variables('virtualNetworkName')]",
-                "location": "[resourceGroup().location]",
-                "properties": {
-                    "addressSpace": {
-                        "addressPrefixes": [
-                            "10.0.0.0/16"
-                        ]
-                    },
-                    "subnets": [
-                        {
-                            "name": "[variables('subnetName')]",
-                            "properties": {
-                                "addressPrefix": "10.0.0.0/24"
-                            }
-                        }
+        {
+            "apiVersion": "2017-06-01",
+            "type": "Microsoft.Network/virtualNetworks",
+            "name": "[variables('virtualNetworkName')]",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "10.0.0.0/16"
                     ]
-                }
-            },
-            {
-                "apiVersion": "2017-10-01",
-                "type": "Microsoft.Network/networkInterfaces",
-                "name": "[variables('nicName')]",
-                "location": "[resourceGroup().location]",
-                "dependsOn": [
-                    "[resourceId('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName'))]",
-                    "[resourceId('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"
-                ],
-                "properties": {
-                    "ipConfigurations": [
-                        {
-                            "name": "ipconfig1",
-                            "properties": {
-                                "privateIPAllocationMethod": "Dynamic",
-                                "publicIPAddress": {
-                                    "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('publicIPAddressName'))]"
-                                },
-                                "subnet": {
-                                    "id": "[concat(resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName')), '/subnets/', variables('subnetName'))]"
-                                }
-                            }
+                },
+                "subnets": [
+                    {
+                        "name": "[variables('subnetName')]",
+                        "properties": {
+                            "addressPrefix": "10.0.0.0/24"
                         }
-                    ]
-                }
-            },
-            {
-                "apiVersion": "2017-03-30",
-                "type": "Microsoft.Compute/virtualMachines",
-                "name": "[variables('vmName')]",
-                "location": "[resourceGroup().location]",
-                "dependsOn": [
-                    "[resourceId('Microsoft.Network/networkInterfaces/', variables('nicName'))]"
-                ],
-                "properties": {
-                    "hardwareProfile": {
-                        "vmSize": "Standard_A1_v2"
-                    },
-                    "osProfile": {
-                        "computerName": "[variables('vmName')]",
-                        "adminUsername": "[parameters('username')]",
-                        "adminPassword": "[parameters('password')]"
-                    },
-                    "storageProfile": {
-                        "imageReference": "[variables('imageReference')]",
-                        "osDisk": {
-                            "createOption": "FromImage"
-                        }
-                    },
-                    "networkProfile": {
-                        "networkInterfaces": [
-                            {
-                                "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('nicName'))]"
-                            }
-                        ]
                     }
+                ]
+            }
+        },
+        {
+            "apiVersion": "2017-10-01",
+            "type": "Microsoft.Network/networkInterfaces",
+            "name": "[variables('nicName')]",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName'))]",
+                "[resourceId('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"
+            ],
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "properties": {
+                            "privateIPAllocationMethod": "Dynamic",
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('publicIPAddressName'))]"
+                            },
+                            "subnet": {
+                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName')), '/subnets/', variables('subnetName'))]"
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "apiVersion": "2017-03-30",
+            "type": "Microsoft.Compute/virtualMachines",
+            "name": "[variables('vmName')]",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/networkInterfaces/', variables('nicName'))]"
+            ],
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "Standard_D2s_v3"
+                },
+                "osProfile": {
+                    "computerName": "[variables('vmName')]",
+                    "adminUsername": "[parameters('username')]",
+                    "adminPassword": "[parameters('password')]"
+                },
+                "storageProfile": {
+                    "imageReference": "[variables('imageReference')]",
+                    "osDisk": {
+                        "createOption": "FromImage"
+                    }
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('nicName'))]"
+                        }
+                    ]
                 }
             }
-        ]
-    }
+        }
+    ]
+}
     ```
 
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create a variable which value designates the name of the resource group that will contain the hub virtual network:
