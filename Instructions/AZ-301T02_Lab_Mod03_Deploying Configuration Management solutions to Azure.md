@@ -348,9 +348,11 @@
     
 > **Review**: In this exercise, you created a PowerShell DSC configuration and applied the configuration to a Linux virtual machine.
 
-#### Task 3bis: Test for packages installed and process running
+#### Task 4: Validate Linux VM onboarding
 
-1. Connect to VM from Bash CloudShell and try following commands, use **Pa55w.rd1234** when password prompted:
+1. In the Azure portal, open a Bash session in the **Cloud Shell**.
+
+1. In the Bash session of the Cloud Shell run the following to identify installed packages (provide the password **Pa55w.rd1234** when prompted):
 
     ```sh
     RESOURCE_GROUP='AADesignLab1202-RG'
@@ -361,6 +363,7 @@
     ps -aux | grep maria
     exit
     ```
+1. Close the **Cloud Shell** pane.
     
 ## Exercise 3: Remove lab resources
 
