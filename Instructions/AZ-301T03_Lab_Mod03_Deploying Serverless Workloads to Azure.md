@@ -158,7 +158,7 @@
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create a new web app using a unique name:
 
     ```sh
-    az webapp create --name $WEBAPPNAME2 --plan AADesignLab0502-$LOCATION --resource-group $RESOURCE_GROUP_APP --runtime "NODE|9.4"
+    az webapp create --name $WEBAPPNAME2 --plan AADesignLab0502-$LOCATION --resource-group $RESOURCE_GROUP_APP --runtime "NODE|14-lts"
     ```
 
     > **Note**: In case the command fails due to duplicate web app name, re-run the last two steps until the command completes successfully
@@ -211,64 +211,10 @@
     }
     ```
 
-1. In the **Cloud Shell** pane, click the **Upload/Download files** icon and, in the drop-down menu, click **Upload**.
-
-1. In the **Open** dialog box, navigate to the **\\allfiles\\AZ-301T03\\Module_03\\Labfiles\\Starter\\** folder, select the **parameters.json** file, and click **Open**. The file contains the following parameters for the Azure Resource Manager template you uploaded previously:
-
-    ```json
-    {
-      "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
-      "contentVersion": "1.0.0.0",
-      "parameters": {
-        "webAppName": {
-          "value": "$WEBAPPNAME2"
-        },
-        "repositoryUrl": {
-          "value": "$REPOSITORY_URL"
-        },
-        "branch": {
-          "value": "master"
-        }
-      }
-    }
-    ```
-
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create a variable which value designates the name of the GitHub repository hosting the web app code:
-
-    ```sh
-    REPOSITORY_URL='https://github.com/Azure-Samples/nodejs-docs-hello-world'
-    ```
-
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to create a variable which value designates the name of the GitHub repository hosting the web app code and which takes into account any special character the URL might include:
-
-    ```sh
-    REPOSITORY_URL_REGEX="$(echo $REPOSITORY_URL | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')"
-    ```
-
-    > **Note**: This is necessary because you will use the **sed** utility to insert this string into the Azure Resource Manager template parameters file. Alternatively, you could simply open the file and enter the URL string directly into the file.
-
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to replace the placeholder for the value of the **webAppName** parameter with the value of the **$WEBAPPNAME2** variable in the parameters file:
-
-    ```sh
-    sed -i.bak1 's/"$WEBAPPNAME2"/"'"$WEBAPPNAME2"'"/' ~/parameters.json
-    ```
-
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to replace the placeholder for the value of the **repositoryUrl** parameter with the value of the **$REPOSITORY_URL** variable in the parameters file:
-
-    ```sh
-    sed -i.bak2 's/"$REPOSITORY_URL"/"'"$REPOSITORY_URL_REGEX"'"/' ~/parameters.json
-    ```
-
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to verify that the placeholders were successfully replaced in the parameters file:
-
-    ```sh
-    cat ~/parameters.json
-    ```
-
 1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to deploy the GitHub-resident web app code by using a local Azure Resource Manager template and a local parameters file:
 
     ```sh
-    az group deployment create --resource-group $RESOURCE_GROUP_APP --template-file github.json --parameters @parameters.json
+    az group deployment create --resource-group $RESOURCE_GROUP_APP --template-file github.json --parameters webAppName=webapp05022$RANDOM$RANDOM --parameters repositoryUrl=https://github.com/Azure-Samples/nodejs-docs-hello-world --parameters branch=master
     ```
 
 1. Wait for the deployment to complete before you proceed to the next task.
