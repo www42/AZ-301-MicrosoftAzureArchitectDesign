@@ -348,7 +348,20 @@
     
 > **Review**: In this exercise, you created a PowerShell DSC configuration and applied the configuration to a Linux virtual machine.
 
+#### Task 3bis: Test for packages installed and process running
 
+1. Connect to VM from Bash CloudShell and try following commands, use **Pa55w.rd1234** when password prompted:
+
+    ```sh
+    RESOURCE_GROUP='AADesignLab1202-RG'
+    PUBLIC_IP=$(az network public-ip list --resource-group $RESOURCE_GROUP --query "[0].ipAddress" --output tsv)
+    ssh Student@$PUBLIC_IP
+    sudo yum history
+    ps -aux | grep httpd
+    ps -aux | grep maria
+    exit
+    ```
+    
 ## Exercise 3: Remove lab resources
 
 #### Task 1: Open Cloud Shell
