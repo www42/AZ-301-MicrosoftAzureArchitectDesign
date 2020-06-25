@@ -122,7 +122,7 @@
 
     - On the **Advanced** tab, in the **Secure transfer required** section, select the **Disabled** option.
     
-    - On the **Advanced** tab, select **Enabled** radio button near the **Public blob access** option.
+    - On the **Advanced** tab, in the **Blob public access** section, select the **Enabled** option.
 
     - Click the **Review + create** button and then click the **Create** button.
 
