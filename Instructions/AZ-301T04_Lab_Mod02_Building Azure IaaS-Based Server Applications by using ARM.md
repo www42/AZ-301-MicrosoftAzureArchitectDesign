@@ -176,10 +176,13 @@ o
 
     - In the **Performance** section, ensure that the **Standard** option is selected.
 
-
     - In the **Account kind** drop-down list, ensure that the **Storage (general purpose v1)** option is selected.
 
     - In the **Replication** drop-down list, select the **Locally-redundant storage (LRS)** entry.
+    
+    - Click the **Advanced** tab at the top of the blade.
+    
+    - Select the **Enabled** radio button near the **Public blob access** line.
 
     - Click the **Review + Create** button, and then click **Create**.
 
