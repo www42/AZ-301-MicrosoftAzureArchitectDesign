@@ -116,7 +116,7 @@
     ssh student@$IP_ADDRESS
     ```
 
-1. In the **Cloud Shell** pane, when prompted whether to continue, type **y** and press Enter.
+1. In the **Cloud Shell** pane, when prompted whether to continue, type **yes** and press Enter.
 
 #### Task 3: Install the Azure Building Blocks npm package in the Azure VM running Linux.
 
