@@ -8,6 +8,7 @@ RESOURCE_GROUP='AADesignLab0402-RG'
 echo $RESOURCE_GROUP
 
 LOCATION='westeurope'
+LOCATION='westus2'
 echo $LOCATION
 
 az group create --name $RESOURCE_GROUP --location $LOCATION
@@ -16,25 +17,8 @@ az aks create \
     --resource-group $RESOURCE_GROUP \
     --name aad0402-akscluster \
     --node-count 1 \
-    --node-vm-size Standard_F2s_v2 \
+    --node-vm-size Standard_D2s_v3 \
     --generate-ssh-keys
-
-# Error: ... The credentials in ServicePrincipalProfile were invalid. ...
-SP=$(az ad sp create-for-rbac --name "MyKubeCluster" --skip-assignment)
-echo $SP
-
-SP_appId=$(echo $SP | jq .appId | tr -d '""')
-SP_password=$(echo $SP | jq .password | tr -d '""')
-
-az aks create \
-    --resource-group $RESOURCE_GROUP \
-    --name Mein-kleiner-K8s-Cluster \
-    --node-count 1 \
-    --node-vm-size Standard_F2s_v2 \
-    --generate-ssh-keys \
-    --service-principal $SP_appId \
-    --client-secret $SP_password
-
 
 az aks list -o table
 
@@ -56,6 +40,8 @@ kubectl get service
 # Exercise 2: Managing an AKS cluster and its containerized workloads
 # -------------------------------------------------------------------
 
+# This works         with kubectl 1.16.0 (Client Version)
+# This does not work with kubectl 1.18.3 (Client Version)
 kubectl run aad0402-akscluster --image=nginx --replicas=1 --port=80
 
 kubectl get pods
@@ -66,9 +52,11 @@ kubectl expose deployment aad0402-akscluster --port=80 --type=LoadBalancer
 
 kubectl get service --watch
 
+# scale out pods manually
 kubectl scale --replicas=2 deployment/aad0402-akscluster
 kubectl get pods
 
+# scale out nodes manually
 az aks scale \
     --resource-group $RESOURCE_GROUP \
     --name aad0402-akscluster \
@@ -158,40 +146,18 @@ cat ~/parameters.json
 az aks get-versions --location $LOCATION --output table
 cat allfiles/AZ-301T03/Module_02/LabFiles/Starter/azuredeploy.json | jq .variables.kubernetesVersion | tr -d '"'
 
-# ARM template from GitHub says 1.16.9
-# Jenkins pipeline stage 4 fails with Kubernetes version 1.16.9
-# Let's test other Kubernetes version!
-# Problem: "kubernetesVersion" is not a parameter (it's a variable) in ARM template on GitHub
-# Solution: clone GitHub repo (it's cloned already!)
-
-# --- Original deployment - ARM template from GitHub repo
-# az group deployment create \
-#     --resource-group $RESOURCE_GROUP \
-#     --template-uri https://raw.githubusercontent.com/MicrosoftLearning/AZ-301-MicrosoftAzureArchitectDesign/master/allfiles/AZ-301T03/Module_02/LabFiles/Starter/azuredeploy.json \
-#     --parameters ~/parameters.json
-
-# Kubernetes version    Jenkins pipeline (stage 4)
-# ------------------    --------------------------
-#   1.16.9                  fail
-#   1.16.8                  fail
-#   1.15.11                 success
-#   1.14.7                  success
-
-# --- New deployment - ARM template local file
-cp allfiles/AZ-301T03/Module_02/LabFiles/Starter/azuredeploy.json ~/azuredeploy.json
-#     Replace Kubernetes version
-sed -i.bak1 's/"1.16.9"/"1.15.11"/g' ~/azuredeploy.json
-
-az deployment group create \
+az group deployment create \
     --resource-group $RESOURCE_GROUP \
-    --template-file ~/azuredeploy.json \
+    --template-uri https://raw.githubusercontent.com/MicrosoftLearning/AZ-301-MicrosoftAzureArchitectDesign/master/allfiles/AZ-301T03/Module_02/LabFiles/Starter/azuredeploy.json \
     --parameters ~/parameters.json
 
 
-
-# =========================
+# ===================================================================================================================
 #        Follow up
-# =========================
+# ===================================================================================================================
+
+# A hole bunch of resource has been created by ARM template
+# ARM template visualizer in VS Code
 az resource list --resource-group $RESOURCE_GROUP -o table
 
 # Jenkins
@@ -227,6 +193,14 @@ kubectl get deployments
 kubectl get pods
 kubectl get services
 # record the public ip of "hello-world-service", open in browser
+
+
+# Grafana
+# -------
+grafanaUrl=$(az deployment group show --name azuredeploy --resource-group $RESOURCE_GROUP --query "properties.outputs.grafanaUrl.value" --output tsv)
+echo $grafanaUrl
+# Log in to Grafana Dashboard user: admin    password:Pa55w.rd1234
+
 
 
 # Vnet (for VMs)
