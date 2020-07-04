@@ -120,7 +120,7 @@ PUBLIC_KEY_REGEX="$(echo $PUBLIC_KEY | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\
 echo $PUBLIC_KEY_REGEX
 
 RESOURCE_GROUP='AADesignLab0403-RG'
-LOCATION='eastus2'
+LOCATION='westeurope'
 
 az group create --name $RESOURCE_GROUP --location $LOCATION
 
@@ -190,7 +190,8 @@ aksName=$(az aks list --resource-group $RESOURCE_GROUP --query "[].name" --outpu
 az aks get-credentials --name $aksName --resource-group $RESOURCE_GROUP
 
 kubectl get deployments
-kubectl get pods
+kubectl get nodes
+kubectl get pods --all-namespaces
 kubectl get services
 # record the public ip of "hello-world-service", open in browser
 
@@ -226,7 +227,3 @@ kubectl config view
 kubectl config delete-context $aksName
 kubectl config delete-cluster $aksName
 kubectl config unset users.clusterUser_AADesignLab0403-RG_$aksName
-
-# $aksName
-# 2. deployment  aksmytggs3hzesb6
-# 3. deployment  aksmytggs3hzesb6
